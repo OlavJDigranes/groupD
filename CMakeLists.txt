@@ -46,7 +46,7 @@ target_link_libraries(lib_ecm PRIVATE lib_maths)
 file(GLOB_RECURSE SOURCES NbrhdNash/*.cpp NbrhdNash/*.h)
 add_executable(nbrhdnash ${SOURCES})
 target_include_directories(nbrhdnash SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
-target_link_libraries(nbrhdnash lib_ecm lib_tile_level_loader lib_maths sfml-graphics Box2d)
+target_link_libraries(nbrhdnash lib_ecm lib_tile_level_loader lib_maths sfml-graphics Box2D)
 add_dependencies(nbrhdnash copy_resources)
 set_target_properties(nbrhdnash 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
