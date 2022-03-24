@@ -49,7 +49,6 @@ target_include_directories(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths" S
 # ECM Library
 file(GLOB_RECURSE SOURCE_FILES lib_ecm/*.cpp lib_ecm/*.h)
 file(GLOB_RECURSE CMPNTS lib_ecm/components/*.cpp lib_ecm/components/*.h)
-file(GLOB_RECURSE SCENES lib_ecm/scenes/*.cpp lib_ecm/scenes/*.h)
 source_group("Components" FILES ${CMPNTS})
 source_group("Resources" FILES ${RESOURCE_FILES})
 add_library(lib_ecm STATIC ${SOURCE_FILES})
@@ -58,6 +57,8 @@ target_link_libraries(lib_ecm PRIVATE lib_maths)
 
 ## Project
 file(GLOB_RECURSE SOURCES NbrhdNash/*.cpp NbrhdNash/*.h)
+file(GLOB_RECURSE SCENES NbrhdNash/scenes/*.cpp NbrhdNash/scenes/*.h)
+source_group("Scenes" FILES ${SCENES})
 add_executable(nbrhdnash ${SOURCES} ${RESOURCE_FILES})
 target_include_directories(nbrhdnash SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(nbrhdnash lib_ecm lib_tile_level_loader lib_maths sfml-graphics Box2D)
