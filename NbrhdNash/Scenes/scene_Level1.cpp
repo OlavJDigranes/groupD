@@ -1,19 +1,19 @@
 #include <iostream>
 #include <thread>
-#include "scene_MainMenu.h"
+#include "scene_Level1.h"
 
-void MainMenu::Load() {
+void Level1::Load() {
 	
 }
 
-void MainMenu::UnLoad() {
+void Level1::UnLoad() {
 
 }
 
-void MainMenu::Render() {
+void Level1::Render() {
 
 }
 
-void MainMenu::Update(const double& dt) {
+void Level1::Update(const double& dt) {
 
 }

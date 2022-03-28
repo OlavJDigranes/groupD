@@ -1,19 +1,20 @@
 #include <iostream>
 #include <thread>
-#include "scene_Level1.h"
+#include "LevelSystem.h"
+#include "scene_MainMenu.h"
 
-void Level1::Load() {
-	
+void MainMenu::Load() {
+	ls::loadLevelFile("res/levels/level1.txt", 50.f);
 }
 
-void Level1::UnLoad() {
-
-}
-
-void Level1::Render() {
+void MainMenu::UnLoad() {
 
 }
 
-void Level1::Update(const double& dt) {
+void MainMenu::Render() {
+
+}
+
+void MainMenu::Update(const double& dt) {
 
 }
