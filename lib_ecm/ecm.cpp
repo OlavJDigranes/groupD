@@ -1,120 +1,130 @@
 #include "ecm.h"
 
-// --- Entity class declarations ---
+using namespace std;
 
-Entity::Entity() : _components(std::vector<std::shared_ptr<Component>>()), _position(sf::Vector2f(0, 0)),
-_rotation(0), _alive(false), _visible(false), _fordeletion(false)
-{};
+Entity::Entity(Scene* const s)
+    : _position({0, 0}), _rotation(0), _alive(true), _visible(true),
+      scene(s), _fordeletion(false) {}
+
+void Entity::addTag(const std::string& t) { _tags.insert(t); }
+const std::set<std::string>& Entity::getTags() const { return _tags; }
+
+void Entity::update(double dt) {
+  if (!_alive) {
+    return;
+  }
+  for (size_t i = 0; i < _components.size(); i++) {
+    if (_components[i]->is_fordeletion()) {
+      _components.erase(_components.begin() + i);
+      --i;
+    }
+    _components[i]->update(dt);
+  }
+}
+
+bool Entity::is_fordeletion() const { return _fordeletion; }
+
+void Entity::render() {
+  if (!_visible) {
+    return;
+  }
+  for (auto& c : _components) {
+    c->render();
+  }
+}
+
+const sf::Vector2f& Entity::getPosition() const { return _position; }
+
+void Entity::setPosition(const sf::Vector2f& _position) {
+  Entity::_position = _position;
+}
+
+float Entity::getRotation() const { return _rotation; }
+
+void Entity::setRotation(float _rotation) { Entity::_rotation = _rotation; }
+
+bool Entity::isAlive() const { return _alive; }
+
+void Entity::setAlive(bool _alive) { Entity::_alive = _alive; }
+
+void Entity::setForDelete() {
+  _fordeletion = true;
+  _alive = false;
+  _visible = false;
+}
+
+bool Entity::isVisible() const { return _visible; }
+
+void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
+
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false) {}
 
 Entity::~Entity() {
-	if (_fordeletion) {
-		for (auto item : _components) {
-			item = nullptr;
-		}
-	}
-	else {
-		throw "Attempting to delete item that is not marked for deletion!";
-	}
+  // Components can inter-depend on each other, so deleting them may take
+  // multiple passes. We Keep deleting components until we can't delete any
+  // more
+  int deli = 0;
+  while (deli != _components.size()) {
+    deli = _components.size();
+    _components.erase(
+        remove_if(_components.begin(), _components.end(),
+                  [](auto& sp) { return (sp.use_count() <= 1); }),
+        _components.end());
+  }
+
+  if (_components.size() > 0) {
+    throw std::runtime_error(
+        "Can't delete entity, someone is grabbing a component!");
+  }
+
+  _components.clear();
 }
 
-//	Render method - Called by entity manager
-void Entity::render() {
-	if (_visible)
-	{
-		for (auto item : _components) {
-			item->render();
-		}
-	}
-};
+Component::~Component() {}
 
-//	Update method - Called by entity manager
-void Entity::update(double dt) {
-	if (_alive)
-	{
-		for (auto item : _components) {
-			item->update(dt);
-		}
-	}
-};
+bool Component::is_fordeletion() const { return _fordeletion; }
 
-//	Get position of entity
-const sf::Vector2f& Entity::getPosition() const {
-	return _position;
-};
-
-//	Set entity position
-void Entity::setPosition(const sf::Vector2f& Position) {
-	_position = Position;
-};
-
-//	Get if entity has been marked for deletion
-bool Entity::is_fordeletion() const {
-	return _fordeletion;
-};
-
-//	Set entity for deletion
-void Entity::setForDelete() {
-	_fordeletion = true;
-};
-
-//	Get rotation of entity
-float Entity::getRotation() const {
-	return _rotation;
-};
-
-//	Set entity rotation
-void Entity::setRotation(float Rotation) {
-	_rotation = Rotation;
-};
-
-//	Get if entity is alive
-bool Entity::isAlive() const {
-	return _alive;
-};
-
-// Set if entity should be alive
-void Entity::setAlive(bool Alive) {
-	_alive = Alive;
-};
-
-//	Get if entity is currently visible
-bool Entity::isVisible() const {
-	return _visible;
-};
-
-//	Set if entity should be visible
-void Entity::setVisible(bool IsVisible) {
-	_visible = IsVisible;
-};
-
-// --- Entity Manager declarations ---
-// 
-//	Update method - Updates all held entities
 void EntityManager::update(double dt) {
-	for (auto item : list) {
-		item->update(dt);
-	}
+  for (size_t i = 0; i < list.size(); i++) {
+    if (list[i]->is_fordeletion()) {
+      list.erase(list.begin() + i);
+      --i;
+      continue;
+    }
+    if (list[i]->_alive) {
+      list[i]->update(dt);
+    }
+  }
 }
 
-//	Render method - Render all held entities
 void EntityManager::render() {
-	for (auto item : list) {
-		item->render();
-	}
+  for (auto& e : list) {
+    if (e->_visible) {
+      e->render();
+    }
+  }
 }
 
-// Component class declarations
-Component::Component(Entity* const Parent) : _parent(Parent), _fordeletion(false) {};
+vector<shared_ptr<Entity>> EntityManager::find(const string& tag) const {
+  vector<shared_ptr<Entity>> ret;
+  for (auto& e : list) {
+    const auto tgs = e->_tags;
+    if (tgs.find(tag) != tgs.end()) {
+      ret.push_back(e);
+    }
+  }
+  return ret;
+}
 
-//	Get if component is set for deletion
-bool Component::is_fordeletion() const {
-	return _fordeletion;
-};
-
-//	Update method (abstract)
-void Component::update(double dt) {};
-
-//	Render method (abstract)
-void Component::render() {};
-
-Component::~Component() {};
+vector<shared_ptr<Entity>>
+EntityManager::find(const vector<string>& tags) const {
+  vector<shared_ptr<Entity>> ret;
+  for (auto& e : list) {
+    const auto tgs = e->_tags;
+    if (any_of(tags.begin(), tags.end(),
+               [&tgs](auto t) { return tgs.find(t) != tgs.end(); })) {
+      ret.push_back(e);
+    }
+  }
+  return ret;
+}
