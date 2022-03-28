@@ -35,7 +35,7 @@ void Loading_render() {
   octagon.setRotation(sf::degrees(loadingspinner));
   octagon.setPosition(Vcast<float>(Engine::getWindowSize()) * .5f);
   octagon.setFillColor(Color(255,255,255,min(255.f,40.f*loadingTime)));
-  static Text t("Loading", *Resources::get<sf::Font>("RobotoMono-Regular.ttf"));
+  static Text t("Loading", *Resources::get<sf::Font>("arial.ttf"));
   t.setFillColor(Color(255,255,255,min(255.f,40.f*loadingTime)));
   t.setPosition(Vcast<float>(Engine::getWindowSize()) * Vector2f(0.4f,0.3f));
   Renderer::queue(&t);
@@ -132,8 +132,8 @@ void Engine::ChangeScene(Scene* s) {
   if (!s->isLoaded()) {
     cout << "Eng: Entering Loading Screen\n";
     loadingTime =0;
-    _activeScene->LoadAsync();
-    //_activeScene->Load();
+    //_activeScene->LoadAsync();
+    _activeScene->Load();
     loading = true;
   }
 }

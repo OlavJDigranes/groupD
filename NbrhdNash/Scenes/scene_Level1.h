@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LevelSystem.h"
 #include "engine.h"
 
 class Level1 : public Scene {

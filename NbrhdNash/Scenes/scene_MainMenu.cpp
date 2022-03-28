@@ -4,7 +4,7 @@
 #include "scene_MainMenu.h"
 
 void MainMenu::Load() {
-	ls::loadLevelFile("res/levels/level1.txt", 50.f);
+
 }
 
 void MainMenu::UnLoad() {
