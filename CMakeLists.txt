@@ -61,7 +61,7 @@ file(GLOB_RECURSE SCENES NbrhdNash/scenes/*.cpp NbrhdNash/scenes/*.h)
 source_group("Scenes" FILES ${SCENES})
 add_executable(nbrhdnash ${SOURCES} ${RESOURCE_FILES})
 target_include_directories(nbrhdnash SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
-target_link_libraries(nbrhdnash lib_ecm lib_tile_level_loader lib_maths sfml-graphics Box2D)
+target_link_libraries(nbrhdnash lib_ecm lib_engine lib_tile_level_loader lib_maths sfml-graphics Box2D)
 add_dependencies(nbrhdnash copy_resources)
 set_target_properties(nbrhdnash
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
