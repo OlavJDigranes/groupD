@@ -3,7 +3,8 @@
 #include "scene_Level1.h"
 
 void Level1::Load() {
-	ls::loadLevelFile("res/levels/level1.txt", 50.f);
+	//ls::loadLevelFile("res/levels/level1.txt", 50.f);
+	ls::loadLevelFile("res/levels/TileTestLevel.txt", 50.f);
 }
 
 void Level1::UnLoad() {
