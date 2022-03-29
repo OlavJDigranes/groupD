@@ -2,11 +2,13 @@
 #include <thread>
 #include "scene_Level1.h"
 
-void Level1::Load() {
-	//ls::loadLevelFile("res/levels/level1.txt", 50.f);
-	ls::loadLevelFile("res/levels/TileTestLevel.txt", 50.f);
+const float t = 18.f;
 
-	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
+void Level1::Load() {
+	ls::loadLevelFile("res/levels/level1.txt", t);
+	//ls::loadLevelFile("res/levels/TileTestLevel.txt", 50.f);
+
+	auto ho = Engine::getWindowSize().y - (ls::getHeight() * t);
 	ls::setOffset(sf::Vector2f(0, ho));
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
