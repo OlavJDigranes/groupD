@@ -1,7 +1,7 @@
 //"cmp_path_follow.cpp"
 #include "cmp_path_follow.h"
-#include "../astar.h"
-#include <LevelSystem.h>
+#include "../NbrhdNash/astar.h"
+#include <../lib_tile_level_loader/LevelSystem.h>
 
 using namespace sf;
 using namespace std;

@@ -1,7 +1,7 @@
 //"cmp_ai_steering.h"
 #pragma once
 #include <../lib_ecm/ecm.h>
-#include "../steering.h"
+#include "../NbrhdNash/steering.h"
 
 class SteeringComponent : public Component {
 protected:
