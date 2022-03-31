@@ -1,8 +1,9 @@
 #pragma once
 
+#include "LevelSystem.h"
 #include "engine.h"
 
-class MainMenu : public Scene {
+class Level1 : public Scene {
 public:
 	void Load() override;
 
