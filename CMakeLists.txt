@@ -53,7 +53,7 @@ source_group("Components" FILES ${CMPNTS})
 source_group("Resources" FILES ${RESOURCE_FILES})
 add_library(lib_ecm STATIC ${SOURCE_FILES})
 target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib_ecm" )
-target_link_libraries(lib_ecm PRIVATE lib_maths)
+target_link_libraries(lib_ecm PRIVATE lib_engine lib_maths)
 
 ## Project
 file(GLOB_RECURSE SOURCES NbrhdNash/*.cpp NbrhdNash/*.h)
