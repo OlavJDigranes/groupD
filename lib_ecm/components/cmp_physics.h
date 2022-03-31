@@ -2,7 +2,7 @@
 
 #include "cmp_sprite.h"
 #include "../lib_ecm/ecm.h"
-#include <../Box2D/Dynamics/b2Body.h>
+#include "Box2D/Dynamics/b2Body.h"
 
 class PhysicsComponent : public Component {
 protected:
