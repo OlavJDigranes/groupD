@@ -10,8 +10,9 @@ void ActorMovementComponent::update(double dt) {}
 ActorMovementComponent::ActorMovementComponent(Entity* p)
     : _speed(100.0f), Component(p) {}
 
+//THIS MAY NEED REDOING
 bool ActorMovementComponent::validMove(const sf::Vector2f& pos) {
-  return (LevelSystem::getTileAt(pos) != LevelSystem::WALL);
+  return (LevelSystem::getTileAt(pos) != LevelSystem::EDGEWALL);
   // return true;
 }
 
