@@ -1,6 +1,6 @@
 
 #pragma once
-#include <ecm.h>
+#include <../lib_ecm/ecm.h>
 
 class ActorMovementComponent : public Component {
 protected:

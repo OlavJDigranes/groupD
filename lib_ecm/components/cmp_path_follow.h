@@ -1,5 +1,5 @@
 #pragma once
-#include <ecm.h>
+#include <../lib_ecm/ecm.h>
 
 class PathfindingComponent : public Component {
 protected:

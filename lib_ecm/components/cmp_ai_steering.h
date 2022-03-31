@@ -1,6 +1,6 @@
 //"cmp_ai_steering.h"
 #pragma once
-#include <ecm.h>
+#include <../lib_ecm/ecm.h>
 #include "../steering.h"
 
 class SteeringComponent : public Component {
