@@ -10,9 +10,15 @@ void ActorMovementComponent::update(double dt) {}
 ActorMovementComponent::ActorMovementComponent(Entity* p)
     : _speed(100.0f), Component(p) {}
 
-//THIS MAY NEED REDOING
+//THIS MAY NEED REDOING dependent on testing. 
 bool ActorMovementComponent::validMove(const sf::Vector2f& pos) {
-  return (LevelSystem::getTileAt(pos) != LevelSystem::EDGEWALL);
+  return (LevelSystem::getTileAt(pos) != LevelSystem::EDGEWALL || 
+      LevelSystem::getTileAt(pos) != LevelSystem::SHOPS ||
+      LevelSystem::getTileAt(pos) != LevelSystem::EMPTY ||
+      LevelSystem::getTileAt(pos) != LevelSystem::BIRDSPAWN ||
+      LevelSystem::getTileAt(pos) != LevelSystem::TREE ||
+      LevelSystem::getTileAt(pos) != LevelSystem::NEIGHBOURHOUSE ||
+      LevelSystem::getTileAt(pos) != LevelSystem::EMPTYHOUSE);
   // return true;
 }
 
