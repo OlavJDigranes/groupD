@@ -4,6 +4,9 @@
 
 class MainMenu : public Scene {
 public:
+	MainMenu() = default;
+	~MainMenu() = default;
+
 	void Load() override;
 
 	void UnLoad() override;
