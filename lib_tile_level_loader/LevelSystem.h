@@ -66,7 +66,7 @@ public:
 
     static float getTileSize();
 
-    static void moveMapView();
+    static void updateMap();
 
     static void setMapPosition(sf::Vector2f newpos);
 

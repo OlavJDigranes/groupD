@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 
+#define DEBUG 1
+
 using namespace std;
 using namespace sf;
 
@@ -277,7 +279,8 @@ const Vector2f& LevelSystem::getOffset() { return _offset; }
 
 float LevelSystem::getTileSize() { return _tileSize; }
 
-void LevelSystem::moveMapView() {
+void LevelSystem::updateMap() {
+#if DEBUG
     sf::Vector2f test = _mapSprite.getPosition();;
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
         test.x -= 1.f;
@@ -292,6 +295,7 @@ void LevelSystem::moveMapView() {
         test.y += 1.f;
     }
     _mapSprite.setPosition(test);
+#endif // DEBUG
 }
 
 void LevelSystem::setMapPosition(sf::Vector2f newpos) {

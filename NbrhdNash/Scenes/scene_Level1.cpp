@@ -42,6 +42,6 @@ void Level1::Render() {
 }
 
 void Level1::Update(const double& dt) {
-	ls::moveMapView();
+	ls::updateMap();
 	Scene::Update(dt);
 }
