@@ -46,6 +46,8 @@ void LevelSystem::setColor(LevelSystem::Tile t, sf::Color c) {
 std::unique_ptr<LevelSystem::Tile[]> LevelSystem::_tiles;
 size_t LevelSystem::_width;
 size_t LevelSystem::_height;
+sf::RenderTexture LevelSystem::_mapTex;
+sf::Sprite LevelSystem::_mapSprite;
 
 float LevelSystem::_tileSize(50.f);
 Vector2f LevelSystem::_offset(0.0f, 30.0f);
@@ -54,6 +56,7 @@ vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
 
 void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
     _tileSize = tileSize;
+    _mapSprite.setPosition(sf::Vector2f(0.f, 0.f));
     size_t w = 0, h = 0;
     string buffer;
 
@@ -104,8 +107,9 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 
 void LevelSystem::buildSprites(bool optimise) {
     _sprites.clear();
-
-    struct tp {
+    _mapTex.clear();
+    _mapTex.create(_width * _tileSize, _height * _tileSize);
+    struct tp { // tile properties
         sf::Vector2f p;
         sf::Vector2f s;
         sf::Color c;
@@ -201,8 +205,11 @@ void LevelSystem::buildSprites(bool optimise) {
 
 void LevelSystem::render(RenderWindow& window) {
     for (auto& t : _sprites) {
-        window.draw(*t);
+        _mapTex.draw(*t);
     }
+    _mapTex.display();
+    _mapSprite.setTexture(_mapTex.getTexture());
+    window.draw(_mapSprite);
 }
 
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
@@ -218,7 +225,7 @@ size_t LevelSystem::getWidth() { return _width; }
 size_t LevelSystem::getHeight() { return _height; }
 
 sf::Vector2f LevelSystem::getTilePosition(sf::Vector2ul p) {
-    return (Vector2f(p.x, p.y) * _tileSize) + _offset;
+    return (Vector2f(p.x, p.y) * _tileSize) + _offset + getMapPosition();
 }
 
 std::vector<sf::Vector2ul> LevelSystem::findTiles(LevelSystem::Tile type) {
@@ -233,11 +240,11 @@ std::vector<sf::Vector2ul> LevelSystem::findTiles(LevelSystem::Tile type) {
 }
 
 LevelSystem::Tile LevelSystem::getTileAt(Vector2f v) {
-    auto a = v - _offset;
+    auto a = v - _offset - getMapPosition();
     if (a.x < 0 || a.y < 0) {
         throw string("Tile out of range ");
     }
-    return getTile(Vector2ul((v - _offset) / (_tileSize)));
+    return getTile(Vector2ul((v - _offset - getMapPosition()) / (_tileSize)));
 }
 
 bool LevelSystem::isOnGrid(sf::Vector2f v) {
@@ -269,3 +276,36 @@ void LevelSystem::unload() {
 const Vector2f& LevelSystem::getOffset() { return _offset; }
 
 float LevelSystem::getTileSize() { return _tileSize; }
+
+void LevelSystem::moveMapView() {
+    sf::Vector2f test = _mapSprite.getPosition();;
+    if (Keyboard::isKeyPressed(Keyboard::Left)) {
+        test.x -= 1.f;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+        test.x += 1.f;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Up)) {
+        test.y -= 1.f;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+        test.y += 1.f;
+    }
+    _mapSprite.setPosition(test);
+}
+
+void LevelSystem::setMapPosition(sf::Vector2f newpos) {
+    _mapSprite.setPosition(newpos);
+}
+
+sf::Vector2f LevelSystem::getMapPosition() {
+    return _mapSprite.getPosition();
+}
+
+void LevelSystem::setMapRotation(sf::Angle newrot) {
+    _mapSprite.setRotation(newrot);
+}
+
+sf::Angle LevelSystem::getMapRotation() {
+    return _mapSprite.getRotation();
+}

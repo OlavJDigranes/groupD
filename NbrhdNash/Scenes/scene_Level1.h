@@ -2,7 +2,7 @@
 
 #include "LevelSystem.h"
 #include "engine.h"
-#include "components/cmp_sprite.h"
+#include "components/components.h"
 
 class Level1 : public Scene {
 public:
