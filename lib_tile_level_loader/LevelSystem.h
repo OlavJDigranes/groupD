@@ -76,6 +76,8 @@ public:
 
     static sf::Angle getMapRotation();
 
+    static sf::Vector2f getMapMovement();
+
 protected:
     static std::unique_ptr<Tile[]> _tiles;
     static size_t _width;
@@ -91,6 +93,7 @@ protected:
     
     static sf::RenderTexture _mapTex; // render texture to output map and AI display to
     static sf::Sprite _mapSprite; // sprite for map texture to render to
+    static sf::Vector2f _mapMovement;
 
 private:
     LevelSystem() = delete;

@@ -43,5 +43,6 @@ void Level1::Render() {
 
 void Level1::Update(const double& dt) {
 	ls::updateMap();
+	ents.mapPosition = ls::getMapMovement();
 	Scene::Update(dt);
 }

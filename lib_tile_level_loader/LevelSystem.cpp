@@ -50,6 +50,7 @@ size_t LevelSystem::_width;
 size_t LevelSystem::_height;
 sf::RenderTexture LevelSystem::_mapTex;
 sf::Sprite LevelSystem::_mapSprite;
+sf::Vector2f LevelSystem::_mapMovement;
 
 float LevelSystem::_tileSize(50.f);
 Vector2f LevelSystem::_offset(0.0f, 30.0f);
@@ -59,6 +60,7 @@ vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
 void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
     _tileSize = tileSize;
     _mapSprite.setPosition(sf::Vector2f(0.f, 0.f));
+    _mapMovement = sf::Vector2f(0.f, 0.f);
     size_t w = 0, h = 0;
     string buffer;
 
@@ -281,18 +283,23 @@ float LevelSystem::getTileSize() { return _tileSize; }
 
 void LevelSystem::updateMap() {
 #if DEBUG
-    sf::Vector2f test = _mapSprite.getPosition();;
+    sf::Vector2f test = _mapSprite.getPosition();
+    _mapMovement = sf::Vector2f(0, 0);
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
         test.x -= 1.f;
+        _mapMovement.x -= 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Right)) {
         test.x += 1.f;
+        _mapMovement.x += 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Up)) {
         test.y -= 1.f;
+        _mapMovement.y -= 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Down)) {
         test.y += 1.f;
+        _mapMovement.y += 1.f;
     }
     _mapSprite.setPosition(test);
 #endif // DEBUG
@@ -312,4 +319,8 @@ void LevelSystem::setMapRotation(sf::Angle newrot) {
 
 sf::Angle LevelSystem::getMapRotation() {
     return _mapSprite.getRotation();
+}
+
+sf::Vector2f LevelSystem::getMapMovement() {
+    return _mapMovement;
 }
