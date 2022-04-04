@@ -7,11 +7,13 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../NbrhdNash/game.h"
 
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
+float Engine::btnTimer;
 
 static bool loading = false;
 static float loadingspinner = 0.f;
@@ -61,6 +63,10 @@ void Engine::Update() {
     }
   }
 
+  if (btnTimer > 0) {
+      btnTimer -= dt; 
+  }
+
   if (loading) {
     Loading_update(dt, _activeScene);
   } else if (_activeScene != nullptr) {
@@ -81,6 +87,7 @@ void Engine::Render(RenderWindow& window) {
 
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
+    btnTimer = 0; 
   RenderWindow window(VideoMode(width, height), gameName);
   _gameName = gameName;
   _window = &window;
@@ -94,8 +101,21 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.close();
       }
     }
-    if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-      window.close();
+    if (Keyboard::isKeyPressed(Keyboard::Escape) && btnTimer <= 0.0f) {
+        if (_activeScene->tag == 1) {
+            ChangeScene(&menu);
+        }
+        if (_activeScene->tag == 0) {
+            window.close();
+        }
+        if (_activeScene->tag == -1) {
+            ChangeScene(&menu);
+        }
+        if (_activeScene->tag == -2) {
+            ChangeScene(&menu);
+        }
+        btnTimer = 2.0f; 
+        
     }
 
     window.clear();
@@ -138,7 +158,9 @@ void Engine::ChangeScene(Scene* s) {
   }
 }
 
-void Scene::Update(const double& dt) { ents.update(dt); }
+void Scene::Update(const double& dt) { 
+    ents.update(dt); 
+}
 
 void Scene::Render() { ents.render(); }
 

@@ -4,11 +4,14 @@
 #include "scene_MainMenu.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
+#include "engine.h"
 
 using namespace std;
 using namespace sf;
 
 void MainMenu::Load() {
+	tag = 0;
+
 	auto txt = makeEntity();
 	txt->addTag("MenuText"); 
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
@@ -29,6 +32,12 @@ void MainMenu::Render() {
 void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&L1);
+	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
+		Engine::ChangeScene(&settings);
+	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
+		Engine::ChangeScene(&credits);
 	}
 	Scene::Update(dt);
 }

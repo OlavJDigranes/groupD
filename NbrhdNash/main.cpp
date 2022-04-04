@@ -10,6 +10,8 @@ const int gameHeight = 1080;
 
 MainMenu menu; 
 Level1 L1;
+Credits credits;
+Settings settings; 
 
 int main() {
 	Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
