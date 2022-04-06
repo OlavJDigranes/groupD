@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "LevelSystem.h"
-#include "scene_MainMenu.h"
+#include "scene_Credits.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 

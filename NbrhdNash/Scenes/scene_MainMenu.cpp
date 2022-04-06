@@ -38,6 +38,8 @@ void MainMenu::Update(const double& dt) {
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
 		Engine::ChangeScene(&credits);
+		//Engine::ChangeScene(&gameover);
+		//Engine::ChangeScene(&celebration);
 	}
 	Scene::Update(dt);
 }

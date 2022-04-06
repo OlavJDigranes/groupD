@@ -1,33 +1,37 @@
 #include <iostream>
 #include <thread>
 #include "LevelSystem.h"
-#include "scene_Settings.h"
+#include "scene_GameOver.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 
 using namespace std;
 using namespace sf;
 
-void Settings::Load() {
-	tag = -1; 
+
+void GameOver::Load() {
+	tag = -3;
 
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<TextComponent>("Press ESC to return to menu");
 	setLoaded(true);
+
+	auto txt = makeEntity();
+	txt->addTag("GameOverText");
+	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
+	auto y = txt->addComponent<TextComponent>("GAME OVER");
+	setLoaded(true);
 }
 
-void Settings::UnLoad() {
+void GameOver::UnLoad() {
 	Scene::UnLoad();
 }
 
-void Settings::Update(const double& dt) {
-	//if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
-	//	Engine::ChangeScene(&menu);
-	//}
+void GameOver::Update(const double& dt) {
 	Scene::Update(dt);
 }
 
-void Settings::Render() {
+void GameOver::Render() {
 	Scene::Render();
 }

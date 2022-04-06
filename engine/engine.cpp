@@ -114,6 +114,12 @@ void Engine::Start(unsigned int width, unsigned int height,
         if (_activeScene->tag == -2) {
             ChangeScene(&menu);
         }
+        if (_activeScene->tag == -3) {
+            ChangeScene(&menu);
+        }
+        if (_activeScene->tag == -4) {
+            ChangeScene(&menu);
+        }
         btnTimer = 2.0f; 
         
     }
