@@ -12,6 +12,8 @@ MainMenu menu;
 Level1 L1;
 Credits credits;
 Settings settings; 
+Celebration celebration;
+GameOver gameover; 
 
 int main() {
 	Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
