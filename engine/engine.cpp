@@ -102,25 +102,14 @@ void Engine::Start(unsigned int width, unsigned int height,
       }
     }
     if (Keyboard::isKeyPressed(Keyboard::Escape) && btnTimer <= 0.0f) {
-        if (_activeScene->tag == 1) {
-            ChangeScene(&menu);
-        }
         if (_activeScene->tag == 0) {
             window.close();
         }
-        if (_activeScene->tag == -1) {
+        if (_activeScene->tag == 1 || _activeScene->tag == -1 || _activeScene->tag == -2 || _activeScene->tag == -3 || _activeScene->tag == -4) {
             ChangeScene(&menu);
         }
-        if (_activeScene->tag == -2) {
-            ChangeScene(&menu);
-        }
-        if (_activeScene->tag == -3) {
-            ChangeScene(&menu);
-        }
-        if (_activeScene->tag == -4) {
-            ChangeScene(&menu);
-        }
-        btnTimer = 2.0f; 
+        
+        btnTimer = 1.5f; 
         
     }
 
