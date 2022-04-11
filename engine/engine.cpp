@@ -13,7 +13,7 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
-float Engine::btnTimer;
+float Engine::btnTimer; //Rest timer so holding the button won't be read. 
 
 static bool loading = false;
 static float loadingspinner = 0.f;
@@ -101,6 +101,8 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.close();
       }
     }
+
+    //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 
     if (Keyboard::isKeyPressed(Keyboard::Escape) && btnTimer <= 0.0f) {
         if (_activeScene->tag == 0) {
             window.close();
@@ -109,7 +111,7 @@ void Engine::Start(unsigned int width, unsigned int height,
             ChangeScene(&menu);
         }
         
-        btnTimer = 1.5f; 
+        btnTimer = 1.3f; 
         
     }
 
