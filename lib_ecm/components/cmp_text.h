@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <../lib_ecm/ecm.h>
 
+//Regular text component
 class TextComponent : public Component {
 public:
   TextComponent() = delete;
@@ -21,6 +22,7 @@ protected:
   sf::Text _text;
 };
 
+//ESC text component
 class ESCTextComponent : public Component {
 public:
 	ESCTextComponent() = delete;
