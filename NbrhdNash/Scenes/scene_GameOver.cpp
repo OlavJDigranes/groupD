@@ -14,7 +14,7 @@ void GameOver::Load() {
 
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
-	auto t = esc->addComponent<TextComponent>("Press ESC to return to menu");
+	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 	setLoaded(true);
 
 	auto txt = makeEntity();

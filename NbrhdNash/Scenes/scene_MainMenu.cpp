@@ -14,7 +14,7 @@ void MainMenu::Load() {
 
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
-	auto y = esc->addComponent<TextComponent>("Press ESC to exit the game");
+	auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
 	setLoaded(true);
 
 	auto txt = makeEntity();

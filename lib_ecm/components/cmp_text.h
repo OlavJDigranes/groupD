@@ -20,3 +20,21 @@ protected:
   std::string _string;
   sf::Text _text;
 };
+
+class ESCTextComponent : public Component {
+public:
+	ESCTextComponent() = delete;
+	explicit ESCTextComponent(Entity* p, const std::string& str = "");
+	void update(double dt) override;
+
+	void render() override;
+
+	~ESCTextComponent() override = default;
+
+	void SetText(const std::string& str);
+
+protected:
+	std::shared_ptr<sf::Font> _ESCfont;
+	std::string _ESCstring;
+	sf::Text _ESCtext;
+};
