@@ -107,9 +107,18 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
             auto next = pos + dir;
 
             // Check if next is valid. THIS MAY NEED TO BE UPDATED
+            //Grass adn parkingspace may be incorrect, need testing. 
             if (!(next.x < 0 || next.x > ls::getWidth() || next.y < 0 ||
                 next.y > ls::getHeight() ||
                 ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::EDGEWALL ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::SHOPS ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::EMPTY ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::BIRDSPAWN ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::TREE ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::NEIGHBOURHOUSE ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::EMPTYHOUSE ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::GRASS ||
+                ls::getTile(Vector2ul(next.x, next.y)) == LevelSystem::PARKINGSPACE ||
                 closed_nodes_map[next.x][next.y])) {
                 // Generate new node
                 Node m0(next, n0.getLevel(), n0.getPriority());

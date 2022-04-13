@@ -1,11 +1,13 @@
 #pragma once
 
+#include "LevelSystem.h"
 #include "engine.h"
+#include "components/cmp_sprite.h"
 
-class MainMenu : public Scene {
+class Credits : public Scene {
 public:
-	MainMenu() = default;
-	~MainMenu() = default;
+	Credits() = default;
+	~Credits() = default; 
 
 	void Load() override;
 
