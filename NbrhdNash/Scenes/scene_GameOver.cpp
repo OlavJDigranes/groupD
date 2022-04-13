@@ -20,7 +20,7 @@ void GameOver::Load() {
 	auto txt = makeEntity();
 	txt->addTag("GameOverText");
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
-	auto y = txt->addComponent<TextComponent>("GAME OVER");
+	auto y = txt->addComponent<RedTextComponent>("GAME OVER");
 	setLoaded(true);
 }
 

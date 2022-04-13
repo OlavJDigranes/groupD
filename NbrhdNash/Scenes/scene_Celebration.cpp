@@ -17,7 +17,13 @@ void Celebration::Load() {
 
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
-	auto y = info->addComponent<TextComponent>("CONGRATULATIONS!");
+	//auto y = info->addComponent<TextComponent>("CONGRATULATIONS!");
+	auto g = info->addComponent<GreenTextComponent>("C    A       N  ");
+	  auto r = info->addComponent<RedTextComponent>("  N     L       ");
+	 auto b = info->addComponent<BlueTextComponent>(" O  R           !");
+   auto y = info->addComponent<YellowTextComponent>("   G T        S ");
+  auto m = info->addComponent<MagentaTextComponent>("       U  T O   ");
+	 auto c = info->addComponent<CyanTextComponent>("         A  I    ");
 	setLoaded(true);
 }
 

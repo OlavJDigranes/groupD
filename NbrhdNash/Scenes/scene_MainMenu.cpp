@@ -41,9 +41,9 @@ void MainMenu::Update(const double& dt) {
 		Engine::ChangeScene(&settings);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-		Engine::ChangeScene(&credits);
+		//Engine::ChangeScene(&credits);
 		//Engine::ChangeScene(&gameover);
-		//Engine::ChangeScene(&celebration);
+		Engine::ChangeScene(&celebration);
 	}
 	Scene::Update(dt);
 }
