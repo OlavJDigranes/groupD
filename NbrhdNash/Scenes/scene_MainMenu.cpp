@@ -5,6 +5,7 @@
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 #include "engine.h"
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
@@ -23,6 +24,11 @@ void MainMenu::Load() {
 	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for credits");
 	setLoaded(true);
 	
+	sf::Music mainMenuLoop; 
+	mainMenuLoop.openFromFile("res/music/MainMenuLoop");
+	mainMenuLoop.play();
+	mainMenuLoop.setLoop(true); 
+	mainMenuLoop.setVolume(70); 
 }
 
 void MainMenu::UnLoad() {
@@ -36,6 +42,7 @@ void MainMenu::Render() {
 void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&L1);
+		//mainMenuLoop.stop(); 
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
 		Engine::ChangeScene(&settings);
