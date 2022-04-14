@@ -24,11 +24,10 @@ void MainMenu::Load() {
 	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for credits");
 	setLoaded(true);
 	
-	sf::Music mainMenuLoop; 
-	mainMenuLoop.openFromFile("res/music/MainMenuLoop");
-	mainMenuLoop.play();
-	mainMenuLoop.setLoop(true); 
-	mainMenuLoop.setVolume(70); 
+	menuLoop.openFromFile("res/music/MainMenuLoop.wav");
+	menuLoop.setLoop(true);
+	menuLoop.setVolume(70);
+	menuLoop.play();
 }
 
 void MainMenu::UnLoad() {
