@@ -24,7 +24,7 @@ void MainMenu::Load() {
 	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for credits");
 	setLoaded(true);
 	
-	menuLoop.openFromFile("res/music/MainMenuLoop.wav");
+	menuLoop.openFromFile("res/music/MainMenuLoop.mp3");
 	menuLoop.setLoop(true);
 	menuLoop.setVolume(70);
 	menuLoop.play();

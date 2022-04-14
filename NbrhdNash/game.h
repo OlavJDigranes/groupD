@@ -16,5 +16,3 @@ extern Credits credits;
 extern Settings settings; 
 extern GameOver gameover;
 extern Celebration celebration; 
-
-//sf::Music mainMenuLoop;
