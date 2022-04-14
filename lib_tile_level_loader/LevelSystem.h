@@ -66,6 +66,18 @@ public:
 
     static float getTileSize();
 
+    static void updateMap();
+
+    static void setMapPosition(sf::Vector2f newpos);
+
+    static sf::Vector2f getMapPosition();
+
+    static void setMapRotation(sf::Angle);
+
+    static sf::Angle getMapRotation();
+
+    static sf::Vector2f getMapMovement();
+
 protected:
     static std::unique_ptr<Tile[]> _tiles;
     static size_t _width;
@@ -78,6 +90,10 @@ protected:
 
     static float _tileSize; // for rendering
     static std::map<Tile, sf::Color> _colours;
+    
+    static sf::RenderTexture _mapTex; // render texture to output map and AI display to
+    static sf::Sprite _mapSprite; // sprite for map texture to render to
+    static sf::Vector2f _mapMovement;
 
 private:
     LevelSystem() = delete;

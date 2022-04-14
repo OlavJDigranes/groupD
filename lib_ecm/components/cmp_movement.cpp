@@ -1,4 +1,5 @@
 #include "cmp_movement.h"
+#include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
 #include <engine.h>
 
@@ -25,7 +26,14 @@ BasicMovementComponent::BasicMovementComponent(Entity* p)
 
 bool BasicMovementComponent::validMove(Vector2f& pos) {
     if (pos.x < 0.0f || pos.x > Engine::GetWindow().getSize().x ||
-        pos.y < 0.0f || pos.y > Engine::GetWindow().getSize().y) {
+        pos.y < 0.0f || pos.y > Engine::GetWindow().getSize().y ||
+        LevelSystem::getTileAt(pos) == LevelSystem::EDGEWALL ||
+        LevelSystem::getTileAt(pos) == LevelSystem::SHOPS ||
+        LevelSystem::getTileAt(pos) == LevelSystem::EMPTY ||
+        LevelSystem::getTileAt(pos) == LevelSystem::BIRDSPAWN ||
+        LevelSystem::getTileAt(pos) == LevelSystem::TREE ||
+        LevelSystem::getTileAt(pos) == LevelSystem::NEIGHBOURHOUSE ||
+        LevelSystem::getTileAt(pos) == LevelSystem::EMPTYHOUSE) {
         return false;
     }
     return true;

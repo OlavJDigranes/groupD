@@ -93,6 +93,7 @@ void EntityManager::update(double dt) {
     }
     if (list[i]->_alive) {
       list[i]->update(dt);
+      list[i]->setPosition(list[i]->getPosition() + mapPosition);
     }
   }
 }
