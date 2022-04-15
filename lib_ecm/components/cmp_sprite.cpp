@@ -24,8 +24,12 @@ void SpriteComponent::render() { Renderer::queue(_sprite.get()); }
 void ShapeComponent::update(double dt) {
     _shape->setPosition(_parent->getPosition());
     if (sf::degrees(_parent->getRotation()) != _rotation) {
+        //float diff = _parent->getRotation() - _rotation.asDegrees();
+        //_shape->rotate(sf::degrees(diff));
         _shape->setRotation(sf::degrees(_parent->getRotation()));
         _rotation = sf::degrees(_parent->getRotation());
+        printf("parent rotation: %f\n", _parent->getRotation());
+        printf("sprite rotation: %f\n", _rotation.asDegrees());
     }
 }
 

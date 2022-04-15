@@ -22,7 +22,7 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
 }
 
 void PlayerDrivingComponent::Drive(float speed, double dt) {
-    while (_currentSpeed <= 20) {
+    while (_currentSpeed <= 20 && _currentSpeed >= 0) {
         //_body->ApplyForceToCenter(speed * dt * _direction, true);
         _body->SetLinearVelocity(b2Vec2(speed * dt * _direction));
         auto debug = speed * dt * _direction;
@@ -32,14 +32,18 @@ void PlayerDrivingComponent::Drive(float speed, double dt) {
 }
 
 void PlayerDrivingComponent::Rotate(float degrees, float dt) {
-    
     auto _arc = ((_direction.x * 1) /* + (_direction.y * 0)*/) / sqrt((pow(_direction.x, 2) + pow(_direction.y, 2)) * (1 + 0));
-    auto angle = (_direction.y/abs(_direction.y)) * acos(_arc);
+    auto angle = (_direction.y / abs(_direction.y)) * acos(_arc);
     auto rot_x = sqrt(pow(_direction.x, 2) + pow(_direction.y, 2)) * cos(angle + degrees * dt);
     auto rot_y = sqrt(pow(_direction.x, 2) + pow(_direction.y, 2)) * sin(angle + degrees * dt);
     _direction = b2Vec2(rot_x, rot_y);
-    printf("direction: %f, %f\n", _direction.x, _direction.y);
+    //printf("direction: %f, %f\n", _direction.x, _direction.y);
+    printf("rotation: %f\n", _body->GetAngle() + sf::deg2rad(degrees));
+    if (_body->GetAngle() > 4 * atan(1)) {
+        _body->SetTransform(_body->GetPosition(), -4 * atan(1));
+    }
     _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(degrees));
+    _parent->setRotation(_parent->getRotation() + (degrees * dt));
 }
 
 void PlayerDrivingComponent::update(double dt) {
@@ -58,6 +62,4 @@ void PlayerDrivingComponent::update(double dt) {
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * _direction);
     _currentSpeed = _body->GetLinearVelocity().Length();
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
-    _parent->setRotation(sf::rad2deg(_body->GetTransform().q.GetAngle()));
-
 }
