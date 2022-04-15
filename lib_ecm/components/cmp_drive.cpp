@@ -43,7 +43,7 @@ void PlayerDrivingComponent::Rotate(float degrees, float dt) {
         _body->SetTransform(_body->GetPosition(), -4 * atan(1));
     }
     _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(degrees));
-    _parent->setRotation(_parent->getRotation() + (degrees * dt));
+    _parent->setRotation(_parent->getRotation() + (degrees));
 }
 
 void PlayerDrivingComponent::update(double dt) {
