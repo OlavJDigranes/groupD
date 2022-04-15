@@ -4,6 +4,7 @@
 #include "components/cmp_ai_steering.h"
 #include "components/cmp_bullet.h"
 #include "components/cmp_decision_tree.h"
+#include "components/cmp_drive.h"
 #include "components/cmp_enemy_ai.h"
 #include "components/cmp_enemy_turret.h"
 #include "components/cmp_hurt_player.h"

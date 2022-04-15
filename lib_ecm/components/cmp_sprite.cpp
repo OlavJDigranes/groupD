@@ -23,7 +23,10 @@ void SpriteComponent::render() { Renderer::queue(_sprite.get()); }
 
 void ShapeComponent::update(double dt) {
     _shape->setPosition(_parent->getPosition());
-    _shape->setRotation(sf::degrees(_parent->getRotation()));
+    if (sf::degrees(_parent->getRotation()) != _rotation) {
+        _shape->setRotation(sf::degrees(_parent->getRotation()));
+        _rotation = sf::degrees(_parent->getRotation());
+    }
 }
 
 void ShapeComponent::render() { Renderer::queue(_shape.get()); }

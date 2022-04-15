@@ -2,7 +2,7 @@
 #include <thread>
 #include "scene_Level1.h"
 
-const float t = 60.f;
+const float t = 64.f;
 static std::shared_ptr<Entity> player;
 
 
@@ -24,7 +24,7 @@ void Level1::Load() {
 		s->getShape().setFillColor(sf::Color::White);
 		s->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
 		
-		player->addComponent<BasicMovementComponent>();
+		player->addComponent<PlayerDrivingComponent>(sf::Vector2f(20.f, 30.f));
 		//player->addComponent<PlayerPhysicsComponent>(sf::Vector2f(20.f, 30.f));
 	}
 
