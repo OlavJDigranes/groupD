@@ -17,6 +17,7 @@ public:
   virtual void Render();
   bool isLoaded() const;
   std::shared_ptr<Entity> makeEntity();
+  int tag; //Unique identifier for scenes. 0 is main menu, 1 and up is levels, -1 and down are further menus and auxiliary scenes.  
 
   EntityManager ents;
 
@@ -26,6 +27,7 @@ private:
   mutable bool _loaded;
   mutable std::future<void> _loaded_future;
   mutable std::mutex _loaded_mtx;
+  
 };
 
 class Engine {
@@ -37,6 +39,8 @@ public:
   static sf::RenderWindow& GetWindow();
   static sf::Vector2u getWindowSize();
   static void setVsync(bool b);
+
+  static float btnTimer; 
 
 private:
   static Scene* _activeScene;

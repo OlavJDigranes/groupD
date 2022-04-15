@@ -1,15 +1,13 @@
 #pragma once
 
-#include <SFML/Audio.hpp>
+#include "LevelSystem.h"
 #include "engine.h"
+#include "components/cmp_sprite.h"
 
-class MainMenu : public Scene {
-protected:
-	sf::Music menuLoop;
-
+class Celebration : public Scene {
 public:
-	MainMenu() = default;
-	~MainMenu() = default;
+	Celebration () = default;
+	~Celebration() = default;
 
 	void Load() override;
 

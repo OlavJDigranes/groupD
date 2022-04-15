@@ -7,6 +7,8 @@ static std::shared_ptr<Entity> player;
 
 
 void Level1::Load() {
+	tag = 1; 
+
 	ls::loadLevelFile("res/levels/level1.txt", t);
 	//ls::loadLevelFile("res/levels/TileTestLevel.txt", 50.f);
 
