@@ -12,6 +12,7 @@ protected:
 	b2Body* _body;
 	float _currentSpeed;
 	b2Vec2 _size;
+	b2Vec2 _halfSize;
 	b2Vec2 _direction;
 	float32 _rotation;
 
