@@ -22,6 +22,7 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
     box.SetAsBox(_size.x, size.y, Physics::sv2_to_bv2(_parent->getPosition()), (float32)0);
     fixDef.shape = &box;
     fixDef.density = 0.35;
+    _body->CreateFixture(&fixDef);
 }
 
 void PlayerDrivingComponent::Drive(float speed, double dt) {

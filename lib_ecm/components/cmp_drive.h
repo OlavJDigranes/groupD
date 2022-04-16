@@ -14,7 +14,7 @@ protected:
 	b2Vec2 _size;
 	b2Vec2 _halfSize;
 	b2Vec2 _direction;
-	float32 _rotation;
+	//float32 _rotation;
 
 public:
 	void Drive(float speed, double dt);
