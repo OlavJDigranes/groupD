@@ -61,6 +61,5 @@ void PlayerDrivingComponent::update(double dt) {
     }
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * _direction);
     _currentSpeed = _body->GetLinearVelocity().Length();
-    printf("%f\n", _currentSpeed);
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
 }
