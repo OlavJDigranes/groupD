@@ -13,8 +13,6 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
     
 	_size = Physics::sv2_to_bv2(size, true);
     
-	//_body->SetSleepingAllowed(false);
-	//_body->SetFixedRotation(true);
     _currentSpeed = 0;
     _body->SetActive(true);
     _direction = b2Vec2(0, -1);
@@ -22,44 +20,47 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
 }
 
 void PlayerDrivingComponent::Drive(float speed, double dt) {
-    while (_currentSpeed <= 20 && _currentSpeed >= 0) {
-        //_body->ApplyForceToCenter(speed * dt * _direction, true);
-        _body->SetLinearVelocity(b2Vec2(speed * dt * _direction));
-        auto debug = speed * dt * _direction;
-        printf("debug = %f, %f\n", debug.x, debug.y);
-        _currentSpeed += speed * dt;
+    if (_body->GetLinearDamping() > 0.5) {
+        _body->SetLinearDamping(0.5);
+    }
+    if (_currentSpeed <= 4 && _currentSpeed >= 0) {
+        _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * _direction));
+    }
+}
+
+void PlayerDrivingComponent::Brake(float dt) {
+    if (_currentSpeed > 0) {
+        _body->SetLinearDamping(2);
     }
 }
 
 void PlayerDrivingComponent::Rotate(float degrees, float dt) {
-    auto _arc = ((_direction.x * 1) /* + (_direction.y * 0)*/) / sqrt((pow(_direction.x, 2) + pow(_direction.y, 2)) * (1 + 0));
-    auto angle = (_direction.y / abs(_direction.y)) * acos(_arc);
-    auto rot_x = sqrt(pow(_direction.x, 2) + pow(_direction.y, 2)) * cos(angle + degrees * dt);
-    auto rot_y = sqrt(pow(_direction.x, 2) + pow(_direction.y, 2)) * sin(angle + degrees * dt);
-    _direction = b2Vec2(rot_x, rot_y);
-    //printf("direction: %f, %f\n", _direction.x, _direction.y);
-    printf("rotation: %f\n", _body->GetAngle() + sf::deg2rad(degrees));
+    _direction = Physics::sv2_to_bv2(Physics::bv2_to_sv2(_direction).rotatedBy(sf::degrees(degrees * dt)));
     if (_body->GetAngle() > 4 * atan(1)) {
         _body->SetTransform(_body->GetPosition(), -4 * atan(1));
     }
-    _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(degrees));
-    _parent->setRotation(_parent->getRotation() + (degrees));
+    _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(degrees * dt));
+    _parent->setRotation(_parent->getRotation() + (degrees * dt));
 }
 
 void PlayerDrivingComponent::update(double dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        Rotate(-2, dt);
+        Rotate(-180, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        Rotate(2, dt);
+        Rotate(180, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        Drive(200, dt);
+        Drive(1, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        Drive(-200, dt);
+        Brake(dt);
+    }
+    if (_currentSpeed == 0) {
+        _body->SetLinearDamping(0.5);
     }
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * _direction);
     _currentSpeed = _body->GetLinearVelocity().Length();
+    printf("%f\n", _currentSpeed);
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
 }
