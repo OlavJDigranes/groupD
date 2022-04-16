@@ -35,10 +35,19 @@ void SteeringScene::Load() {
         s->getShape().setFillColor(Color::Blue);
         enemy->addComponent<SteeringComponent>(player.get());
     }
+
+    std::cout << " Scene 1 Load Done" << std::endl;
+
+    setLoaded(true);
 }
 
 void SteeringScene::UnLoad() { Scene::UnLoad(); }
 
-void SteeringScene::Update(const double& dt) { Scene::Update(dt); }
+void SteeringScene::Update(const double& dt) {
+    Scene::Update(dt); 
+}
 
-void SteeringScene::Render() { Scene::Render(); }
+void SteeringScene::Render() { 
+    ls::render(Engine::GetWindow());
+    Scene::Render();
+}
