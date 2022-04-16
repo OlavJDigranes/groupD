@@ -6,6 +6,7 @@
 #include "Scenes/scene_Settings.h"
 #include "Scenes/scene_Celebration.h"
 #include "Scenes/scene_GameOver.h"
+#include "Scenes/scene_Steering.h"
 #include <SFML/Audio.hpp>
 
 using namespace sf;
@@ -16,3 +17,4 @@ extern Credits credits;
 extern Settings settings; 
 extern GameOver gameover;
 extern Celebration celebration; 
+extern SteeringScene steering; 
