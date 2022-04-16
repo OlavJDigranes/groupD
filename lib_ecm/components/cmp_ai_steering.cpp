@@ -5,6 +5,7 @@ using namespace sf;
 
 void SteeringComponent::update(double dt) {
     auto rot = _face.getSteering();
+    rotate(rot.rotation, dt); 
     // If target (player) is more than 100 pixels away seek 
     if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
         auto output = _seek.getSteering();
@@ -36,9 +37,9 @@ void SteeringComponent::move(const sf::Vector2f& p, float f) {
     if (validMove(new_pos)) {
         _parent->setPosition(new_pos);
     }
-    _parent->setRotation(f);
+    //_parent->setRotation(f);
     //std::cout << _parent->getRotation() << std::endl; 
-    printf("%f\n", _parent->getRotation());
+    //printf("%f\n", _parent->getRotation());
 }
 
 void SteeringComponent::move(float x, float y, float f) { move(Vector2f(x, y), f); }

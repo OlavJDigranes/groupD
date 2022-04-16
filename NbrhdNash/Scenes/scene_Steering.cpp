@@ -1,6 +1,7 @@
 #include "scene_steering.h"
 #include "components/cmp_sprite.h"
 #include "components/cmp_actor_movement.h"
+#include "components/cmp_movement.h"
 #include "components/cmp_ai_steering.h"
 #include <LevelSystem.h>
 #include <random>
@@ -18,7 +19,7 @@ void SteeringScene::Load() {
     auto s = player->addComponent<ShapeComponent>();
     s->setShape<CircleShape>(10.0f);
     s->getShape().setFillColor(Color::Red);
-    player->addComponent<ActorMovementComponent>();
+    player->addComponent<BasicMovementComponent>();
 
     // Setup C++ random number generation
     random_device dev;

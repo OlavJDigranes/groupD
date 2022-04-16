@@ -41,9 +41,9 @@ bool BasicMovementComponent::validMove(Vector2f& pos) {
 
 void BasicMovementComponent::move(const sf::Vector2f& p) {
     auto new_pos = _parent->getPosition() + p;
-    if (validMove(new_pos)) {
+    //if (validMove(new_pos)) {
         _parent->setPosition(new_pos);
-    }
+    //}
 }
 
 void BasicMovementComponent::move(float x, float y) {
