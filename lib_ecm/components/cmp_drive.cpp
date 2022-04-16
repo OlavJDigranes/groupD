@@ -14,6 +14,7 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
 	_size = Physics::sv2_to_bv2(size, true);
     
     _currentSpeed = 0;
+    _body->SetTransform(_body->GetPosition(), sf::deg2rad(_parent->getRotation()));
     _body->SetActive(true);
     _direction = b2Vec2(0, -1);
     _body->SetLinearDamping(0.5);
@@ -36,10 +37,8 @@ void PlayerDrivingComponent::Brake(float dt) {
 
 void PlayerDrivingComponent::Rotate(float degrees, float dt) {
     _direction = Physics::sv2_to_bv2(Physics::bv2_to_sv2(_direction).rotatedBy(sf::degrees(degrees * dt)));
-    if (_body->GetAngle() > 4 * atan(1)) {
-        _body->SetTransform(_body->GetPosition(), -4 * atan(1));
-    }
-    _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(degrees * dt));
+    auto forceLoc = _body->GetWorldPoint(b2Vec2(_direction));
+    _body->ApplyForce(Physics::sv2_to_bv2(Physics::bv2_to_sv2(_direction).rotatedBy(sf::degrees(degrees * dt))), forceLoc, true);
     _parent->setRotation(_parent->getRotation() + (degrees * dt));
 }
 
