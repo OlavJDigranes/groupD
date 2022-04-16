@@ -21,7 +21,7 @@ public:
     void update(double) override;
     void move(const sf::Vector2f&, float f);
     void move(float x, float y, float f);
-    void rotate(float d, float dt);
+    void rotate(SteeringOutput rot, float dt);
     void render() override { }
     explicit SteeringComponent(Entity* p, Entity* player);
     SteeringComponent() = delete;

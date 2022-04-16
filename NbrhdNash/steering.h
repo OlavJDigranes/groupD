@@ -1,6 +1,7 @@
 //"steering.h"
 #pragma once
 #include "engine.h"
+#include "maths.h"
 
 // Output from a steering behaviour.
 struct SteeringOutput
