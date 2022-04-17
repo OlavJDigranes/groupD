@@ -2,8 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-#define DEBUG 1
-
 using namespace std;
 using namespace sf;
 
@@ -59,7 +57,9 @@ vector<std::unique_ptr<sf::RectangleShape>> LevelSystem::_sprites;
 
 void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
     _tileSize = tileSize;
+#ifdef RENDER_TO_TEX
     _mapSprite.setPosition(sf::Vector2f(0.f, 0.f));
+#endif
     _mapMovement = sf::Vector2f(0.f, 0.f);
     size_t w = 0, h = 0;
     string buffer;
@@ -208,16 +208,19 @@ void LevelSystem::buildSprites(bool optimise) {
 }
 
 void LevelSystem::render(RenderWindow& window) {
+#ifdef RENDER_TO_TEX
     for (auto& t : _sprites) {
         _mapTex.draw(*t);
     }
     _mapTex.display();
     _mapSprite.setTexture(_mapTex.getTexture());
     window.draw(_mapSprite);
-    /*for (auto& t : _sprites) {
+#else
+    for (auto& t : _sprites) {
         window.draw(*t);
-    }*/
-    
+    }
+#endif
+
 }
 
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
@@ -286,7 +289,7 @@ const Vector2f& LevelSystem::getOffset() { return _offset; }
 float LevelSystem::getTileSize() { return _tileSize; }
 
 void LevelSystem::updateMap() {
-#if DEBUG
+#ifdef DEBUG
     sf::Vector2f old_pos = _mapSprite.getPosition();
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
         old_pos.x -= 1.f;
@@ -305,7 +308,7 @@ void LevelSystem::updateMap() {
         _mapMovement.y += 1.f;
     }
     _mapSprite.setPosition(old_pos);
-#endif // DEBUG
+#endif
 }
 
 void LevelSystem::setMapPosition(sf::Vector2f newpos) {

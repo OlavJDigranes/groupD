@@ -2,20 +2,19 @@
 #include <thread>
 #include "scene_Level1.h"
 
-#define DEBUG_COL 0
-
 const float t = 64.f;
 static std::shared_ptr<Entity> player;
+static sf::View playerView;
 
 void Level1::Load() {
 	tag = 1; 
 
 	ls::loadLevelFile("res/levels/Level1_testing.txt", t);
-	//ls::loadLevelFile("res/levels/TileTestLevel.txt", 50.f);
-
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * t);
 	ls::setOffset(sf::Vector2f(0, 0));
+#ifdef RENDER_TO_TEX
 	ls::setMapPosition(sf::Vector2f(0, ho));
+#endif // RENDER_TO_TEX
 
 	{
 		player = makeEntity();
@@ -26,9 +25,10 @@ void Level1::Load() {
 		s->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
 		
 		player->addComponent<PlayerDrivingComponent>(sf::Vector2f(20.f, 30.f));
-		//player->addComponent<PlayerPhysicsComponent>(sf::Vector2f(20.f, 30.f));
 	}
 
+	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(1920.f, 1080.f)));
+	
 	{
 		std::vector<Vector2ul> all;
 		auto walls = ls::findTiles(ls::EDGEWALL);
@@ -41,13 +41,12 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(w);
 			auto e = makeEntity();
 			e->setPosition(pos);
-#if DEBUG_COL
+#ifdef DEBUG_HOUSECOL
 			auto debug_shape = e->addComponent<ShapeComponent>();
 			debug_shape->setShape<sf::RectangleShape>(sf::Vector2f(t, t));
 			debug_shape->getShape().setFillColor(sf::Color::Cyan);
 			debug_shape->getShape().setOrigin(Vector2f(t / 2, t / 2));
-#endif // DEBUG_COL
-
+#endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 		}
 	}
@@ -58,12 +57,18 @@ void Level1::Load() {
 }
 
 void Level1::UnLoad() {
+	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
 	ls::unload();
 	Scene::UnLoad();
 }
 
 void Level1::Render() {
+#ifndef RENDER_TO_TEX
+	playerView->setCenter(player->getPosition());
+	Engine::GetWindow().setView(*playerView);
+#endif // !RENDER_TO_TEX
+
 	ls::render(Engine::GetWindow());
 	Scene::Render();
 }

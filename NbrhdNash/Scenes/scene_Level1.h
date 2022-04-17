@@ -5,6 +5,8 @@
 #include "components/components.h"
 
 class Level1 : public Scene {
+protected:
+	std::shared_ptr<sf::View> playerView;
 public:
 	void Load() override;
 
