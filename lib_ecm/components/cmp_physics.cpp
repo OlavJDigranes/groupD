@@ -7,7 +7,7 @@ using namespace sf;
 using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
-  _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
+  _parent->setPosition(/*invert_height*/(bv2_to_sv2(_body->GetPosition())));
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
@@ -18,7 +18,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
   b2BodyDef BodyDef;
   // Is Dynamic(moving), or static(Stationary)
   BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
-  BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
+  BodyDef.position = sv2_to_bv2(/*invert_height*/(p->getPosition() + (0.5f * size)));
 
   // Create the body
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
