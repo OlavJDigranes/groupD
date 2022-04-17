@@ -23,9 +23,9 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
     //Fixture definition and assignment to body
     b2FixtureDef fixDef;
     b2PolygonShape box;
-    box.SetAsBox(_size.x, _size.y, _body->GetWorldCenter(), _body->GetAngle());
+    box.SetAsBox(_halfSize.x, _halfSize.y, b2Vec2_zero, _body->GetAngle());
     fixDef.shape = &box;
-    fixDef.density = 0.006;
+    fixDef.density = 1;
     _body->CreateFixture(&fixDef);
 }
 

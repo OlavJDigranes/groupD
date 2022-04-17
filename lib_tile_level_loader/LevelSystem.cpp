@@ -214,6 +214,10 @@ void LevelSystem::render(RenderWindow& window) {
     _mapTex.display();
     _mapSprite.setTexture(_mapTex.getTexture());
     window.draw(_mapSprite);
+    /*for (auto& t : _sprites) {
+        window.draw(*t);
+    }*/
+    
 }
 
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
