@@ -14,7 +14,6 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
     bodyDef.position = Physics::sv2_to_bv2(_parent->getPosition());
     _body = Physics::GetWorld()->CreateBody(&bodyDef);
 	_body->SetGravityScale(0);
-    auto test = _parent->getPosition() + ls::getMapPosition();
     _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), sf::deg2rad(_parent->getRotation()));
     _body->SetActive(true);
     _body->SetLinearDamping(0.5);
