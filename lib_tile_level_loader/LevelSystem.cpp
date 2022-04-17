@@ -283,25 +283,24 @@ float LevelSystem::getTileSize() { return _tileSize; }
 
 void LevelSystem::updateMap() {
 #if DEBUG
-    sf::Vector2f test = _mapSprite.getPosition();
-    _mapMovement = sf::Vector2f(0, 0);
+    sf::Vector2f old_pos = _mapSprite.getPosition();
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
-        test.x -= 1.f;
+        old_pos.x -= 1.f;
         _mapMovement.x -= 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Right)) {
-        test.x += 1.f;
+        old_pos.x += 1.f;
         _mapMovement.x += 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Up)) {
-        test.y -= 1.f;
+        old_pos.y -= 1.f;
         _mapMovement.y -= 1.f;
     }
     if (Keyboard::isKeyPressed(Keyboard::Down)) {
-        test.y += 1.f;
+        old_pos.y += 1.f;
         _mapMovement.y += 1.f;
     }
-    _mapSprite.setPosition(test);
+    _mapSprite.setPosition(old_pos);
 #endif // DEBUG
 }
 
