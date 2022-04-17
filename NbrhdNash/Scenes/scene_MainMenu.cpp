@@ -40,8 +40,8 @@ void MainMenu::Render() {
 
 void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
-		//Engine::ChangeScene(&L1);
-		Engine::ChangeScene(&steering); 
+		Engine::ChangeScene(&L1);
+		//Engine::ChangeScene(&steering); 
 		//mainMenuLoop.stop(); 
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
