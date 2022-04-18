@@ -199,12 +199,17 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
         }
         edge = edge->next;
     }
-    if (dirtyCheck != ret) {
+    if (dirtyCheck != ret && ret.size() > dirtyCheck.size()) {
         auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
         auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
         if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
             printf("Successfully detected Player\n");
+            dirtyCheck = ret;
         }
+    }
+    else if (dirtyCheck.size() > ret.size()) {
+        printf("Player has left detection area\n");
+        dirtyCheck = ret;
     }
 }
 

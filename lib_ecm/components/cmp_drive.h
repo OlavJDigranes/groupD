@@ -15,7 +15,6 @@ protected:
 	b2Vec2 _halfSize;
 	b2Vec2 _direction;
 	bodyUserData* _data;
-	//float32 _rotation;
 
 public:
 	void Drive(float speed, double dt);
@@ -27,5 +26,6 @@ public:
 
 	explicit PlayerDrivingComponent(Entity* parent, sf::Vector2f size);
 	PlayerDrivingComponent() = delete;
+	~PlayerDrivingComponent();
 
 };
