@@ -9,6 +9,11 @@
 class Entity;
 class Scene;
 
+struct bodyUserData {
+    Entity* _parent;
+    std::string _tag;
+};
+
 class Component {
   friend Entity;
 

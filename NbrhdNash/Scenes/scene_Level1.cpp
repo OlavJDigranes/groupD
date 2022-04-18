@@ -10,9 +10,9 @@ void Level1::Load() {
 	tag = 1; 
 
 	ls::loadLevelFile("res/levels/Level1_testing.txt", t);
+#ifdef RENDER_TO_TEX
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * t);
 	ls::setOffset(sf::Vector2f(0, 0));
-#ifdef RENDER_TO_TEX
 	ls::setMapPosition(sf::Vector2f(0, ho));
 #endif // RENDER_TO_TEX
 
@@ -27,8 +27,11 @@ void Level1::Load() {
 		player->addComponent<PlayerDrivingComponent>(sf::Vector2f(20.f, 30.f));
 	}
 
+#ifndef RENDER_TO_TEX
 	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(1920.f, 1080.f)));
 	view = player->getPosition();
+#endif // !RENDER_TO_TEX
+
 	
 	{
 		std::vector<Vector2ul> all;
@@ -42,7 +45,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(w);
 			auto e = makeEntity();
 			e->setPosition(pos);
-#ifdef DEBUG_HOUSECOL
+#ifdef DEBUG_COLLIDERS
 			auto debug_shape = e->addComponent<ShapeComponent>();
 			debug_shape->setShape<sf::RectangleShape>(sf::Vector2f(t, t));
 			debug_shape->getShape().setFillColor(sf::Color::Cyan);
@@ -50,8 +53,22 @@ void Level1::Load() {
 #endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 		}
+		all.clear();
+		auto shops = ls::findTiles(ls::SHOPS);
+		auto grates = ls::findTiles(ls::GRATEROAD);
+		all.insert(all.begin(), shops.begin(), shops.end());
+		all.insert(all.begin(), grates.begin(), grates.end()); 
+		for (auto w : all) {
+			auto pos = ls::getTilePosition(w);
+			auto e = makeEntity();
+			e->setPosition(pos);
+			e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t));
+		}
 	}
-	//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+#ifdef FAKE_LOADING
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+#endif // FAKE_LOADING
+
 	std::cout << " Scene 1 Load Done" << std::endl;
 
 	setLoaded(true);
@@ -75,8 +92,7 @@ void Level1::Render() {
 }
 
 void Level1::Update(const double& dt) {
-	//view = player->getPosition();
-
+#ifndef RENDER_TO_TEX
 	if (player->getPosition().x > 960 && player->getPosition().x < 2880) {
 		view.x = player->getPosition().x;
 	}
@@ -89,9 +105,7 @@ void Level1::Update(const double& dt) {
 	else {
 		player->getPosition().y > 540 ? view.y = 3300 : view.y = 540;
 	}
-	
-	auto test = player->getPosition().y;
-	printf("player pos: %f, %f\n", player->getPosition().x, player->getPosition().y);
+#endif // !RENDER_TO_TEX
 
 	ls::updateMap();
 	ents.mapPosition = ls::getMapMovement();

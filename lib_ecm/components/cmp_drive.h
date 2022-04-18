@@ -14,6 +14,7 @@ protected:
 	b2Vec2 _size;
 	b2Vec2 _halfSize;
 	b2Vec2 _direction;
+	bodyUserData* _data;
 	//float32 _rotation;
 
 public:

@@ -7,7 +7,7 @@ using namespace sf;
 using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
-  _parent->setPosition(/*invert_height*/(bv2_to_sv2(_body->GetPosition())));
+  _parent->setPosition(bv2_to_sv2(_body->GetPosition()));
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
@@ -19,7 +19,10 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
   // Is Dynamic(moving), or static(Stationary)
   BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
   BodyDef.position = sv2_to_bv2(/*invert_height*/(p->getPosition() + (0.5f * size)));
-
+  _data = new bodyUserData();
+  _data->_parent = p;
+  _data->_tag = "Collidor";
+  BodyDef.userData = _data;
   // Create the body
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
   _body->SetActive(true);
@@ -147,4 +150,73 @@ std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
 
 void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
+}
+
+PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size) 
+    : Component(p), _dynamic(false) {
+    b2BodyDef BodyDef;
+    BodyDef.type = b2_staticBody;
+    BodyDef.position = sv2_to_bv2((p->getPosition() + (0.5f * size)));
+    _data = new bodyUserData();
+    _data->_parent = p;
+    _data->_tag = "Sensor";
+    BodyDef.userData = _data;
+    // Create the body
+    _body = Physics::GetWorld()->CreateBody(&BodyDef);
+    _body->SetActive(true);
+    // Create the fixture shape
+    b2PolygonShape Shape;
+    // SetAsBox box takes HALF-Widths!
+    Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+    b2FixtureDef FixtureDef;
+    FixtureDef.shape = &Shape;
+    FixtureDef.isSensor = true;
+    // Add to body
+    _fixture = _body->CreateFixture(&FixtureDef);
+
+    std::vector<const b2Contact const*> ret;
+    b2ContactEdge* edge = _body->GetContactList();
+    while (edge != NULL) {
+        const b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {
+            ret.push_back(contact);
+        }
+        edge = edge->next;
+    }
+    dirtyCheck = ret;
+}
+
+void PhysicsTriggerComponent::IsPlayerOverlapping() {
+    std::string* p_check = new std::string("Player");
+
+    std::vector<const b2Contact const*> ret;
+    b2ContactEdge* edge = _body->GetContactList();
+    while (edge != NULL) {
+        const b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {
+            ret.push_back(contact);
+        }
+        edge = edge->next;
+    }
+    if (dirtyCheck != ret) {
+        auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
+        auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
+        if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
+            printf("Successfully detected Player");
+        }
+    }
+}
+
+void PhysicsTriggerComponent::render() {}
+
+void PhysicsTriggerComponent::update(double dt) {
+    IsPlayerOverlapping();
+}
+
+PhysicsTriggerComponent::~PhysicsTriggerComponent() {
+    auto a = Physics::GetWorld();
+    _body->SetActive(false);
+    Physics::GetWorld()->DestroyBody(_body);
+    // delete _body;
+    _body = nullptr;
 }

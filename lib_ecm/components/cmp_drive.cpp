@@ -1,12 +1,15 @@
 #include "cmp_drive.h"
 
-
 PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2f size) : Component(parent) {
 	_parent = parent;
     _direction = b2Vec2(0, -1);
     _currentSpeed = 0;
     _size = Physics::sv2_to_bv2(size, true);
     _halfSize = Physics::sv2_to_bv2(0.5f * size);
+
+    _data = new bodyUserData();
+    _data->_parent = parent;
+    _data->_tag = "Player";
 
     // Body definition and assignment to parent
     b2BodyDef bodyDef;
@@ -19,6 +22,7 @@ PlayerDrivingComponent::PlayerDrivingComponent(Entity* parent, const sf::Vector2
     _body->SetLinearDamping(0.5);
     _body->SetAngularDamping(1);
     _body->SetFixedRotation(false);
+    _body->SetUserData(_data);
 
     //Fixture definition and assignment to body
     b2FixtureDef fixDef;
