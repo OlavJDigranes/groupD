@@ -54,15 +54,33 @@ void Level1::Load() {
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 		}
 		all.clear();
+		auto chkpt = ls::findTiles(ls::CHECKPOINT);
 		auto shops = ls::findTiles(ls::SHOPS);
 		auto grates = ls::findTiles(ls::GRATEROAD);
+		all.insert(all.begin(), chkpt.begin(), chkpt.end());
 		all.insert(all.begin(), shops.begin(), shops.end());
 		all.insert(all.begin(), grates.begin(), grates.end()); 
 		for (auto w : all) {
 			auto pos = ls::getTilePosition(w);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t));
+#ifdef DEBUG_COLLIDERS
+			auto debug_shape = e->addComponent<ShapeComponent>();
+			debug_shape->setShape<sf::RectangleShape>(sf::Vector2f(t, t));
+			debug_shape->getShape().setFillColor(sf::Color::White);
+			debug_shape->getShape().setOrigin(Vector2f(t / 2, t / 2));
+#endif
+			if (ls::getTileAt(pos) == ls::SHOPS) {
+				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true);
+				_shops.push_back(m);
+			}
+			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
+				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true);
+				_goal = m;
+			}
+			else {
+				e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false);
+			}
 		}
 	}
 #ifdef FAKE_LOADING
@@ -75,6 +93,8 @@ void Level1::Load() {
 }
 
 void Level1::UnLoad() {
+	_shops.clear();
+	_goal = nullptr;
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
 	ls::unload();
@@ -106,7 +126,16 @@ void Level1::Update(const double& dt) {
 		player->getPosition().y > 540 ? view.y = 3300 : view.y = 540;
 	}
 #endif // !RENDER_TO_TEX
-
+	if (_goal->HasGoalBeenReached()) {
+		printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
+	}
+	for (auto s : _shops) {
+		if (s->HasGoalBeenReached()) {
+			printf("Wrong shop! Turn back and find the right shop");
+			remove(_shops.begin(), _shops.end(), s);
+		}
+	}
+	
 	ls::updateMap();
 	ents.mapPosition = ls::getMapMovement();
 	Scene::Update(dt);

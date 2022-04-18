@@ -153,8 +153,10 @@ void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
 }
 
-PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size) 
+PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal) 
     : Component(p), _dynamic(false) {
+    _isGoal = isGoal;
+    goalReached = false;
     b2BodyDef BodyDef;
     BodyDef.type = b2_staticBody;
     BodyDef.position = sv2_to_bv2((p->getPosition() + (0.5f * size)));
@@ -184,7 +186,11 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
         }
         edge = edge->next;
     }
-    dirtyCheck = ret;
+    _dirtyCheck = ret;
+}
+
+bool PhysicsTriggerComponent::HasGoalBeenReached() {
+    return goalReached;
 }
 
 void PhysicsTriggerComponent::IsPlayerOverlapping() {
@@ -199,17 +205,20 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
         }
         edge = edge->next;
     }
-    if (dirtyCheck != ret && ret.size() > dirtyCheck.size()) {
+    if (_dirtyCheck != ret && ret.size() > _dirtyCheck.size()) {
         auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
         auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
         if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
             printf("Successfully detected Player\n");
-            dirtyCheck = ret;
+            _dirtyCheck = ret;
+            if (_isGoal) {
+                goalReached = true;
+            }
         }
     }
-    else if (dirtyCheck.size() > ret.size()) {
+    else if (_dirtyCheck.size() > ret.size()) {
         printf("Player has left detection area\n");
-        dirtyCheck = ret;
+        _dirtyCheck = ret;
     }
 }
 

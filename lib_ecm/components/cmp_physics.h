@@ -38,10 +38,13 @@ protected:
 	bodyUserData* _data;
 	const bool _dynamic;
 	b2Fixture* _fixture;
-	std::vector<const b2Contact const*> dirtyCheck;
+	std::vector<const b2Contact const*> _dirtyCheck;
+	bool _isGoal;
+	bool goalReached;
 public:
-	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size);
+	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal);
 	void IsPlayerOverlapping();
+	bool HasGoalBeenReached();
 	void update(double dt) override;
 	void render() override;
 	~PhysicsTriggerComponent() override;
