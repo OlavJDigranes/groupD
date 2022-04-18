@@ -82,3 +82,11 @@ void PlayerDrivingComponent::update(double dt) {
     _currentSpeed = _body->GetLinearVelocity().Length(); // Update speed to follow damping effects
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition())); // Set parent to follow body when not moving
 }
+
+PlayerDrivingComponent::~PlayerDrivingComponent() {
+    _body->SetActive(false);
+    _data = nullptr;
+    Physics::GetWorld()->DestroyBody(_body);
+    // delete _body;
+    _body = nullptr;
+}

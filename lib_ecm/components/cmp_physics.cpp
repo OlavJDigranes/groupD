@@ -90,6 +90,7 @@ b2Fixture* const PhysicsComponent::getFixture() const { return _fixture; }
 PhysicsComponent::~PhysicsComponent() {
   auto a = Physics::GetWorld();
   _body->SetActive(false);
+  _data = nullptr;
   Physics::GetWorld()->DestroyBody(_body);
   // delete _body;
   _body = nullptr;
@@ -202,7 +203,7 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
         auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
         auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
         if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
-            printf("Successfully detected Player");
+            printf("Successfully detected Player\n");
         }
     }
 }
@@ -216,6 +217,7 @@ void PhysicsTriggerComponent::update(double dt) {
 PhysicsTriggerComponent::~PhysicsTriggerComponent() {
     auto a = Physics::GetWorld();
     _body->SetActive(false);
+    _data = nullptr;
     Physics::GetWorld()->DestroyBody(_body);
     // delete _body;
     _body = nullptr;
