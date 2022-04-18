@@ -28,6 +28,7 @@ void Level1::Load() {
 	}
 
 	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(1920.f, 1080.f)));
+	view = player->getPosition();
 	
 	{
 		std::vector<Vector2ul> all;
@@ -65,7 +66,7 @@ void Level1::UnLoad() {
 
 void Level1::Render() {
 #ifndef RENDER_TO_TEX
-	playerView->setCenter(player->getPosition());
+	playerView->setCenter(view);
 	Engine::GetWindow().setView(*playerView);
 #endif // !RENDER_TO_TEX
 
@@ -74,6 +75,24 @@ void Level1::Render() {
 }
 
 void Level1::Update(const double& dt) {
+	//view = player->getPosition();
+
+	if (player->getPosition().x > 960 && player->getPosition().x < 2880) {
+		view.x = player->getPosition().x;
+	}
+	else {
+		player->getPosition().x > 960 ? view.x = 2880 : view.x = 960;
+	}
+	if (player->getPosition().y > 540 && player->getPosition().y < 3300) {
+		view.y = player->getPosition().y;
+	}
+	else {
+		player->getPosition().y > 540 ? view.y = 3300 : view.y = 540;
+	}
+	
+	auto test = player->getPosition().y;
+	printf("player pos: %f, %f\n", player->getPosition().x, player->getPosition().y);
+
 	ls::updateMap();
 	ents.mapPosition = ls::getMapMovement();
 	Scene::Update(dt);
