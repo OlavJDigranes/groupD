@@ -1,7 +1,7 @@
 #pragma once
 
 #include <../lib_ecm/ecm.h>
-#include <engine.h>
+#include "engine.h"
 #include <fstream>
 
 using namespace std;
@@ -19,8 +19,8 @@ public:
 
 	explicit LevelTimer(Entity* const p, int levelTag);
 
-	~LevelTimer() override = default;
+	~LevelTimer() = default;
 	void LevelTimerStop();
-	//void update(double dt) override; 
-	//void render() override; 
+	void update(double dt) override {};
+	void render() override {};
 };
