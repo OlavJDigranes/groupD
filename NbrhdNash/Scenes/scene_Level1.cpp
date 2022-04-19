@@ -105,6 +105,25 @@ void Level1::Load() {
 		}
 	}
 
+	{
+		std::vector<Vector2ul> cars;
+		auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
+		auto cars_2 = ls::findTiles(ls::CAR2SPAWN);
+		auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
+		cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
+		cars.insert(cars.begin(), cars_2.begin(), cars_2.end());
+		cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
+		for (auto c : cars) {
+			auto car = makeEntity();
+			auto pos = ls::getTilePosition(c) + Vector2f(t/2, t/2);
+			car->setPosition(pos);
+			auto cmp = car->addComponent<ShapeComponent>();
+			cmp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
+			cmp->getShape().setFillColor(sf::Color::Red);
+			cmp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+		}
+	}
+
 	// Debug setting to fake a loading screen
 #ifdef FAKE_LOADING
 	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
