@@ -39,7 +39,7 @@ void PlayerDrivingComponent::Drive(float speed, double dt) {
         _body->SetLinearDamping(0.5);
     }
     // If below top speed, set body velocity to increase in direction and let parent (sprite) update
-    if (_body->GetLinearVelocity().LengthSquared() <= pow(8, 2) && _body->GetLinearVelocity().LengthSquared() >= 0) {
+    if (_body->GetLinearVelocity().LengthSquared() <= pow(8, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= 8) {
         _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * _direction));
         _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
         _currentSpeed += speed * dt;
