@@ -13,7 +13,7 @@ protected:
 	sf::Clock timer; 
 	int tempLevelTag; 
 	float timeInSeconds; 
-	ofstream timeFile; 
+	fstream timeFile; 
 public: 
 	LevelTimer() = delete;
 
