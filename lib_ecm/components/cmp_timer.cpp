@@ -58,9 +58,9 @@ void LevelTimer::LevelTimerStop() {
 	//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
 	if (counter >= 5) {
 		//PSEUDOCODE:
-			//make a vecotr of ints
+			//make a vecotr of floats. use int a = 3; float b = (float)a;
 			//make the minute andd second substrings into int and float. std::stof() - convert string to float.
-			//compate the new time in seconds to old times in seconds and discard the slowest one. Keep only 5 fastest, and save them to file. 
+			//compare the new time in seconds (floats) to old times (floats) in seconds and discard the slowest one. Keep only 5 fastest, and save them to file. 
 	}
 
 	timeInSeconds = 0; 
