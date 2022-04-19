@@ -29,7 +29,7 @@ void Scoreboard::Load() {
 	auto txt = makeEntity();
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
 	for (int i = 0; i < counter; i++) {
-		auto s = txt->addComponent<TextComponent>(lines[i] + "\n ");
+		auto s = txt->addComponent<TextComponent>(std::to_string(i+1) + lines[i] + "\n ");
 	}
 	timeFile.close(); 
 }

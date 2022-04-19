@@ -1,6 +1,5 @@
 #include "cmp_timer.h"
 
-
 using namespace std;
 using namespace sf; 
 
@@ -16,6 +15,15 @@ void LevelTimer::LevelTimerStop() {
 	timeInSeconds = timer.getElapsedTime().asSeconds(); 
 	timeFile.open("times.txt", std::ios_base::app); 
 
+	vector<string> lines;
+	std::string line;
+
+	//checking if file is empty
+	while (!timeFile.eof()) {
+		//if file is empty or has less than 5 lines add new line. 
+		//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
+	}
+		
 	int timeMins = 0;
 	float timeSecs = 0.0f; 
 
