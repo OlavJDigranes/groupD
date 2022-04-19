@@ -4,24 +4,26 @@
 using namespace sf;
 
 void SteeringComponent::update(double dt) {
-    auto rot = _face.getSteering();
-    rotate(rot, dt); 
-    // If target (player) is more than 100 pixels away seek 
-    if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
-        auto output = _seek.getSteering();
-        move(output.direction * (float)dt, rot.rotation * (float)dt);
+    if (_isActive)
+    {
+        auto rot = _face.getSteering();
+        rotate(rot, dt);
+        // If target (player) is more than 100 pixels away seek 
+        if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
+            auto output = _seek.getSteering();
+            move(output.direction * (float)dt, rot.rotation * (float)dt);
+        }
+        // If target (player) is less than 50 pixels away flee
+        else if (length(_parent->getPosition() - _player->getPosition()) <
+            50.0f) {
+            auto output = _flee.getSteering();
+            move(output.direction * (float)dt, rot.rotation * (float)dt);
+        }
     }
-    // If target (player) is less than 50 pixels away flee
-    else if (length(_parent->getPosition() - _player->getPosition()) <
-        50.0f) {
-        auto output = _flee.getSteering();
-        move(output.direction * (float)dt, rot.rotation * (float)dt);
-    }
-
 }
 
-SteeringComponent::SteeringComponent(Entity* p, Entity* player)
-    : _player(player), _seek(Seek(p, player, 100.0f)),
+SteeringComponent::SteeringComponent(Entity* p, Entity* player, bool ActiveOnCreation)
+    : _player(player), _isActive(ActiveOnCreation),_seek(Seek(p, player, 100.0f)),
     _flee(Flee(p, player, 100.0f)), _face(Face(p, player, 100.0f)), Component(p) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -32,8 +34,8 @@ SteeringComponent::SteeringComponent(Entity* p, Entity* player)
 }
 
 bool SteeringComponent::validMove(const sf::Vector2f& pos) const {
-    if (pos.x < 0.0f || pos.x > Engine::GetWindow().getSize().x ||
-        pos.y < 0.0f || pos.y > Engine::GetWindow().getSize().y) {
+    if (pos.x < 0.0f || pos.x > 3840/*Engine::GetWindow().getSize().x*/ ||
+        pos.y < 0.0f || pos.y > 3840/*Engine::GetWindow().getSize().y*/) {
         return false;
     }
     return true;
@@ -55,6 +57,14 @@ void SteeringComponent::rotate(SteeringOutput steer, float dt) {
     }
     _body->SetTransform(_body->GetPosition(), _body->GetAngle() + sf::deg2rad(steer.rotation * dt));
     _parent->setRotation(_parent->getRotation() + (steer.rotation * dt));
+}
+
+bool SteeringComponent::IsActive() {
+    return _isActive;
+}
+
+void SteeringComponent::SetActive(bool Active) {
+    _isActive = Active;
 }
 
 /*

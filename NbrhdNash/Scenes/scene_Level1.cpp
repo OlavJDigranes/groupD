@@ -16,6 +16,7 @@ void Level1::Load() {
 	ls::setMapPosition(sf::Vector2f(0, ho));
 #endif // RENDER_TO_TEX
 
+	// Create player entity
 	{
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(20, 0));
@@ -27,12 +28,13 @@ void Level1::Load() {
 		player->addComponent<PlayerDrivingComponent>(sf::Vector2f(20.f, 30.f));
 	}
 
+	// Setting view to player's location
 #ifndef RENDER_TO_TEX
 	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(1920.f, 1080.f)));
 	view = player->getPosition();
 #endif // !RENDER_TO_TEX
 
-	
+	// Setting up colliders and sensors for statics (houses/shops etc.)
 	{
 		std::vector<Vector2ul> all;
 		auto walls = ls::findTiles(ls::EDGEWALL);
@@ -83,6 +85,22 @@ void Level1::Load() {
 			}
 		}
 	}
+
+	// Setting up birds
+	{
+		for (auto tree : ls::findTiles(ls::BIRDSPAWN)) {
+			auto enemy = makeEntity();
+			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t/2, t/2)));
+			auto s = enemy->addComponent<ShapeComponent>();
+			s->setShape<CircleShape>(10.0f, 30.0f);
+			s->getShape().setFillColor(Color::Blue);
+			s->getShape().setOrigin(Vector2f(10.f, 10.f));
+			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false);
+			_birds.push_back(bird);
+		}
+	}
+
+	// Debug setting to fake a loading screen
 #ifdef FAKE_LOADING
 	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 #endif // FAKE_LOADING
@@ -94,6 +112,7 @@ void Level1::Load() {
 
 void Level1::UnLoad() {
 	_shops.clear();
+	_birds.clear();
 	_goal = nullptr;
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
@@ -112,6 +131,7 @@ void Level1::Render() {
 }
 
 void Level1::Update(const double& dt) {
+	// Update view to stay within map bounds
 #ifndef RENDER_TO_TEX
 	if (player->getPosition().x > 960 && player->getPosition().x < 2880) {
 		view.x = player->getPosition().x;
@@ -126,9 +146,18 @@ void Level1::Update(const double& dt) {
 		player->getPosition().y > 540 ? view.y = 3300 : view.y = 540;
 	}
 #endif // !RENDER_TO_TEX
+	// Goal checking for arrival at correct shop
 	if (_goal->HasGoalBeenReached()) {
 		printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
 	}
+	// Debug birds chasing player
+#ifdef DEBUG_BIRDS
+	if (Keyboard::isKeyPressed(Keyboard::B)) {
+		for (auto b : _birds) {
+			b->SetActive(true);
+		}
+	}
+#endif
 	
 	ls::updateMap();
 	ents.mapPosition = ls::getMapMovement();

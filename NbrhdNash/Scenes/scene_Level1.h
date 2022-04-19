@@ -10,6 +10,7 @@ protected:
 	Vector2f view;
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;
 	std::shared_ptr<PhysicsTriggerComponent> _goal;
+	std::vector<std::shared_ptr<SteeringComponent>> _birds;
 public:
 	void Load() override;
 

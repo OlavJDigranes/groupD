@@ -16,14 +16,17 @@ protected:
     b2Vec2 _size;
     b2Vec2 _direction;
     float32 _rotation;
+    bool _isActive;
     bool validMove(const sf::Vector2f&) const;
 public:
+    void SetActive(bool Active);
+    bool IsActive();
     void update(double) override;
     void move(const sf::Vector2f&, float f);
     void move(float x, float y, float f);
     void rotate(SteeringOutput rot, float dt);
     void render() override { }
-    explicit SteeringComponent(Entity* p, Entity* player);
+    explicit SteeringComponent(Entity* p, Entity* player, bool ActiveOnCreation);
     SteeringComponent() = delete;
 };
 
