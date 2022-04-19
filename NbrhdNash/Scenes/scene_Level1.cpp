@@ -129,12 +129,6 @@ void Level1::Update(const double& dt) {
 	if (_goal->HasGoalBeenReached()) {
 		printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
 	}
-	for (auto s : _shops) {
-		if (s->HasGoalBeenReached()) {
-			printf("Wrong shop! Turn back and find the right shop");
-			remove(_shops.begin(), _shops.end(), s);
-		}
-	}
 	
 	ls::updateMap();
 	ents.mapPosition = ls::getMapMovement();
