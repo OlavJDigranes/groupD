@@ -32,11 +32,11 @@ void LevelTimer::LevelTimerStop() {
 
 	if(timeMins == 0){
 		//timeFile << "Level %d: %f seconds!", tempLevelTag, timeSecs;
-		timeFile << "Level: " << std::to_string(tempLevelTag) << " - " << std::to_string(timeSecs) << " seconds!";
+		timeFile << "Level " << std::to_string(tempLevelTag) << ": " << std::to_string(timeSecs) << " seconds!";
 	}
 	if (timeMins > 0) {
 		//timeFile << "Level %d: %d minutes, %f seconds!", tempLevelTag, timeMins, timeSecs;
-		timeFile << "Level: " << std::to_string(tempLevelTag) << " - " << std::to_string(timeMins) << " minutes and" << std::to_string(timeSecs) << " seconds!";
+		timeFile << "Level " << std::to_string(tempLevelTag) << ": " << std::to_string(timeMins) << " minutes and" << std::to_string(timeSecs) << " seconds!";
 	}
 
 	timeInSeconds = 0; 
