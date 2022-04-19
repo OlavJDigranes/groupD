@@ -2,6 +2,11 @@
 #include <thread>
 #include "scene_Level1.h"
 
+//#define RENDER_TO_TEX
+//#define DEBUG_COLLIDERS
+//#define FAKE_LOADING
+//#define DEBUG_BIRDS
+
 const float t = 64.f;
 static std::shared_ptr<Entity> player;
 static sf::View playerView;
@@ -95,7 +100,7 @@ void Level1::Load() {
 			s->setShape<CircleShape>(10.0f, 30.0f);
 			s->getShape().setFillColor(Color::Blue);
 			s->getShape().setOrigin(Vector2f(10.f, 10.f));
-			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false);
+			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false, Vector2i(ls::getWidth(), ls::getHeight()));
 			_birds.push_back(bird);
 		}
 	}

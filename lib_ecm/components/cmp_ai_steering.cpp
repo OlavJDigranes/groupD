@@ -22,8 +22,8 @@ void SteeringComponent::update(double dt) {
     }
 }
 
-SteeringComponent::SteeringComponent(Entity* p, Entity* player, bool ActiveOnCreation)
-    : _player(player), _isActive(ActiveOnCreation),_seek(Seek(p, player, 100.0f)),
+SteeringComponent::SteeringComponent(Entity* p, Entity* player, bool ActiveOnCreation, Vector2i mapBounds)
+    : _player(player), _isActive(ActiveOnCreation), _mapBounds(mapBounds),_seek(Seek(p, player, 100.0f)),
     _flee(Flee(p, player, 100.0f)), _face(Face(p, player, 100.0f)), Component(p) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -34,8 +34,8 @@ SteeringComponent::SteeringComponent(Entity* p, Entity* player, bool ActiveOnCre
 }
 
 bool SteeringComponent::validMove(const sf::Vector2f& pos) const {
-    if (pos.x < 0.0f || pos.x > 3840/*Engine::GetWindow().getSize().x*/ ||
-        pos.y < 0.0f || pos.y > 3840/*Engine::GetWindow().getSize().y*/) {
+    if (pos.x < 0.0f || pos.x > _mapBounds.x ||
+        pos.y < 0.0f || pos.y > _mapBounds.y) {
         return false;
     }
     return true;

@@ -34,7 +34,7 @@ void SteeringScene::Load() {
         auto s = enemy->addComponent<ShapeComponent>();
         s->setShape<CircleShape>(10.0f, 3.0f);
         s->getShape().setFillColor(Color::Blue);
-        enemy->addComponent<SteeringComponent>(player.get(), true);
+        enemy->addComponent<SteeringComponent>(player.get(), true, sf::Vector2i(ls::getWidth(), ls::getHeight()));
     }
 
     std::cout << " Scene 1 Load Done" << std::endl;
