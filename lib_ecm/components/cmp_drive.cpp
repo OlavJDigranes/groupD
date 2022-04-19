@@ -46,10 +46,11 @@ void PlayerDrivingComponent::Drive(float speed, double dt) {
     }
 }
 
-void PlayerDrivingComponent::Brake() {
+void PlayerDrivingComponent::Brake(double dt) {
     // Increase damping if car is moving
-    if (_currentSpeed > 0) {
-        _body->SetLinearDamping(2);
+    auto damping = _body->GetLinearDamping();
+    if (damping >= 0.5 && damping < 3) {
+        _body->SetLinearDamping(damping + dt);
     }
 }
 
@@ -73,10 +74,10 @@ void PlayerDrivingComponent::update(double dt) {
         Drive(1, dt);   // Drive forwards
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        Brake();  // Brake
+        Brake(dt);  // Brake
     }
-    if (_currentSpeed == 0) {
-        _body->SetLinearDamping(0.5);   // if car is stationary then reduce damping
+    else if (_body->GetLinearDamping() > 0.5 || _currentSpeed == 0) {
+        _body->SetLinearDamping(0.5);   // if car is stationary or not braking then reduce damping
     }
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * _direction); // ensure the car is always travelling forwards when turning with no accel
     _currentSpeed = _body->GetLinearVelocity().Length(); // Update speed to follow damping effects

@@ -18,7 +18,7 @@ protected:
 
 public:
 	void Drive(float speed, double dt);
-	void Brake();
+	void Brake(double dt);
 	void Rotate(float degrees, float dt);
 
 	void render() override {};
