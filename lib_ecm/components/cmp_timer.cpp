@@ -13,8 +13,8 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
 	timeInSeconds = round(timer.getElapsedTime().asSeconds()); 
-	//timeFile.open("times.txt", std::ios_base::app); 
-	timeFile.open("times.txt"); 
+	timeFile.open("times.txt", std::ios_base::app); 
+	//timeFile.open("times.txt"); 
 
 	vector<string> lines;
 	std::string line;

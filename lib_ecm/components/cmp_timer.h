@@ -24,6 +24,6 @@ public:
 	void LevelTimerStop();
 	string WriteToTimeFile(float time); 
 
-	//void update(double dt) override {};
-	//void render() override {};
+	void update(double dt) override {};
+	void render() override {};
 };
