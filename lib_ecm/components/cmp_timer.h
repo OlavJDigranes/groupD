@@ -3,6 +3,7 @@
 #include <../lib_ecm/ecm.h>
 #include "engine.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace sf; 
