@@ -13,7 +13,8 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
 	timeInSeconds = round(timer.getElapsedTime().asSeconds()); 
-	timeFile.open("times.txt", std::ios_base::app); 
+	//timeFile.open("times.txt", std::ios_base::app); 
+	timeFile.open("times.txt"); 
 
 	vector<string> lines;
 	std::string line;
@@ -22,7 +23,7 @@ void LevelTimer::LevelTimerStop() {
 	vector<float> times; 
 
 	//checking if file is empty
-	if (timeFile.peek() == std::ifstream::traits_type::eof()) {
+	if (timeFile.peek() != std::ifstream::traits_type::eof()) {
 		while (!timeFile.eof()) {
 			timeFile >> line;
 			lines.push_back(line);
@@ -55,6 +56,13 @@ void LevelTimer::LevelTimerStop() {
 	//if file is empty or has less than 5 lines add new line. 
 	if(counter < 5){
 		timeFile << newLine; 
+
+		if (counter > 0) {
+			for (int i = 0; i < counter; i++) {
+				timeFile << lines[i]; 
+			}
+		}
+		
 	}
 	//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
 	if (counter >= 5) {
