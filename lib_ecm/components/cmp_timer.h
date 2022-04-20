@@ -21,6 +21,8 @@ public:
 
 	~LevelTimer() = default;
 	void LevelTimerStop();
-	void update(double dt) override {};
-	void render() override {};
+	string WriteToTimeFile(float time); 
+
+	//void update(double dt) override {};
+	//void render() override {};
 };

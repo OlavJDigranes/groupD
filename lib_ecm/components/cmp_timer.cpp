@@ -18,7 +18,7 @@ void LevelTimer::LevelTimerStop() {
 
 	vector<string> lines;
 	std::string line;
-	std::string newLine;
+	std::string outLine;
 	int counter = 0;
 	vector<float> times; 
 
@@ -31,31 +31,11 @@ void LevelTimer::LevelTimerStop() {
 		}
 	}
 
-	//New Time handling.
-	int timeMins = 0;
-	float timeSecs = 0.0f;
-
-	while (timeInSeconds > 0) {
-		if (timeInSeconds >= 60) {
-			timeMins += 1;
-			timeInSeconds -= 60;
-		}
-		else {
-			timeSecs = timeInSeconds;
-			timeInSeconds -= timeInSeconds;
-		}
-	}
-
-	if (timeMins == 0) {
-		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeSecs) + " seconds!";
-	}
-	if (timeMins > 0) {
-		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(timeSecs) + " seconds!";
-	}
+	outLine = WriteToTimeFile(timeInSeconds); 
 
 	//if file is empty or has less than 5 lines add new line. 
 	if(counter < 5){
-		timeFile << newLine; 
+		timeFile << outLine; 
 
 		if (counter > 0) {
 			for (int i = 0; i < counter; i++) {
@@ -103,11 +83,38 @@ void LevelTimer::LevelTimerStop() {
 
 		sort(times.begin(), times.end()); 
 
-		for (int i = 0; i < 5; i++) {
-			timeFile << newLine; 
+		for (int i = 0; i < times.size(); i++) {
+			timeFile << WriteToTimeFile(times[i]); 
 		}
 	}
 
 	timeInSeconds = 0; 
 	timeFile.close();
+}
+
+//Helper function
+string LevelTimer::WriteToTimeFile(float time) {
+	//New Time handling.
+	int timeMins = 0;
+	float timeSecs = 0.0f;
+	std::string newLine;
+
+	while (time > 0) {
+		if (time >= 60) {
+			timeMins += 1;
+			time -= 60;
+		}
+		else {
+			timeSecs = time;
+			time -= time;
+		}
+	}
+
+	if (timeMins == 0) {
+		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeSecs) + " seconds!";
+	}
+	if (timeMins > 0) {
+		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(timeSecs) + " seconds!";
+	}
+	return newLine; 
 }
