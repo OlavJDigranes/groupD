@@ -4,6 +4,7 @@
 #include "engine.h"
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 using namespace sf; 
@@ -23,6 +24,7 @@ public:
 	~LevelTimer() = default;
 	void LevelTimerStop();
 	string WriteToTimeFile(float time); 
+	float roundTime(float f); 
 
 	void update(double dt) override {};
 	void render() override {};

@@ -1,8 +1,12 @@
 #include "cmp_timer.h"
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
 
 using namespace std;
 using namespace sf; 
 
+//TODO: Ask why file reading is not working. 
 //Starts the level timer for the given level. 
 LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 	tempLevelTag = levelTag; 
@@ -12,13 +16,14 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
-	timeInSeconds = round(timer.getElapsedTime().asSeconds()); 
-	timeFile.open("times.txt", std::ios_base::app); 
-	//timeFile.open("times.txt"); 
+	timeInSeconds = LevelTimer::roundTime(timer.getElapsedTime().asSeconds());
+	//timeFile.open("times.txt", std::ios_base::app); 
+	timeFile.open("times.txt", std::ios_base::out | std::ios_base::in);
 
+	//Local variables
 	vector<string> lines;
 	std::string line;
-	std::string outLine;
+	std::string outputLine;
 	int counter = 0;
 	vector<float> times; 
 
@@ -31,11 +36,11 @@ void LevelTimer::LevelTimerStop() {
 		}
 	}
 
-	outLine = WriteToTimeFile(timeInSeconds); 
+	outputLine = WriteToTimeFile(timeInSeconds);
 
 	//if file is empty or has less than 5 lines add new line. 
 	if(counter < 5){
-		timeFile << outLine; 
+		timeFile << outputLine;
 
 		if (counter > 0) {
 			for (int i = 0; i < counter; i++) {
@@ -92,7 +97,7 @@ void LevelTimer::LevelTimerStop() {
 	timeFile.close();
 }
 
-//Helper function
+//Helper function for writing to the file. 
 string LevelTimer::WriteToTimeFile(float time) {
 	//New Time handling.
 	int timeMins = 0;
@@ -110,11 +115,21 @@ string LevelTimer::WriteToTimeFile(float time) {
 		}
 	}
 
+	//TODO roundTime still outputs 4 zeros which chould not be there. 
 	if (timeMins == 0) {
-		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeSecs) + " seconds!";
+		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(LevelTimer::roundTime(timeSecs)) + " seconds!";
+		//newLine = ("Level %d: %f seconds!\n", tempLevelTag, LevelTimer::roundTime(timeSecs));
 	}
 	if (timeMins > 0) {
-		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(timeSecs) + " seconds!";
+		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(LevelTimer::roundTime(timeSecs)) + " seconds!";
+		//newLine = ("Level %d: %d minutes and %f seconds!\n", tempLevelTag, timeMins,  LevelTimer::roundTime(timeSecs));
 	}
+	std::cout << newLine << endl; 
 	return newLine; 
+}
+
+//Helper function for proper rounding of the times. https://www.geeksforgeeks.org/rounding-floating-point-number-two-decimal-places-c-c/
+float LevelTimer::roundTime(float f) {
+	float value = (int)(f * 100 + .5);
+	return (float)value / 100;
 }

@@ -13,7 +13,7 @@ void Scoreboard::Load() {
 	std::string line; 
 	ifstream timeFile; 
 
-	timeFile.open("times.txt");
+	timeFile.open("times.txt", ios::in);
 	if (timeFile.is_open()) {
 		while (!timeFile.eof()) {
 			timeFile >> line; 
@@ -32,6 +32,7 @@ void Scoreboard::Load() {
 		auto s = txt->addComponent<TextComponent>(std::to_string(i+1) + lines[i] + "\n ");
 	}
 	timeFile.close(); 
+	setLoaded(true);
 }
 
 void Scoreboard::UnLoad() {
