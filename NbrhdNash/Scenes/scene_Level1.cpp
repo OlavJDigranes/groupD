@@ -2,6 +2,11 @@
 #include <thread>
 #include "scene_Level1.h"
 
+//#define RENDER_TO_TEX
+//#define DEBUG_COLLIDERS
+//#define FAKE_LOADING
+//#define DEBUG_BIRDS
+
 const float t = 64.f;
 static std::shared_ptr<Entity> player;
 static sf::View playerView;
@@ -59,9 +64,11 @@ void Level1::Load() {
 		auto chkpt = ls::findTiles(ls::CHECKPOINT);
 		auto shops = ls::findTiles(ls::SHOPS);
 		auto grates = ls::findTiles(ls::GRATEROAD);
+		auto home = ls::findTiles(ls::HOME);
 		all.insert(all.begin(), chkpt.begin(), chkpt.end());
 		all.insert(all.begin(), shops.begin(), shops.end());
-		all.insert(all.begin(), grates.begin(), grates.end()); 
+		all.insert(all.begin(), grates.begin(), grates.end());
+		all.insert(all.begin(), home.begin(), home.end());
 		for (auto w : all) {
 			auto pos = ls::getTilePosition(w);
 			auto e = makeEntity();
@@ -73,17 +80,22 @@ void Level1::Load() {
 			debug_shape->getShape().setOrigin(Vector2f(t / 2, t / 2));
 #endif
 			if (ls::getTileAt(pos) == ls::SHOPS) {
-				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true);
+				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
 			}
 			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
-				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true);
-				_goal = m;
+				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
+				_goalShop = m;
+			}
+			else if (ls::getTileAt(pos) == ls::HOME) {
+				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
 			}
 			else {
-				e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false);
+				e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 			}
 		}
+		
+
 	}
 
 	// Setting up birds
@@ -95,10 +107,33 @@ void Level1::Load() {
 			s->setShape<CircleShape>(10.0f, 30.0f);
 			s->getShape().setFillColor(Color::Blue);
 			s->getShape().setOrigin(Vector2f(10.f, 10.f));
-			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false);
+			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false, Vector2i(ls::getWidth(), ls::getHeight()));
 			_birds.push_back(bird);
 		}
 	}
+
+	{
+		std::vector<Vector2ul> cars;
+		auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
+		auto cars_2 = ls::findTiles(ls::CAR2SPAWN);
+		auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
+		cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
+		cars.insert(cars.begin(), cars_2.begin(), cars_2.end());
+		cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
+		for (auto c : cars) {
+			auto car = makeEntity();
+			auto pos = ls::getTilePosition(c) + Vector2f(t/2, t/2);
+			car->setPosition(pos);
+			auto cmp = car->addComponent<ShapeComponent>();
+			cmp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
+			cmp->getShape().setFillColor(sf::Color::Red);
+			cmp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+		}
+	}
+
+	_timer = player->addComponent<LevelTimer>(tag);
+	_reachedShop = false;
+	_complete = false;
 
 	// Debug setting to fake a loading screen
 #ifdef FAKE_LOADING
@@ -113,7 +148,9 @@ void Level1::Load() {
 void Level1::UnLoad() {
 	_shops.clear();
 	_birds.clear();
-	_goal = nullptr;
+	_goalShop = nullptr;
+	_home = nullptr;
+	_timer = nullptr;
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
 	ls::unload();
@@ -147,8 +184,17 @@ void Level1::Update(const double& dt) {
 	}
 #endif // !RENDER_TO_TEX
 	// Goal checking for arrival at correct shop
-	if (_goal->HasGoalBeenReached()) {
+	if (_goalShop->HasGoalBeenReached() && _reachedShop == false) {
+		_reachedShop = true;
 		printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
+		_home->SetActive(true);
+		_goalShop->SetActive(false);
+	}
+	if (_home->HasGoalBeenReached() && _reachedShop == true && _complete == false) {
+		if (_home->HasGoalBeenReached()) {
+			_timer->LevelTimerStop();
+			_complete = true;
+		}
 	}
 	// Debug birds chasing player
 #ifdef DEBUG_BIRDS
@@ -156,6 +202,17 @@ void Level1::Update(const double& dt) {
 		for (auto b : _birds) {
 			b->SetActive(true);
 		}
+	}
+#endif
+	// Debug birds chasing player
+#ifdef DEBUG_TELEPORT
+	if (Keyboard::isKeyPressed(Keyboard::LBracket)) {
+		auto d = player->GetCompatibleComponent<PlayerDrivingComponent>();
+		d.at(0)->teleport(ls::getTilePosition(ls::findTiles(ls::CHECKPOINT)[0]));
+	}
+	if (Keyboard::isKeyPressed(Keyboard::RBracket)) {
+		auto d = player->GetCompatibleComponent<PlayerDrivingComponent>();
+		d.at(0)->teleport(ls::getTilePosition(ls::findTiles(ls::HOME)[0]));
 	}
 #endif
 	

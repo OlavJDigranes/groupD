@@ -6,6 +6,8 @@
 #include <LevelSystem.h>
 #include <maths.h>
 
+#define DEBUG_TELEPORT
+
 class PlayerDrivingComponent : public Component {
 protected:
 	Entity* _parent;
@@ -18,7 +20,7 @@ protected:
 
 public:
 	void Drive(float speed, double dt);
-	void Brake();
+	void Brake(double dt);
 	void Rotate(float degrees, float dt);
 
 	void render() override {};
@@ -27,5 +29,7 @@ public:
 	explicit PlayerDrivingComponent(Entity* parent, sf::Vector2f size);
 	PlayerDrivingComponent() = delete;
 	~PlayerDrivingComponent();
-
+#ifdef DEBUG_TELEPORT
+	void teleport(sf::Vector2f pos);
+#endif
 };

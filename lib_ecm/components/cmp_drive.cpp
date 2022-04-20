@@ -39,17 +39,18 @@ void PlayerDrivingComponent::Drive(float speed, double dt) {
         _body->SetLinearDamping(0.5);
     }
     // If below top speed, set body velocity to increase in direction and let parent (sprite) update
-    if (_body->GetLinearVelocity().LengthSquared() <= pow(8, 2) && _body->GetLinearVelocity().LengthSquared() >= 0) {
+    if (_body->GetLinearVelocity().LengthSquared() <= pow(8, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= 8) {
         _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * _direction));
         _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
         _currentSpeed += speed * dt;
     }
 }
 
-void PlayerDrivingComponent::Brake() {
+void PlayerDrivingComponent::Brake(double dt) {
     // Increase damping if car is moving
-    if (_currentSpeed > 0) {
-        _body->SetLinearDamping(2);
+    auto damping = _body->GetLinearDamping();
+    if (damping >= 0.5 && damping < 3) {
+        _body->SetLinearDamping(damping + dt);
     }
 }
 
@@ -73,10 +74,10 @@ void PlayerDrivingComponent::update(double dt) {
         Drive(1, dt);   // Drive forwards
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        Brake();  // Brake
+        Brake(dt);  // Brake
     }
-    if (_currentSpeed == 0) {
-        _body->SetLinearDamping(0.5);   // if car is stationary then reduce damping
+    else if (_body->GetLinearDamping() > 0.5 || _currentSpeed == 0) {
+        _body->SetLinearDamping(0.5);   // if car is stationary or not braking then reduce damping
     }
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * _direction); // ensure the car is always travelling forwards when turning with no accel
     _currentSpeed = _body->GetLinearVelocity().Length(); // Update speed to follow damping effects
@@ -90,3 +91,9 @@ PlayerDrivingComponent::~PlayerDrivingComponent() {
     // delete _body;
     _body = nullptr;
 }
+
+#ifdef DEBUG_TELEPORT
+void PlayerDrivingComponent::teleport(sf::Vector2f pos) {
+    _body->SetTransform(Physics::sv2_to_bv2(pos), sf::deg2rad(_parent->getRotation()));
+}
+#endif
