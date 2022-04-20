@@ -91,3 +91,9 @@ PlayerDrivingComponent::~PlayerDrivingComponent() {
     // delete _body;
     _body = nullptr;
 }
+
+#ifdef DEBUG_TELEPORT
+void PlayerDrivingComponent::teleport(sf::Vector2f pos) {
+    _body->SetTransform(Physics::sv2_to_bv2(pos), sf::deg2rad(_parent->getRotation()));
+}
+#endif

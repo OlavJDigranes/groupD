@@ -40,11 +40,14 @@ protected:
 	b2Fixture* _fixture;
 	std::vector<const b2Contact const*> _dirtyCheck;
 	bool _isGoal;
+	bool _isActive;
 	bool goalReached;
 public:
-	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal);
+	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal, bool isActive);
 	void IsPlayerOverlapping();
 	bool HasGoalBeenReached();
+	bool IsActive();
+	void SetActive(bool active);
 	void update(double dt) override;
 	void render() override;
 	~PhysicsTriggerComponent() override;

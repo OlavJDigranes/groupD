@@ -9,8 +9,11 @@ protected:
 	std::shared_ptr<sf::View> playerView;
 	Vector2f view;
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;
-	std::shared_ptr<PhysicsTriggerComponent> _goal;
+	std::shared_ptr<PhysicsTriggerComponent> _goalShop;
+	std::shared_ptr<PhysicsTriggerComponent> _home;
 	std::vector<std::shared_ptr<SteeringComponent>> _birds;
+	std::shared_ptr<LevelTimer> _timer;
+	bool _reachedShop;
 public:
 	void Load() override;
 

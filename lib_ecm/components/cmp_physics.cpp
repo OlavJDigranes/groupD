@@ -153,10 +153,8 @@ void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
 }
 
-PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal) 
-    : Component(p), _dynamic(false) {
-    _isGoal = isGoal;
-    goalReached = false;
+PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal, bool isActive) 
+    : Component(p), _dynamic(false), _isGoal(isGoal), _isActive(isActive), goalReached(false) {
     b2BodyDef BodyDef;
     BodyDef.type = b2_staticBody;
     BodyDef.position = sv2_to_bv2((p->getPosition() + (0.5f * size)));
@@ -193,6 +191,14 @@ bool PhysicsTriggerComponent::HasGoalBeenReached() {
     return goalReached;
 }
 
+bool PhysicsTriggerComponent::IsActive() {
+    return _isActive;
+}
+
+void PhysicsTriggerComponent::SetActive(bool active) {
+    _isActive = active;
+}
+
 void PhysicsTriggerComponent::IsPlayerOverlapping() {
     std::string* p_check = new std::string("Player");
 
@@ -225,7 +231,9 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
 void PhysicsTriggerComponent::render() {}
 
 void PhysicsTriggerComponent::update(double dt) {
-    IsPlayerOverlapping();
+    if (_isActive) {
+        IsPlayerOverlapping();
+    }
 }
 
 PhysicsTriggerComponent::~PhysicsTriggerComponent() {
