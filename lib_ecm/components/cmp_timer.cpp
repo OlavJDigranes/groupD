@@ -12,13 +12,14 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
-	timeInSeconds = timer.getElapsedTime().asSeconds(); 
+	timeInSeconds = round(timer.getElapsedTime().asSeconds()); 
 	timeFile.open("times.txt", std::ios_base::app); 
 
 	vector<string> lines;
 	std::string line;
 	std::string newLine;
 	int counter = 0;
+	vector<float> times; 
 
 	//checking if file is empty
 	if (timeFile.peek() == std::ifstream::traits_type::eof()) {
@@ -48,7 +49,7 @@ void LevelTimer::LevelTimerStop() {
 		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeSecs) + " seconds!";
 	}
 	if (timeMins > 0) {
-		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and" + std::to_string(timeSecs) + " seconds!";
+		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(timeSecs) + " seconds!";
 	}
 
 	//if file is empty or has less than 5 lines add new line. 
@@ -61,6 +62,42 @@ void LevelTimer::LevelTimerStop() {
 			//make a vecotr of floats. use int a = 3; float b = (float)a;
 			//make the minute andd second substrings into int and float. std::stof() - convert string to float.
 			//compare the new time in seconds (floats) to old times (floats) in seconds and discard the slowest one. Keep only 5 fastest, and save them to file. 
+		float tempOldTimeInSeconds;
+		float tempOldMinutes; 
+		float tempOldSeconds; 
+		string tempSubStringSecs; 
+		string tempSubStringMins; 
+
+		times.push_back(timeInSeconds); 
+
+		for (int i = 0; i < counter; i++) {
+			tempOldTimeInSeconds = 0.0f;
+			tempOldMinutes = 0.0f; 
+			tempOldSeconds = 0.0f;
+			tempSubStringMins = " "; 
+			tempSubStringSecs = " "; 
+
+			if (lines[i].length() > 22) {
+				tempSubStringMins = lines[i].substr(9, 2); 
+				tempOldMinutes = std::stof(tempSubStringMins); 
+
+				tempSubStringSecs = lines[i].substr(25, 4);
+				tempOldSeconds = std::stof(tempSubStringSecs); 
+				tempOldTimeInSeconds = (tempOldMinutes * 60) + tempOldSeconds; 
+				times.push_back(tempOldTimeInSeconds); 
+			}
+			else {
+				tempSubStringSecs = lines[i].substr(9, 4);
+				tempOldTimeInSeconds = std::stof(tempSubStringSecs); 
+				times.push_back(tempOldTimeInSeconds); 
+			}
+		}
+
+		sort(times.begin(), times.end()); 
+
+		for (int i = 0; i < 5; i++) {
+			timeFile << newLine; 
+		}
 	}
 
 	timeInSeconds = 0; 
