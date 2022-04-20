@@ -39,60 +39,62 @@ void LevelTimer::LevelTimerStop() {
 	outputLine = WriteToTimeFile(timeInSeconds);
 
 	//if file is empty or has less than 5 lines add new line. 
-	if(counter < 5){
-		timeFile << outputLine;
+	if (timeFile.is_open()) {
+		if (counter < 5) {
+			timeFile << outputLine;
 
-		if (counter > 0) {
+			if (counter > 0) {
+				for (int i = 0; i < counter; i++) {
+					timeFile << lines[i];
+				}
+			}
+
+		}
+		//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
+		if (counter >= 5) {
+			//PSEUDOCODE:
+				//make a vecotr of floats. use int a = 3; float b = (float)a;
+				//make the minute andd second substrings into int and float. std::stof() - convert string to float.
+				//compare the new time in seconds (floats) to old times (floats) in seconds and discard the slowest one. Keep only 5 fastest, and save them to file. 
+			float tempOldTimeInSeconds;
+			float tempOldMinutes;
+			float tempOldSeconds;
+			string tempSubStringSecs;
+			string tempSubStringMins;
+
+			times.push_back(timeInSeconds);
+
 			for (int i = 0; i < counter; i++) {
-				timeFile << lines[i]; 
+				tempOldTimeInSeconds = 0.0f;
+				tempOldMinutes = 0.0f;
+				tempOldSeconds = 0.0f;
+				tempSubStringMins = " ";
+				tempSubStringSecs = " ";
+
+				if (lines[i].length() > 22) {
+					tempSubStringMins = lines[i].substr(9, 2);
+					tempOldMinutes = std::stof(tempSubStringMins);
+
+					tempSubStringSecs = lines[i].substr(25, 4);
+					tempOldSeconds = std::stof(tempSubStringSecs);
+					tempOldTimeInSeconds = (tempOldMinutes * 60) + tempOldSeconds;
+					times.push_back(tempOldTimeInSeconds);
+				}
+				else {
+					tempSubStringSecs = lines[i].substr(9, 4);
+					tempOldTimeInSeconds = std::stof(tempSubStringSecs);
+					times.push_back(tempOldTimeInSeconds);
+				}
 			}
-		}
-		
-	}
-	//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
-	if (counter >= 5) {
-		//PSEUDOCODE:
-			//make a vecotr of floats. use int a = 3; float b = (float)a;
-			//make the minute andd second substrings into int and float. std::stof() - convert string to float.
-			//compare the new time in seconds (floats) to old times (floats) in seconds and discard the slowest one. Keep only 5 fastest, and save them to file. 
-		float tempOldTimeInSeconds;
-		float tempOldMinutes; 
-		float tempOldSeconds; 
-		string tempSubStringSecs; 
-		string tempSubStringMins; 
 
-		times.push_back(timeInSeconds); 
+			sort(times.begin(), times.end());
 
-		for (int i = 0; i < counter; i++) {
-			tempOldTimeInSeconds = 0.0f;
-			tempOldMinutes = 0.0f; 
-			tempOldSeconds = 0.0f;
-			tempSubStringMins = " "; 
-			tempSubStringSecs = " "; 
-
-			if (lines[i].length() > 22) {
-				tempSubStringMins = lines[i].substr(9, 2); 
-				tempOldMinutes = std::stof(tempSubStringMins); 
-
-				tempSubStringSecs = lines[i].substr(25, 4);
-				tempOldSeconds = std::stof(tempSubStringSecs); 
-				tempOldTimeInSeconds = (tempOldMinutes * 60) + tempOldSeconds; 
-				times.push_back(tempOldTimeInSeconds); 
+			for (int i = 0; i < times.size(); i++) {
+				timeFile << WriteToTimeFile(times[i]);
 			}
-			else {
-				tempSubStringSecs = lines[i].substr(9, 4);
-				tempOldTimeInSeconds = std::stof(tempSubStringSecs); 
-				times.push_back(tempOldTimeInSeconds); 
-			}
-		}
-
-		sort(times.begin(), times.end()); 
-
-		for (int i = 0; i < times.size(); i++) {
-			timeFile << WriteToTimeFile(times[i]); 
 		}
 	}
-
+	
 	timeInSeconds = 0; 
 	timeFile.close();
 }
