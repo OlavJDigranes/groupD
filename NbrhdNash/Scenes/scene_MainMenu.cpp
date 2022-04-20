@@ -20,8 +20,8 @@ void MainMenu::Load() {
 
 	auto txt = makeEntity();
 	txt->addTag("MenuText"); 
-	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
-	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for credits");
+	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.25));
+	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for scoreboard\nPress 4 for credits");
 	setLoaded(true);
 	
 	menuLoop.openFromFile("res/music/MainMenuLoop.mp3");
@@ -48,9 +48,12 @@ void MainMenu::Update(const double& dt) {
 		Engine::ChangeScene(&settings);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-		Engine::ChangeScene(&credits);
+		Engine::ChangeScene(&scoreboard);
 		//Engine::ChangeScene(&gameover);
 		//Engine::ChangeScene(&celebration);
+	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
+		Engine::ChangeScene(&credits); 
 	}
 	Scene::Update(dt);
 }

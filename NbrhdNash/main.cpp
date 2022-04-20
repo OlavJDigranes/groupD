@@ -15,6 +15,7 @@ Settings settings;
 Celebration celebration;
 GameOver gameover; 
 SteeringScene steering; 
+Scoreboard scoreboard;
 
 int main() {
 	Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);

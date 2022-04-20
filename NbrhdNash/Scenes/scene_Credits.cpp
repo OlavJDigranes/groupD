@@ -26,9 +26,6 @@ void Credits::UnLoad(){
 }
 
 void Credits::Update(const double& dt) {
-	//if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
-	//	Engine::ChangeScene(&menu); 
-	//}
 	Scene::Update(dt);
 }
 
