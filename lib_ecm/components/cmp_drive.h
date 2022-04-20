@@ -6,7 +6,7 @@
 #include <LevelSystem.h>
 #include <maths.h>
 
-//#define DEBUG_TELEPORT
+#define DEBUG_TELEPORT
 
 class PlayerDrivingComponent : public Component {
 protected:

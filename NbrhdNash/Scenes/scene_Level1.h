@@ -14,6 +14,7 @@ protected:
 	std::vector<std::shared_ptr<SteeringComponent>> _birds;
 	std::shared_ptr<LevelTimer> _timer;
 	bool _reachedShop;
+	bool _complete;
 public:
 	void Load() override;
 

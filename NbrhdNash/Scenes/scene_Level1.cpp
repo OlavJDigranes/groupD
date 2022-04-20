@@ -132,6 +132,8 @@ void Level1::Load() {
 	}
 
 	_timer = player->addComponent<LevelTimer>(tag);
+	_reachedShop = false;
+	_complete = false;
 
 	// Debug setting to fake a loading screen
 #ifdef FAKE_LOADING
@@ -188,9 +190,10 @@ void Level1::Update(const double& dt) {
 		_home->SetActive(true);
 		_goalShop->SetActive(false);
 	}
-	if (_home->HasGoalBeenReached() && _reachedShop == true) {
+	if (_home->HasGoalBeenReached() && _reachedShop == true && _complete == false) {
 		if (_home->HasGoalBeenReached()) {
 			_timer->LevelTimerStop();
+			_complete = true;
 		}
 	}
 	// Debug birds chasing player
