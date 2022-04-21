@@ -24,6 +24,15 @@ void Scoreboard::Load() {
 		}
 	}
 
+	//Removing underscores for readability
+	for (int i = 0; i < lines.size(); i++) {
+		for (int j = 0; j < lines[i].length(); j++) {
+			if (lines[i][j] == '_') {
+				lines[i][j] = ' '; 
+			}
+		}
+	}
+
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
