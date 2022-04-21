@@ -16,12 +16,7 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
-	//TEST TODO CHECK IF FILE EXISTS?
-	//ofstream tempFileOpen; 
-	//tempFileOpen.open("times.txt", std::ios_base::app);
-	//tempFileOpen << "EOF"; 
-	//tempFileOpen.close(); 
-
+	
 	ingestFile();
 
 	//timeInSeconds = LevelTimer::roundTime(timer.getElapsedTime().asSeconds());
@@ -30,10 +25,7 @@ void LevelTimer::LevelTimerStop() {
 	timeFile.open("times.txt", std::ios_base::out);
 
 	//Local variables
-	//vector<string> lines;
-	
 	std::string outputLine;
-	//int counter = 0;
 	vector<float> times; 
 
 	outputLine = WriteToTimeFile(timeInSeconds);
@@ -126,11 +118,9 @@ string LevelTimer::WriteToTimeFile(float time) {
 	//TODO roundTime still outputs 4 zeros which chould not be there. 
 	if (timeMins == 0) {
 		newLine = "Level_" + std::to_string(tempLevelTag) + ":_" + std::to_string(LevelTimer::roundTime(timeSecs)) + "_seconds! ";
-		//newLine = ("Level %d: %f seconds!\n", tempLevelTag, LevelTimer::roundTime(timeSecs));
 	}
 	if (timeMins > 0) {
 		newLine = "Level_" + std::to_string(tempLevelTag) + ":_" + std::to_string(timeMins) + "_minute(s)_and_" + std::to_string(LevelTimer::roundTime(timeSecs)) + "_seconds! ";
-		//newLine = ("Level %d: %d minutes and %f seconds!\n", tempLevelTag, timeMins,  LevelTimer::roundTime(timeSecs));
 	}
 	//std::cout << newLine << endl; 
 	return newLine; 
@@ -142,6 +132,7 @@ float LevelTimer::roundTime(float f) {
 	return (float)value / 100;
 }
 
+//Helper function for ingesting file if it exists
 void LevelTimer::ingestFile() {
 	std::string line;
 	ifstream timeFileIn;
