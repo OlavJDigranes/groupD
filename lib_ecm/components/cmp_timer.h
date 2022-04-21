@@ -15,7 +15,9 @@ protected:
 	sf::Clock timer; 
 	int tempLevelTag; 
 	float timeInSeconds; 
-	fstream timeFile; 
+	ofstream timeFile; 
+	vector<string> lines;
+	int counter = 0;
 public: 
 	LevelTimer() = delete;
 
@@ -25,6 +27,7 @@ public:
 	void LevelTimerStop();
 	string WriteToTimeFile(float time); 
 	float roundTime(float f); 
+	void ingestFile();
 
 	void update(double dt) override {};
 	void render() override {};

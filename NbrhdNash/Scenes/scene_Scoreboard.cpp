@@ -10,12 +10,14 @@ void Scoreboard::Load() {
 
 	int counter = 0; 
 	vector<string> lines; 
+	vector<shared_ptr<Entity>> scoreboardText; 
 	std::string line; 
 	ifstream timeFile; 
 
-	timeFile.open("times.txt", ios::in);
+	timeFile.open("times.txt", std::ios_base::in);
 	if (timeFile.is_open()) {
 		while (!timeFile.eof()) {
+			line.resize(timeFile.tellg()); 
 			timeFile >> line; 
 			lines.push_back(line); 
 			counter++; 
@@ -26,10 +28,14 @@ void Scoreboard::Load() {
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 
-	auto txt = makeEntity();
-	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
 	for (int i = 0; i < counter; i++) {
-		auto s = txt->addComponent<TextComponent>(std::to_string(i+1) + lines[i] + "\n ");
+		auto txt = makeEntity();
+		scoreboardText.push_back(txt);
+	}
+
+	for (int i = 0; i < counter; i++) {
+		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + (i * 10))));
+		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i+1) + " " + lines[i] + "\n ");
 	}
 	timeFile.close(); 
 	setLoaded(true);

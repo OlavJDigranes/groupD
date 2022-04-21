@@ -16,33 +16,36 @@ LevelTimer::LevelTimer(Entity* const p, int levelTag) : Component(p) {
 
 //Stops the level timer and outputs the time to a txt file 
 void LevelTimer::LevelTimerStop() {
+	//TEST
+	ofstream tempFileOpen; 
+	tempFileOpen.open("times.txt", std::ios_base::app);
+	tempFileOpen << "EOF"; 
+	tempFileOpen.close(); 
+
 	timeInSeconds = LevelTimer::roundTime(timer.getElapsedTime().asSeconds());
 	//timeFile.open("times.txt", std::ios_base::app); 
-	timeFile.open("times.txt", std::ios_base::out | std::ios_base::in);
+	timeFile.open("times.txt", std::ios_base::out);
 
 	//Local variables
-	vector<string> lines;
-	std::string line;
+	//vector<string> lines;
+	
 	std::string outputLine;
-	int counter = 0;
+	//int counter = 0;
 	vector<float> times; 
 
-	//checking if file is empty
-	if (timeFile.peek() != std::ifstream::traits_type::eof()) {
-		while (!timeFile.eof()) {
-			timeFile >> line;
-			lines.push_back(line);
-			counter++;
-		}
-	}
+	ingestFile(); 
 
 	outputLine = WriteToTimeFile(timeInSeconds);
+	
+	std::cout << outputLine << endl;
 
 	//if file is empty or has less than 5 lines add new line. 
 	if (timeFile.is_open()) {
 		if (counter < 5) {
+			std::cout << "boo" << endl; 
 			timeFile << outputLine;
 
+			//Only runs the for loop if there was sometihng in the file
 			if (counter > 0) {
 				for (int i = 0; i < counter; i++) {
 					timeFile << lines[i];
@@ -52,6 +55,7 @@ void LevelTimer::LevelTimerStop() {
 		}
 		//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
 		if (counter >= 5) {
+			std::cout << "boo3gjperugh" << endl; 
 			//PSEUDOCODE:
 				//make a vecotr of floats. use int a = 3; float b = (float)a;
 				//make the minute andd second substrings into int and float. std::stof() - convert string to float.
@@ -90,6 +94,7 @@ void LevelTimer::LevelTimerStop() {
 			sort(times.begin(), times.end());
 
 			for (int i = 0; i < times.size(); i++) {
+				std:: cout << WriteToTimeFile(times[i]) << endl;
 				timeFile << WriteToTimeFile(times[i]);
 			}
 		}
@@ -126,7 +131,7 @@ string LevelTimer::WriteToTimeFile(float time) {
 		newLine = "Level " + std::to_string(tempLevelTag) + ": " + std::to_string(timeMins) + " minutes and " + std::to_string(LevelTimer::roundTime(timeSecs)) + " seconds!";
 		//newLine = ("Level %d: %d minutes and %f seconds!\n", tempLevelTag, timeMins,  LevelTimer::roundTime(timeSecs));
 	}
-	std::cout << newLine << endl; 
+	//std::cout << newLine << endl; 
 	return newLine; 
 }
 
@@ -134,4 +139,22 @@ string LevelTimer::WriteToTimeFile(float time) {
 float LevelTimer::roundTime(float f) {
 	float value = (int)(f * 100 + .5);
 	return (float)value / 100;
+}
+
+void LevelTimer::ingestFile() {
+	std::string line;
+	ifstream timeFileIn;
+	timeFileIn.open("times.txt", std::ios_base::in);
+
+	//checking if file is empty
+	if (timeFileIn.peek() != std::ifstream::traits_type::eof()) {
+		while (!timeFileIn.eof()) {
+			line.resize(timeFileIn.tellg());
+			timeFileIn >> line;
+			if (line != "EOF") {
+				lines.push_back(line);
+				counter++;
+			}
+		}
+	}
 }
