@@ -11,6 +11,7 @@ public:
 	void update(double) override;
 	void render() override {}
 	void setPath(std::vector<sf::Vector2i>& path);
+	void FindNewCheckpoint();
 	explicit PathfindingComponent(Entity* p);
 	PathfindingComponent() = delete;
 };

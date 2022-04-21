@@ -18,6 +18,9 @@ void PathfindingComponent::update(double dt) {
             ++_index;
         }
     }
+    if (_index == _path.size()) {
+        FindNewCheckpoint();
+    }
 }
 
 PathfindingComponent::PathfindingComponent(Entity* p) : Component(p) {}
@@ -25,4 +28,19 @@ PathfindingComponent::PathfindingComponent(Entity* p) : Component(p) {}
 void PathfindingComponent::setPath(std::vector<sf::Vector2i>& path) {
     _index = 0;
     _path = path;
+}
+
+void PathfindingComponent::FindNewCheckpoint() {
+    Vector2ul cur = { (size_t)(_parent->getPosition().x / ls::getTileSize()), (size_t)(_parent->getPosition().y / ls::getTileSize()) };
+    auto currentTile = ls::getTileAt(_parent->getPosition());
+    srand(time(NULL));
+    auto newTileVal = rand() % 4 + 50;
+    if (newTileVal != currentTile) {
+        auto newChkPt = ls::findTiles(newTileVal).at(0);
+        std::vector<sf::Vector2i> _newPath;
+        Vector2i loc = Vector2i((int)newChkPt.x, (int)newChkPt.y);
+        Vector2i init = Vector2i(cur.x, cur.y);
+        auto path = pathFind(init, loc);
+        setPath(path);
+    }
 }

@@ -14,7 +14,8 @@ static sf::View playerView;
 void Level1::Load() {
 	tag = 1; 
 
-	ls::loadLevelFile("res/levels/Level1_testing.txt", t);
+	//ls::loadLevelFile("res/levels/Level1_testing.txt", t);
+	ls::loadLevelFile("res/levels/level1.txt", t);
 #ifdef RENDER_TO_TEX
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * t);
 	ls::setOffset(sf::Vector2f(0, 0));
@@ -112,6 +113,7 @@ void Level1::Load() {
 		}
 	}
 
+	// Setting up cars
 	{
 		std::vector<Vector2ul> cars;
 		auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
@@ -124,10 +126,13 @@ void Level1::Load() {
 			auto car = makeEntity();
 			auto pos = ls::getTilePosition(c) + Vector2f(t/2, t/2);
 			car->setPosition(pos);
-			auto cmp = car->addComponent<ShapeComponent>();
-			cmp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
-			cmp->getShape().setFillColor(sf::Color::Red);
-			cmp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+			auto shp = car->addComponent<ShapeComponent>();
+			shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
+			shp->getShape().setFillColor(sf::Color::Red);
+			shp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+			auto pth = car->addComponent<PathfindingComponent>();
+			pth->FindNewCheckpoint();
+			
 		}
 	}
 
