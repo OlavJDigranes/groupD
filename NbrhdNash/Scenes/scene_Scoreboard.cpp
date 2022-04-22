@@ -19,9 +19,18 @@ void Scoreboard::Load() {
 		while (!timeFile.eof()) {
 			line.resize(timeFile.tellg()); 
 			timeFile >> line; 
-			lines.push_back(line); 
-			counter++; 
 		}
+	}
+
+	//Split lines at blank spaces. https://www.delftstack.com/howto/cpp/cpp-split-string-by-space/
+	//This should allow the output to be a list. 
+	string spaceDelimiter = " "; 
+	int stingPosition = 0; 
+
+	while ((stingPosition = line.find(spaceDelimiter)) != string::npos) {
+		lines.push_back(line.substr(0, stingPosition));
+		line.erase(0, stingPosition + spaceDelimiter.length());
+		counter++;
 	}
 
 	//Removing underscores for readability
@@ -43,7 +52,7 @@ void Scoreboard::Load() {
 	}
 
 	for (int i = 0; i < counter; i++) {
-		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + (i * 10))));
+		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + (i * 30))));
 		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i+1) + " " + lines[i] + "\n ");
 	}
 	timeFile.close(); 
