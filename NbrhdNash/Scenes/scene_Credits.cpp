@@ -11,13 +11,15 @@ using namespace sf;
 void Credits::Load() {
 	tag = -2; 
 
+	//Set standard ESC to menu text.
 	auto esc = makeEntity(); 
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 
+	//Indented credits. 
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
-	auto y = info->addComponent<TextComponent>("Game Programming:\n Rory Gatens\n Olav J. Digranes\n\nSound Design:\n Nicholas Di Biase\n Olav J. Digranes\n\nGame Art:\n Rory Gatens");
+	auto y = info->addComponent<TextComponent>("Game Programming:\n  Rory Gatens\n  Olav J. Digranes\n\nSound Design:\n  Nicolas Di Biase\n  Olav J. Digranes\n\nGame Art:\n  Rory Gatens");
 	setLoaded(true);
 }
 

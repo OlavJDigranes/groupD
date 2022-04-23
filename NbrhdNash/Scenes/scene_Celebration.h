@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "components/cmp_sprite.h"
 
+//Celebration scene class
 class Celebration : public Scene {
 public:
 	Celebration () = default;

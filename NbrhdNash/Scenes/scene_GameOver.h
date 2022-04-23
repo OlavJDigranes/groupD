@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "components/cmp_sprite.h"
 
+//Game over scene class
 class GameOver : public Scene {
 public:
 	GameOver() = default; 

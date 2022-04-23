@@ -6,14 +6,21 @@ using namespace std;
 using namespace sf; 
 
 void Scoreboard::Load() {
-	tag = -5; 
+	tag = -5;
 
+	//Escape text
+	auto esc = makeEntity();
+	esc->setPosition(Vector2f(5, 5));
+	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
+
+	//Local variables
 	int counter = 0; 
 	vector<string> lines; 
 	vector<shared_ptr<Entity>> scoreboardText; 
 	std::string line; 
 	ifstream timeFile; 
 
+	//Times.txt ingest
 	timeFile.open("times.txt", std::ios_base::in);
 	if (timeFile.is_open()) {
 		while (!timeFile.eof()) {
@@ -69,13 +76,6 @@ void Scoreboard::Load() {
 			}
 		}
 	}
-
-	//Escape text
-	auto esc = makeEntity();
-	esc->setPosition(Vector2f(5, 5));
-	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
-
-	
 	
 	std::cout << "TBTBT1 " + std::to_string(counter) << endl;
 

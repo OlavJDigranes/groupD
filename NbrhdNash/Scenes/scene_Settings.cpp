@@ -11,6 +11,7 @@ using namespace sf;
 void Settings::Load() {
 	tag = -1; 
 
+	//ESC text message
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
@@ -22,9 +23,6 @@ void Settings::UnLoad() {
 }
 
 void Settings::Update(const double& dt) {
-	//if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
-	//	Engine::ChangeScene(&menu);
-	//}
 	Scene::Update(dt);
 }
 

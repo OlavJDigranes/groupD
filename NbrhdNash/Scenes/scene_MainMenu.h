@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 #include "engine.h"
 
+//Main menu scene class with music loop
 class MainMenu : public Scene {
 protected:
 	sf::Music menuLoop;

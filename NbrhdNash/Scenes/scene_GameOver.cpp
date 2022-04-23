@@ -12,11 +12,13 @@ using namespace sf;
 void GameOver::Load() {
 	tag = -3;
 
+	//Set standard ESC to menu text.
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 	setLoaded(true);
 
+	//Red GAME OVER message. 
 	auto txt = makeEntity();
 	txt->addTag("GameOverText");
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));

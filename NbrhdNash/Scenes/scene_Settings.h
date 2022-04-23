@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "components/cmp_sprite.h"
 
+//Settings scene class
 class Settings : public Scene {
 public:
 	Settings() = default; 
