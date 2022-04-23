@@ -41,7 +41,7 @@ void LevelTimer::LevelTimerStop() {
 			//Only runs the for loop if there was sometihng in the file
 			if (counter > 0) {
 				for (int i = 0; i < counter; i++) {
-					timeFile << lines[i];
+					timeFile << lines[i] + " ";
 				}
 			}
 
@@ -87,7 +87,7 @@ void LevelTimer::LevelTimerStop() {
 			sort(times.begin(), times.end());
 
 			for (int i = 0; i < times.size(); i++) {
-				std:: cout << WriteToTimeFile(times[i]) << endl;
+				//std:: cout << WriteToTimeFile(times[i]) << endl;
 				timeFile << WriteToTimeFile(times[i]);
 			}
 		}
