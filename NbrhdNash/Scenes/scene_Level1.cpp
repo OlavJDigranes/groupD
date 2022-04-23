@@ -16,6 +16,7 @@ void Level1::Load() {
 
 	//ls::loadLevelFile("res/levels/Level1_testing.txt", t);
 	ls::loadLevelFile("res/levels/level1.txt", t);
+	ls::setOffset(sf::Vector2f(0, 0));
 #ifdef RENDER_TO_TEX
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * t);
 	ls::setOffset(sf::Vector2f(0, 0));
@@ -31,7 +32,8 @@ void Level1::Load() {
 		s->getShape().setFillColor(sf::Color::White);
 		s->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
 		
-		player->addComponent<PlayerDrivingComponent>(sf::Vector2f(20.f, 30.f));
+		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(20.f, 30.f), "Player");
+		player->addComponent<PlayerController>(d);
 	}
 
 	// Setting view to player's location
@@ -116,24 +118,33 @@ void Level1::Load() {
 	// Setting up cars
 	{
 		std::vector<Vector2ul> cars;
-		auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
+		//auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
 		auto cars_2 = ls::findTiles(ls::CAR2SPAWN);
-		auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
-		cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
+		//auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
+		//cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
 		cars.insert(cars.begin(), cars_2.begin(), cars_2.end());
-		cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
+		//cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
+#if 0
 		for (auto c : cars) {
 			auto car = makeEntity();
-			auto pos = ls::getTilePosition(c) + Vector2f(t/2, t/2);
+			auto pos = ls::getTilePosition(c) + Vector2f(t / 2, t / 2);
 			car->setPosition(pos);
 			auto shp = car->addComponent<ShapeComponent>();
 			shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
 			shp->getShape().setFillColor(sf::Color::Red);
 			shp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
-			auto pth = car->addComponent<PathfindingComponent>();
-			pth->FindNewCheckpoint();
-			
+			car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f, 30.f));
 		}
+#endif // 0
+
+		auto car = makeEntity();
+		auto pos = ls::getTilePosition(cars.at(3)) + Vector2f(t / 2, t / 2);
+		car->setPosition(pos);
+		auto shp = car->addComponent<ShapeComponent>();
+		shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f/2, 30.f/2));
+		shp->getShape().setFillColor(sf::Color::Red);
+		shp->getShape().setOrigin(sf::Vector2f(10.f/2, 15.f/2));
+		car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f/2, 30.f/2));
 	}
 
 	_timer = player->addComponent<LevelTimer>(tag);
@@ -212,11 +223,11 @@ void Level1::Update(const double& dt) {
 	// Debug birds chasing player
 #ifdef DEBUG_TELEPORT
 	if (Keyboard::isKeyPressed(Keyboard::LBracket)) {
-		auto d = player->GetCompatibleComponent<PlayerDrivingComponent>();
+		auto d = player->GetCompatibleComponent<DrivingComponent>();
 		d.at(0)->teleport(ls::getTilePosition(ls::findTiles(ls::CHECKPOINT)[0]));
 	}
 	if (Keyboard::isKeyPressed(Keyboard::RBracket)) {
-		auto d = player->GetCompatibleComponent<PlayerDrivingComponent>();
+		auto d = player->GetCompatibleComponent<DrivingComponent>();
 		d.at(0)->teleport(ls::getTilePosition(ls::findTiles(ls::HOME)[0]));
 	}
 #endif

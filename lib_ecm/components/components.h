@@ -10,6 +10,7 @@
 #include "components/cmp_hurt_player.h"
 #include "components/cmp_movement.h"
 #include "components/cmp_path_follow.h"
+#include "components/cmp_player_controller.h"
 #include "components/cmp_physics.h"
 #include "components/cmp_player_physics.h"
 #include "components/cmp_sprite.h"
