@@ -56,7 +56,7 @@ void Scoreboard::Load() {
 	for (int i = 0; i < counter; i++) {
 		auto txt = makeEntity();
 		scoreboardText.push_back(txt);
-		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + (i * 30))));
+		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + ((size_t)i * 30))));
 		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i + 1) + " " + lines[i]);
 	}
 
