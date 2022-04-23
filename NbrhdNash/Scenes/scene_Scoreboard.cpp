@@ -21,10 +21,31 @@ void Scoreboard::Load() {
 			timeFile >> line; 
 			lines.push_back(line);
 			counter++;
+
+			//Make a vector of 5 text elements.
+				//Put them off screen?
+			if (counter == 1) {
+				auto txt1 = makeEntity();
+				scoreboardText.push_back(txt1);
+			}
+			if (counter == 2) {
+				auto txt2 = makeEntity();
+				scoreboardText.push_back(txt2);
+			}
+			if (counter == 3) {
+				auto txt3 = makeEntity();
+				scoreboardText.push_back(txt3);
+			}
+			if (counter == 4) {
+				auto txt4 = makeEntity();
+				scoreboardText.push_back(txt4);
+			}
+			if (counter == 5) {
+				auto txt5 = makeEntity();
+				scoreboardText.push_back(txt5);
+			}
 		}
 	}
-
-	std::cout << "!!!" + line << endl;
 
 	//Split lines at blank spaces. https://www.delftstack.com/howto/cpp/cpp-split-string-by-space/
 	//This should allow the output to be a list. 
@@ -49,13 +70,20 @@ void Scoreboard::Load() {
 		}
 	}
 
+	//Escape text
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 
+	
+	
+	std::cout << "TBTBT1 " + std::to_string(counter) << endl;
+
+	//Populate the elements if needed, and place on screen. 
 	for (int i = 0; i < counter; i++) {
-		auto txt = makeEntity();
-		scoreboardText.push_back(txt);
+		std::cout << std::to_string(i) << endl; 
+		//auto txt = makeEntity();
+		//scoreboardText.push_back(txt);
 		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + ((size_t)i * 30))));
 		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i + 1) + " " + lines[i]);
 	}

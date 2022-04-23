@@ -30,12 +30,12 @@ void LevelTimer::LevelTimerStop() {
 
 	outputLine = WriteToTimeFile(timeInSeconds);
 	
-	std::cout << outputLine << endl;
+	//std::cout << outputLine << endl;
 
 	//if file is empty or has less than 5 lines add new line. 
 	if (timeFile.is_open()) {
 		if (counter < 5) {
-			std::cout << "boo" << endl; 
+			//std::cout << "boo" << endl; 
 			timeFile << outputLine;
 
 			//Only runs the for loop if there was sometihng in the file
