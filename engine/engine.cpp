@@ -100,6 +100,12 @@ void Engine::Start(unsigned int width, unsigned int height,
       if (event.type == Event::Closed) {
         window.close();
       }
+      //Window resizing
+      //https://www.sfml-dev.org/tutorials/2.2/graphics-view.php#showing-more-when-the-window-is-resized
+      if (event.type == sf::Event::Resized) {
+          sf::FloatRect screenSize(0, 0, event.size.width, event.size.height);
+          window.setView(sf::View(screenSize)); 
+      }
     }
 
     //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 
