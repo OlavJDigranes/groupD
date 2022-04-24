@@ -144,7 +144,25 @@ void Level1::Load() {
 		shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f/2, 30.f/2));
 		shp->getShape().setFillColor(sf::Color::Red);
 		shp->getShape().setOrigin(sf::Vector2f(10.f/2, 15.f/2));
-		car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f/2, 30.f/2));
+		auto ai = car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f/2, 30.f/2));
+#ifdef DEBUG_AI_PATH
+		auto debugPath = *ai->getPath();
+		for (auto p : debugPath) {
+			auto pos = p.worldPos + Vector2f(t/2, t/2);
+			auto e = makeEntity();
+			e->setPosition(pos);
+			auto shp = e->addComponent<ShapeComponent>();
+			shp->setShape<sf::CircleShape>(5.f, 30.f);
+			if (!p.turnLeft) {
+				shp->getShape().setFillColor(Color::Yellow);
+			}
+			else {
+				shp->getShape().setFillColor(Color::Red);
+			}
+			shp->getShape().setOrigin(Vector2f(5.f, 5.f));
+#endif // DEBUG_AI_PATH
+
+		}
 	}
 
 	_timer = player->addComponent<LevelTimer>(tag);

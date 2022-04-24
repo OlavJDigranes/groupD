@@ -52,7 +52,7 @@ namespace sf {
     }
 
     static double rad2deg(double radians) {
-        return radians * 180 / 4.0 * atan(1.0);
+        return (radians * 180) / (4.0 * atan(1.0));
     }
 
     template <typename T>

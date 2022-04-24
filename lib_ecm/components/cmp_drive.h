@@ -41,9 +41,11 @@ public:
 };
 
 class AIDrivingComponent : public Component {
+#define DEBUG_AI_PATH
 protected:
 	struct PathNode {
-		sf::Vector2f pos;
+		sf::Vector2ul tilePos;
+		sf::Vector2f worldPos;
 		int idx;
 		bool isCorner;
 		bool turnLeft;
@@ -56,13 +58,15 @@ protected:
 	std::unique_ptr<PathfindingComponent> _pather;
 	std::shared_ptr<std::vector<sf::Vector2i>> _path;
 	std::shared_ptr<size_t> _index;
-	std::vector<PathNode> _analysedPath;
+	std::shared_ptr<std::vector<PathNode>> _analysedPath;
 	PathNode lastNode;
 	void AnalysePath();
 	void ComputeActions(double dt);
 public:
 	void render() override {};
 	void update(double dt) override;
+
+	std::shared_ptr<std::vector<PathNode>> getPath() { return _analysedPath; };
 
 	AIDrivingComponent() = delete;
 	explicit AIDrivingComponent(Entity* parent, sf::Vector2f size);

@@ -92,94 +92,104 @@ AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size) 
     _pather->FindNewCheckpoint();
     _path = _pather->getPath();
     _index = _pather->getIndex();
+    _analysedPath = std::make_shared<std::vector<PathNode>>();
     AnalysePath();
-    lastNode = _analysedPath.at(0);
+    lastNode = _analysedPath->at(0);
     printf("Set up path for AI\n");
 }
 
 void AIDrivingComponent::AnalysePath() {
+    sf::Vector2i prev_dir;
     for (int i = 0; i < _path->size(); i++) {
         PathNode p;
         sf::Vector2i dir = sf::Vector2i(0,0);
-        p.pos = ls::getTilePosition(sf::Vector2ul(_path->at(i).x, _path->at(i).y));
+        p.tilePos = sf::Vector2ul(_path->at(i).x, _path->at(i).y);
+        p.worldPos = ls::getTilePosition(sf::Vector2ul(_path->at(i).x, _path->at(i).y));
         p.idx = i;
         p.isCorner = false;
         p.turnLeft = false;
-        if (i + 2 < _path->size()) {
-            dir = _path->at(i + 2) - _path->at(i);
+        if (i + 1 < _path->size()) {
+            dir = _path->at(i + 1) - _path->at(i);
+            if (i == 0) {
+                prev_dir = dir;
+            }
         }
-        if (dir.x != 0 && dir.y != 0)
+        bool dX = dir.x != prev_dir.x;
+        bool dY = dir.y != prev_dir.y;
+        if (dX && dY)
         {
             p.isCorner = true;
-            if (dir.y > 0) {
-                if (dir.x < 0) {
-                    p.turnLeft = true;
-                }
+            if (prev_dir.x == -1 && dir.y == 1) {
+                p.turnLeft = true;
             }
-            else {
-                if (dir.x > 0) {
-                    p.turnLeft = true;
-                }
+            if (prev_dir.x == 1 && dir.y == -1) {
+                p.turnLeft = true;
+            }
+            if (prev_dir.y == 1 && dir.x == 1) {
+                p.turnLeft = true;
+            }
+            if (prev_dir.y == -1 && dir.x == -1) {
+                p.turnLeft = true;
             }
         }
-        /*auto horizontalDiff = _path->at(i + 2).x != _path->at(i).x;
-        auto verticalDiff = _path->at(i + 2).y != _path->at(i).y;
-        if (horizontalDiff && verticalDiff) {
-            p.isCorner = true;
-            if (p.pos.x < _path->at(*_index + 2).x) {
-                if (p.pos.y < _path->at(*_index + 2).y) {
-                    p.turnLeft = true;
-                }
-            }
-            else {
-                if (p.pos.x > _path->at(*_index + 2).x) {
-                    if (p.pos.y > _path->at(*_index + 2).y) {
-                        p.turnLeft = true;
-                    }
-                }
-            }
-        }*/
-        _analysedPath.push_back(p);
+        _analysedPath->push_back(p);
+        prev_dir = dir;
     }
 }
 
 void AIDrivingComponent::ComputeActions(double dt) {
     bool braking = false;
     //printf("Current Position = %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
-    //printf("Target = %f, %f\n", _analysedPath.at(*_index).pos.x, _analysedPath.at(*_index).pos.y);
+    //printf("Target = %f, %f\n", _analysedPath->at(*_index).pos.x, _analysedPath->at(*_index).pos.y);
     //printf("Target index = %f\n", *_index);
     //system("cls");
-    if (_analysedPath.at(*_index).isCorner) {
+    if (_analysedPath->at(*_index).isCorner) {
         if (_driver->GetCurrentSpeed() > 1) {
             _driver->Brake(dt);
             braking = true;
         }
     }
     auto dir = *_driver->GetDirection();
-    sf::Vector2ul nextLoc = sf::Vector2ul(_analysedPath.at(*_index).pos.x, _analysedPath.at(*_index).pos.y);
-    auto trg = Physics::sv2_to_bv2(sf::Vector2f(nextLoc + sf::Vector2ul(ls::getTileSize()/2, ls::getTileSize() / 2)) - _parent->getPosition());
-    trg.Normalize();
+    sf::Vector2f nextLoc = _analysedPath->at(*_index).worldPos + sf::Vector2f(ls::getTileSize() / 2, ls::getTileSize() / 2); //sf::Vector2ul(_analysedPath->at(*_index).worldPos.x, _analysedPath->at(*_index).worldPos.y);
+    auto trg = nextLoc - _parent->getPosition();
+    trg = trg.normalized();
+    //trg.Normalize();
 
-    if (dir.x > trg.x + 0.025 || dir.y > trg.y + 0.025) {
-        float adj_rate;
-        dir.x > trg.x + 0.025 ? adj_rate = dir.x - trg.x : adj_rate = dir.y - trg.y;
-        _driver->Rotate(-180 * (1 + adj_rate), dt);
-        if (_driver->GetCurrentSpeed() > 1) {
-            _driver->Brake(dt);
-            braking = true;
+    auto top = (dir.x * trg.x) + (dir.y * trg.y);
+    auto bottom = (sqrt(pow(dir.x, 2) + pow(dir.y, 2))) * (sqrt(pow(trg.x, 2) + pow(trg.y, 2)));
+    auto sum = top / bottom;
+    auto angle = sf::rad2deg(acos(sum));
+    bool goingLeft = false;
+
+    //if facing right
+    if (dir.x > dir.y && dir.x > 0) {
+        if (nextLoc.y < _parent->getPosition().y) {
+            angle = -angle;
         }
     }
-    if (dir.x < trg.x - 0.025 || dir.y < trg.y - 0.025) {
-        float adj_rate;
-        dir.x < trg.x + 0.025 ? adj_rate = trg.x - dir.x : adj_rate = trg.y - dir.y;
-        _driver->Rotate(180 * (1 + adj_rate), dt);
-        if (_driver->GetCurrentSpeed() > 1) {
-            _driver->Brake(dt);
-            braking = true;
+    else if (dir.x < dir.y && dir.x < 0) {
+        if (nextLoc.y > _parent->getPosition().y) {
+            angle = -angle;
         }
     }
+    // if facing down
+    else if (dir.y > dir.x && dir.y > 0) {
+        if (nextLoc.x > _parent->getPosition().x) {
+            angle = -angle;
+        }
+    }
+    // if facing up
+    else if (dir.y < dir.x && dir.y < 0) {
+        if (nextLoc.x < _parent->getPosition().x) {
+            angle = -angle;
+        }
+    }
+    _driver->Rotate(2 * angle, dt);
+    printf("Angle: %f\n", angle);
+
+
    
-    if (!braking && _parent->getPosition() != _analysedPath.at(*_index).pos) {
+    if (!braking && _parent->getPosition() != _analysedPath->at(*_index).worldPos) {
         _driver->Drive(0.1, dt);
     }
 }
@@ -187,7 +197,7 @@ void AIDrivingComponent::ComputeActions(double dt) {
 void AIDrivingComponent::update(double dt) {
     if (_path->size() != 0) {
         if (lastNode.idx < *_index - 1 && *_index != 0) {
-            lastNode = _analysedPath.at(*_index - 1);
+            lastNode = _analysedPath->at(*_index - 1);
         }
         ComputeActions(dt);
         //_driver->Drive(1, dt);
