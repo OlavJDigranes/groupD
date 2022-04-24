@@ -1,6 +1,14 @@
 #include "cmp_player_controller.h"
 
-PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> drive_cmp) : Component(p), _driver(drive_cmp) {}
+PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> drive_cmp) : Component(p), _driver(drive_cmp) {
+    for (unsigned int i = 0; i < sf::Joystick::Count; ++i)
+    {
+        if (sf::Joystick::isConnected(i))
+            std::cout << "Joystick " << i << " is connected!" << std::endl;
+        else
+            std::cout << "Joystick " << i << " is NOT connected!" << std::endl;
+    }
+}
 
 PlayerController::~PlayerController() {
 	Component::~Component();
