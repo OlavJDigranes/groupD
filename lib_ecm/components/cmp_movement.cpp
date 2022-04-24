@@ -1,8 +1,6 @@
 #include "cmp_movement.h"
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Joystick.hpp>
-#include <SFML/Window.hpp>
 #include <engine.h>
 
 void BasicMovementComponent::update(double dt) {
@@ -19,25 +17,6 @@ void BasicMovementComponent::update(double dt) {
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
         direction.y += 1.0f;
-    }
-
-    sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0); 
-    if (Joystick::isConnected(0)) {
-        std::cout << "joyjoy" << endl; 
-        float joystickXYAxisPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
-        float joystickTAxisPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
-        if (joystickXYAxisPos < 0) {
-            direction.x -= 1.0f;
-        }
-        if (joystickXYAxisPos > 0) {
-            direction.x += 1.0f;
-        }
-        if (joystickTAxisPos < 0) {
-            direction.y -= 1.0f;
-        }
-        if (joystickTAxisPos > 0) {
-            direction.y += 1.0f;
-        }
     }
 
     move(normalize(direction) * _speed * (float)dt);

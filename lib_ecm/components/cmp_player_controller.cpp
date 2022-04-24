@@ -1,5 +1,8 @@
 #include "cmp_player_controller.h"
 
+using namespace std; 
+using namespace sf; 
+
 PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> drive_cmp) : Component(p), _driver(drive_cmp) {
     for (unsigned int i = 0; i < sf::Joystick::Count; ++i)
     {
@@ -28,6 +31,28 @@ void PlayerController::update(double dt) {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             d->Brake(dt);  // Brake
+        }
+
+        sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
+        if (Joystick::isConnected(0)) {
+            float joystickXYAxisPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::X);
+            float joystickTAxisPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
+            if (joystickXYAxisPos < -50.0f) {
+                cout << "L" << endl; 
+                d->Rotate(-180, dt);   // Turn left
+            }
+            if (joystickXYAxisPos > 50.0f) {
+                cout << "R" << endl;
+                d->Rotate(180, dt);    // Turn right
+            }
+            if (joystickTAxisPos < 0) {
+                cout << "D" << endl;
+                d->Drive(1, dt);   // Drive forwards
+            }
+            if (joystickTAxisPos > 0) {
+                cout << "R" << endl;
+                d->Brake(dt);  // Brake
+            }
         }
 	}
 	else {
