@@ -14,7 +14,7 @@ void Scoreboard::Load() {
 	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
 
 	//Local variables
-	int counter = 0; 
+	int counter = -1; 
 	vector<string> lines; 
 	vector<shared_ptr<Entity>> scoreboardText; 
 	std::string line; 
@@ -84,7 +84,7 @@ void Scoreboard::Load() {
 		std::cout << std::to_string(i) << endl; 
 		//auto txt = makeEntity();
 		//scoreboardText.push_back(txt);
-		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2 + ((size_t)i * 30))));
+		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * (0.2) + ((size_t)i * 30)));
 		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i + 1) + " " + lines[i]);
 	}
 
