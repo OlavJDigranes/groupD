@@ -2,6 +2,8 @@
 
 #include "../lib_ecm/ecm.h"
 #include "cmp_drive.h"
+#include "SFML/Window.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 class PlayerController : public Component {
 protected:
