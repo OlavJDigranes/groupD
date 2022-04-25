@@ -159,6 +159,9 @@ void AIDrivingComponent::ComputeActions(double dt) {
     auto bottom = (sqrt(pow(dir.x, 2) + pow(dir.y, 2))) * (sqrt(pow(trg.x, 2) + pow(trg.y, 2)));
     auto sum = top / bottom;
     auto angle = sf::rad2deg(acos(sum));
+    if (std::isnan(angle)) {
+        angle = 0;
+    }
     bool goingLeft = false;
 
     //if facing right
