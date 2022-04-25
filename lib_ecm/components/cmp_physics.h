@@ -42,6 +42,7 @@ protected:
 	bool _isGoal;
 	bool _isActive;
 	bool goalReached;
+	bool _playerOverlap;
 public:
 	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal, bool isActive);
 	void IsPlayerOverlapping();
@@ -51,4 +52,23 @@ public:
 	void update(double dt) override;
 	void render() override;
 	~PhysicsTriggerComponent() override;
+};
+
+class GrateComponent : public PhysicsTriggerComponent {
+protected:
+	b2Fixture* _trigger;
+	std::vector<const b2Contact const*> _triggerDirtyCheck;
+	bool _isExpanding;
+public:
+	GrateComponent() = delete;
+	explicit GrateComponent(Entity* p, const sf::Vector2f& size);
+	void ExpandAndNotify(double dt);
+	void ResetSize(double dt);
+	float32 ReturnTriggerRadius() { return _trigger->GetShape()->m_radius; };
+	void update(double dt) override;
+	~GrateComponent() override;
+#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+	void ConsumeDebugCmp(std::shared_ptr<ShapeComponent> cmp);
+	std::shared_ptr<ShapeComponent> debug;
+#endif
 };

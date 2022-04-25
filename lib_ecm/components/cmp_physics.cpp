@@ -94,6 +94,7 @@ PhysicsComponent::~PhysicsComponent() {
   Physics::GetWorld()->DestroyBody(_body);
   // delete _body;
   _body = nullptr;
+  _fixture = nullptr;
 }
 
 void PhysicsComponent::render() {}
@@ -200,8 +201,6 @@ void PhysicsTriggerComponent::SetActive(bool active) {
 }
 
 void PhysicsTriggerComponent::IsPlayerOverlapping() {
-    std::string* p_check = new std::string("Player");
-
     std::vector<const b2Contact const*> ret;
     b2ContactEdge* edge = _body->GetContactList();
     while (edge != NULL) {
@@ -217,6 +216,7 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
         if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
             printf("Successfully detected Player\n");
             _dirtyCheck = ret;
+            _playerOverlap = true;
             if (_isGoal) {
                 goalReached = true;
             }
@@ -224,6 +224,7 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
     }
     else if (_dirtyCheck.size() > ret.size()) {
         printf("Player has left detection area\n");
+        _playerOverlap = false;
         _dirtyCheck = ret;
     }
 }
@@ -243,4 +244,95 @@ PhysicsTriggerComponent::~PhysicsTriggerComponent() {
     Physics::GetWorld()->DestroyBody(_body);
     // delete _body;
     _body = nullptr;
+    _fixture = nullptr;
 }
+
+GrateComponent::GrateComponent(Entity* p, const sf::Vector2f& size) :
+    PhysicsTriggerComponent(p, size, false, true) {
+    // Create the fixture shape
+    b2CircleShape Shape;
+    // SetAsBox box takes HALF-Widths!
+    //Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+    Shape.m_p.Set(p->getPosition().x, p->getPosition().y);
+    Shape.m_radius = 0.1f;
+    b2FixtureDef FixtureDef;
+    FixtureDef.shape = &Shape;
+    FixtureDef.isSensor = true;
+    FixtureDef.userData = "birdTrigger";
+    // Add to body
+    _trigger = _body->CreateFixture(&FixtureDef);
+
+    std::vector<const b2Contact const*> ret;
+    b2ContactEdge* edge = _body->GetContactList();
+    while (edge != NULL) {
+        const b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {
+            ret.push_back(contact);
+        }
+        edge = edge->next;
+    }
+    _triggerDirtyCheck = ret;
+    _playerOverlap = false;
+    _isExpanding = false;
+}
+
+void GrateComponent::ExpandAndNotify(double dt) {
+    _trigger->GetShape()->m_radius += 16 * dt;
+    std::vector<const b2Contact const*> ret;
+    b2ContactEdge* edge = _body->GetContactList();
+    while (edge != NULL) {
+        const b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {
+            ret.push_back(contact);
+        }
+        edge = edge->next;
+    }
+    if (_triggerDirtyCheck != ret && ret.size() > _triggerDirtyCheck.size()) {
+        for (auto contact : ret) {
+            auto bodyA = (bodyUserData*)contact->GetFixtureA()->GetBody()->GetUserData();
+            auto bodyB = (bodyUserData*)contact->GetFixtureB()->GetBody()->GetUserData();
+            if (bodyA->_tag == "Tree" || bodyB->_tag == "Tree") {
+                printf("Successfully detected Tree\n");
+                _triggerDirtyCheck = ret;
+            }
+        }
+    }
+    else if (_triggerDirtyCheck.size() > ret.size()) {
+        printf("Tree has left detection area\n");
+        _dirtyCheck = ret;
+    }
+}
+
+void GrateComponent::ResetSize(double dt) {
+    _trigger->GetShape()->m_radius -= 16 * dt;
+}
+
+void GrateComponent::update(double dt) {
+    PhysicsTriggerComponent::update(dt);
+    if (_playerOverlap && !_isExpanding) {
+        _isExpanding = true;
+    }
+    if (_isExpanding) {
+        ExpandAndNotify(dt);
+    }
+    if (_trigger->GetShape()->m_radius > 200.f) {
+        _isExpanding = false;
+    }
+    if (!_isExpanding && _trigger->GetShape()->m_radius > 0.0f) {
+        ResetSize(dt);
+    }
+#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+    debug->getShape().setScale(sf::Vector2f(ReturnTriggerRadius(), ReturnTriggerRadius()));
+#endif
+}
+
+GrateComponent::~GrateComponent() {
+    debug = nullptr;
+    _trigger = nullptr;
+}
+
+#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+void GrateComponent::ConsumeDebugCmp(std::shared_ptr<ShapeComponent> cmp) {
+    debug = cmp;
+}
+#endif

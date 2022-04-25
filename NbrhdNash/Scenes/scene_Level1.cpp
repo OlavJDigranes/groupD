@@ -86,6 +86,16 @@ void Level1::Load() {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
 			}
+			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
+				auto m = e->addComponent<GrateComponent>(Vector2f(t, t));
+#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+				auto dbg_m = e->addComponent<ShapeComponent>();
+				dbg_m->setShape<sf::CircleShape>(1.0f, 30.f);
+				dbg_m->getShape().setFillColor(sf::Color::Green);
+				dbg_m->getShape().setOrigin(sf::Vector2f(t / 2, t / 2));
+				m->ConsumeDebugCmp(dbg_m);
+#endif
+			}
 			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
 				_goalShop = m;
