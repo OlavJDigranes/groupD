@@ -17,7 +17,8 @@ public:
   virtual void Render();
   bool isLoaded() const;
   std::shared_ptr<Entity> makeEntity();
-  int tag; //Unique identifier for scenes. 0 is main menu, 1 and up is levels, -1 and down are further menus and auxiliary scenes.  
+  int tag; //Unique identifier for scenes. 0 is main menu, 1 and up is levels, -1 and down are further menus and auxiliary scenes. 
+  int resTag; //Unique identifier for changing resolutions. 
 
   EntityManager ents;
 

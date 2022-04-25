@@ -90,7 +90,8 @@ void Engine::Render(RenderWindow& window) {
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
     btnTimer = 0; 
-  RenderWindow window(VideoMode(width, height), gameName);
+  //RenderWindow window(VideoMode(width, height), gameName, sf::Style::Fullscreen);
+  RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close);
   _gameName = gameName;
   _window = &window;
   Renderer::initialise(window);
@@ -108,6 +109,32 @@ void Engine::Start(unsigned int width, unsigned int height,
           sf::FloatRect screenSize(Vector2f(0, 0), Vector2f(event.size.width, event.size.height));
           window.setView(sf::View(screenSize)); 
       }
+    }
+
+    //Window resizing actions
+    if (_activeScene->resTag == 1) {
+        int w = 1280; 
+        int h = 720;
+        sf::FloatRect screenSize1(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize1));
+        //sf::VideoMode(w, h);
+        window.setSize(Vector2u(w, h));
+    }
+    if (_activeScene->resTag == 2) {
+        int w = 1920;
+        int h = 1080;
+        sf::FloatRect screenSize2(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize2));
+        //sf::VideoMode(1920, 1080);
+        window.setSize(Vector2u(w, h));
+    }
+    if (_activeScene->resTag == 3) {
+        int w = 2560;
+        int h = 1440;
+        sf::FloatRect screenSize3(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize3));
+        //sf::VideoMode(2560, 1440);
+        window.setSize(Vector2u(w, h));
     }
 
     //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 
