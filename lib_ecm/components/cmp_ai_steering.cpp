@@ -8,17 +8,28 @@ void SteeringComponent::update(double dt) {
     {
         auto rot = _face.getSteering();
         rotate(rot, dt);
-        // If target (player) is more than 100 pixels away seek 
-        if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
+        if (_parent->getPosition() != _targetLoc) {
             auto output = _seek.getSteering();
             move(output.direction * (float)dt, rot.rotation * (float)dt);
         }
-        // If target (player) is less than 50 pixels away flee
-        else if (length(_parent->getPosition() - _player->getPosition()) <
-            50.0f) {
+        else if (!_atTarget) {
             auto output = _flee.getSteering();
             move(output.direction * (float)dt, rot.rotation * (float)dt);
+            _atTarget = true;
         }
+        //auto rot = _face.getSteering();
+        //rotate(rot, dt);
+        //// If target (player) is more than 100 pixels away seek 
+        //if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
+        //    auto output = _seek.getSteering();
+        //    move(output.direction * (float)dt, rot.rotation * (float)dt);
+        //}
+        //// If target (player) is less than 50 pixels away flee
+        //else if (length(_parent->getPosition() - _player->getPosition()) <
+        //    50.0f) {
+        //    auto output = _flee.getSteering();
+        //    move(output.direction * (float)dt, rot.rotation * (float)dt);
+        //}
     }
 }
 

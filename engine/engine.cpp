@@ -184,8 +184,12 @@ void Scene::setLoaded(bool b) {
 }
 
 void Scene::UnLoad() {
-  ents.list.clear();
-  setLoaded(false);
+    for (auto e : ents.list) {
+        e->setAlive(false);
+        e->setForDelete();
+    }
+    ents.list.clear();
+    setLoaded(false);
 }
 
 void Scene::LoadAsync() { _loaded_future = std::async(&Scene::Load, this); }

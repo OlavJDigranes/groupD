@@ -17,11 +17,16 @@ protected:
     b2Vec2 _direction;
     float32 _rotation;
     sf::Vector2i _mapBounds;
+    sf::Vector2f _targetLoc;
     bool _isActive;
+    bool _atTarget;
     bool validMove(const sf::Vector2f&) const;
 public:
     void SetActive(bool Active);
     bool IsActive();
+    void SetTargetLocation(sf::Vector2f loc) { _targetLoc = loc; };
+    sf::Vector2f GetTargetLocation() { return _targetLoc; };
+    bool HasArrived() { return _atTarget; }
     void update(double) override;
     void move(const sf::Vector2f&, float f);
     void move(float x, float y, float f);

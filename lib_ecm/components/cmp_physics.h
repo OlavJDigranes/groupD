@@ -5,6 +5,8 @@
 #include <Box2D/Box2D.h>
 #include "Box2D/Dynamics/b2Body.h"
 
+//#define DEBUG_GRATE_TRIGGER_RADIUS
+
 class PhysicsComponent : public Component {
 protected:
   b2Body* _body;
@@ -67,7 +69,7 @@ public:
 	float32 ReturnTriggerRadius() { return _trigger->GetShape()->m_radius; };
 	void update(double dt) override;
 	~GrateComponent() override;
-#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+#ifdef DEBUG_GRATE_TRIGGER_RADIUS
 	void ConsumeDebugCmp(std::shared_ptr<ShapeComponent> cmp);
 	std::shared_ptr<ShapeComponent> debug;
 #endif

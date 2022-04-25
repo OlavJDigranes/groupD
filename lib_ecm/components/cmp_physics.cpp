@@ -258,7 +258,7 @@ GrateComponent::GrateComponent(Entity* p, const sf::Vector2f& size) :
     b2FixtureDef FixtureDef;
     FixtureDef.shape = &Shape;
     FixtureDef.isSensor = true;
-    FixtureDef.userData = "birdTrigger";
+    FixtureDef.userData = "Grate";
     // Add to body
     _trigger = _body->CreateFixture(&FixtureDef);
 
@@ -291,14 +291,14 @@ void GrateComponent::ExpandAndNotify(double dt) {
         for (auto contact : ret) {
             auto bodyA = (bodyUserData*)contact->GetFixtureA()->GetBody()->GetUserData();
             auto bodyB = (bodyUserData*)contact->GetFixtureB()->GetBody()->GetUserData();
-            if (bodyA->_tag == "Tree" || bodyB->_tag == "Tree") {
-                printf("Successfully detected Tree\n");
+            if (bodyA->_tag == "Bird" || bodyB->_tag == "Bird") {
+                printf("Successfully detected Bird\n");
                 _triggerDirtyCheck = ret;
             }
         }
     }
     else if (_triggerDirtyCheck.size() > ret.size()) {
-        printf("Tree has left detection area\n");
+        printf("Bird has left detection area\n");
         _dirtyCheck = ret;
     }
 }
@@ -321,17 +321,19 @@ void GrateComponent::update(double dt) {
     if (!_isExpanding && _trigger->GetShape()->m_radius > 0.0f) {
         ResetSize(dt);
     }
-#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+#ifdef DEBUG_GRATE_TRIGGER_RADIUS
     debug->getShape().setScale(sf::Vector2f(ReturnTriggerRadius(), ReturnTriggerRadius()));
 #endif
 }
 
 GrateComponent::~GrateComponent() {
+#ifdef DEBUG_GRATE_TRIGGER_RADIUS
     debug = nullptr;
+#endif
     _trigger = nullptr;
 }
 
-#ifndef DEBUG_GRATE_TRIGGER_RADIUS
+#ifdef DEBUG_GRATE_TRIGGER_RADIUS
 void GrateComponent::ConsumeDebugCmp(std::shared_ptr<ShapeComponent> cmp) {
     debug = cmp;
 }
