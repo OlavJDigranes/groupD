@@ -39,7 +39,7 @@ void Settings::Load() {
 		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nA: 1280 x 720\nB: 1920 x 1080\nX: 2560 x 1440");
 	}
 	else {
-		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440");
+		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440\n\nV-SYNC:\nV: On\nB: Off");
 	}
 	
 
@@ -66,7 +66,13 @@ void Settings::Update(const double& dt) {
 		resTag = 3;
 		Settings::UnLoad();
 		Settings::Load();
-	}	
+	}
+	if (Keyboard::isKeyPressed(Keyboard::V)) {
+		Engine::setVsync(true);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::B)) {
+		Engine::setVsync(false); 
+	}
 }
 
 void Settings::Render() {
