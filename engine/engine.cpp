@@ -103,7 +103,7 @@ void Engine::Start(unsigned int width, unsigned int height,
       //Window resizing
       //https://www.sfml-dev.org/tutorials/2.2/graphics-view.php#showing-more-when-the-window-is-resized
       if (event.type == sf::Event::Resized) {
-          sf::FloatRect screenSize(0, 0, event.size.width, event.size.height);
+          sf::FloatRect screenSize(Vector2f(0, 0), Vector2f(event.size.width, event.size.height));
           window.setView(sf::View(screenSize)); 
       }
     }

@@ -23,7 +23,7 @@ void MainMenu::Load() {
 	auto txt = makeEntity();
 	txt->addTag("MenuText"); 
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.25));
-	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for scoreboard\nPress 4 for credits");
+	auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings/help\nPress 3 for scoreboard\nPress 4 for credits");
 	setLoaded(true);
 	
 	//Music loop setup.
