@@ -4,6 +4,8 @@
 #include "scene_Settings.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
+#include "SFML/Window.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 using namespace std;
 using namespace sf;
@@ -11,14 +13,16 @@ using namespace sf;
 void Settings::Load() {
 	tag = -1; 
 
-	//ESC text message
+	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
+
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
-	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
-
-	auto info = makeEntity(); 
-	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
-	auto i = info->addComponent<TextComponent>("CONTROLS:"); 
+	if (Joystick::isConnected(0)) {
+		auto y = esc->addComponent<ESCTextComponent>("Press Start to exit the game");
+	}
+	else {
+		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
+	}
 
 	setLoaded(true);
 }
@@ -28,6 +32,9 @@ void Settings::UnLoad() {
 }
 
 void Settings::Update(const double& dt) {
+	//if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+	//	Engine::ChangeScene(&menu);
+	//}
 	Scene::Update(dt);
 }
 

@@ -8,6 +8,8 @@
 #include <iostream>
 #include <stdexcept>
 #include "../NbrhdNash/game.h"
+#include "SFML/Window.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 using namespace sf;
 using namespace std;
@@ -119,6 +121,22 @@ void Engine::Start(unsigned int width, unsigned int height,
         
         btnTimer = 1.3f; 
         
+    }
+
+    //Joystick handling for ESC
+    sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
+    if (Joystick::isConnected(0)) {
+        if (Joystick::isButtonPressed(0, 7) && btnTimer <= 0.0f) {
+            if (_activeScene->tag == 0) {
+                window.close();
+            }
+            if (_activeScene->tag == 1 || _activeScene->tag == -1 || _activeScene->tag == -2 || _activeScene->tag == -3 || _activeScene->tag == -4 || _activeScene->tag == -5) {
+                ChangeScene(&menu);
+            }
+
+            btnTimer = 1.3f;
+        }
+
     }
 
     window.clear();
