@@ -5,6 +5,8 @@
 #include "Box2D/Dynamics/b2Body.h"
 #include "system_physics.h"
 #include "components/cmp_sprite.h"
+#include "components/cmp_state_machine.h"
+#include "components/states_driving.h"
 #include <LevelSystem.h>
 #include <maths.h>
 
@@ -54,11 +56,13 @@ protected:
 	std::vector<SpriteComponent> debug;
 
 	int _actions;
-	std::unique_ptr<DrivingComponent> _driver;
+	std::shared_ptr<DrivingComponent> _driver;
 	std::unique_ptr<PathfindingComponent> _pather;
+	std::unique_ptr<StateMachineComponent> _sm;
 	std::shared_ptr<std::vector<sf::Vector2i>> _path;
 	std::shared_ptr<size_t> _index;
 	std::shared_ptr<std::vector<PathNode>> _analysedPath;
+	std::shared_ptr<double> _angle;
 	PathNode lastNode;
 	void AnalysePath();
 	void ComputeActions(double dt);
@@ -67,6 +71,8 @@ public:
 	void update(double dt) override;
 
 	std::shared_ptr<std::vector<PathNode>> getPath() { return _analysedPath; };
+	std::shared_ptr<DrivingComponent> getDriver() { return _driver; };
+	std::shared_ptr<double> getAngle() { return _angle; };
 
 	AIDrivingComponent() = delete;
 	explicit AIDrivingComponent(Entity* parent, sf::Vector2f size);
