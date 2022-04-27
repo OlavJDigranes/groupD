@@ -145,13 +145,8 @@ void AIDrivingComponent::AnalysePath() {
 }
 
 void AIDrivingComponent::ComputeActions(double dt) {
-    //printf("Current Position = %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
-    //printf("Target = %f, %f\n", _analysedPath->at(*_index).pos.x, _analysedPath->at(*_index).pos.y);
-    //printf("Target index = %f\n", *_index);
-    //system("cls");
     if (_analysedPath->at(*_index).isCorner) {
         if (_driver->GetCurrentSpeed() > 4) {
-            //_driver->Brake(dt);
             _sm->changeState("Braking");
             return;
         }
@@ -160,7 +155,6 @@ void AIDrivingComponent::ComputeActions(double dt) {
     sf::Vector2f nextLoc = _analysedPath->at(*_index).worldPos + sf::Vector2f(ls::getTileSize() / 2, ls::getTileSize() / 2); //sf::Vector2ul(_analysedPath->at(*_index).worldPos.x, _analysedPath->at(*_index).worldPos.y);
     auto trg = nextLoc - _parent->getPosition();
     trg = trg.normalized();
-    //trg.Normalize();
 
     auto top = (dir.x * trg.x) + (dir.y * trg.y);
     auto bottom = (sqrt(pow(dir.x, 2) + pow(dir.y, 2))) * (sqrt(pow(trg.x, 2) + pow(trg.y, 2)));
@@ -174,7 +168,6 @@ void AIDrivingComponent::ComputeActions(double dt) {
         //if facing right
         if (dir.x > dir.y && dir.x > 0) {
             if (nextLoc.y < _parent->getPosition().y) {
-                //angle = -angle;
                 _sm->changeState("TurningLeft");
                 return;
             }
@@ -185,7 +178,6 @@ void AIDrivingComponent::ComputeActions(double dt) {
         }
         else if (dir.x < dir.y && dir.x < 0) {
             if (nextLoc.y > _parent->getPosition().y) {
-                //angle = -angle;
                 _sm->changeState("TurningLeft");
                 return;
             }
@@ -197,7 +189,6 @@ void AIDrivingComponent::ComputeActions(double dt) {
         // if facing down
         else if (dir.y > dir.x && dir.y > 0) {
             if (nextLoc.x > _parent->getPosition().x) {
-                //angle = -angle;
                 _sm->changeState("TurningLeft");
                 return;
             }
@@ -218,12 +209,10 @@ void AIDrivingComponent::ComputeActions(double dt) {
                 return;
             }
         }
-        //_driver->Rotate(2 * angle, dt);
 
     }
    
     if (_parent->getPosition() != _analysedPath->at(*_index).worldPos) {
-        //_driver->Drive(0.1, dt);
         _sm->changeState("Accelerating");
         return;
     }
@@ -235,7 +224,6 @@ void AIDrivingComponent::update(double dt) {
             lastNode = _analysedPath->at(*_index - 1);
         }
         ComputeActions(dt);
-        //_driver->Drive(1, dt);
         _driver->update(dt);
         _pather->update(dt);
     }
@@ -244,7 +232,6 @@ void AIDrivingComponent::update(double dt) {
         return;
     }
     _sm->update(dt);
-    //Component::update(dt);
 }
 
 AIDrivingComponent::~AIDrivingComponent() {
