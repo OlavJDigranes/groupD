@@ -14,6 +14,7 @@ protected:
 	sf::SoundBuffer carEngineBuffer;
 	sf::Sound carEngine;
 	bool soundOn = false;
+	bool soundCheck = false; 
 public:
 	void update(double) override;
 	void render() override {};

@@ -15,7 +15,8 @@ PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> dr
     //Driving sound
     carEngineBuffer.loadFromFile("res/music/CarSound.mp3");
     carEngine.setBuffer(carEngineBuffer);
-    carEngine.setVolume(90);
+    carEngine.setVolume(70);
+    
 }
 
 PlayerController::~PlayerController() {
@@ -53,21 +54,23 @@ void PlayerController::update(double dt) {
             }
             if (joystickTAxisPos < 0) {
                 d->Drive(1, dt);   // Drive forwards
+                soundOn = true;
             }
             if (joystickTAxisPos > 0) {
                 d->Brake(dt);  // Brake
+                soundOn = false;
             }
         }
 
         //Car sounds
-        if (soundOn) {
-            std::cout << "wg" << std::endl;
+        if (soundOn && !soundCheck) {
             carEngine.play();
-            //carEngine.setLoop(true);
+            carEngine.setLoop(true);
+            soundCheck = true;
         }
-        if (!soundOn) {
-            std::cout << "rh" << std::endl;
+        if (!soundOn && soundCheck) {
             carEngine.stop();
+            soundCheck = false;
         }
 	}
 	else {
