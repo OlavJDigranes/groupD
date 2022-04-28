@@ -25,7 +25,7 @@ public:
 
 	~LevelTimer() = default;
 	void LevelTimerStop();
-	string WriteToTimeFile(float time); 
+	string CreateTimeFileString(float time); 
 	float roundTime(float f); 
 	void ingestFile();
 

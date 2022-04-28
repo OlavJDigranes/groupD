@@ -28,7 +28,7 @@ void LevelTimer::LevelTimerStop() {
 	std::string outputLine;
 	vector<float> times; 
 
-	outputLine = WriteToTimeFile(timeInSeconds);
+	outputLine = CreateTimeFileString(timeInSeconds);
 	
 	//std::cout << outputLine << endl;
 
@@ -88,7 +88,7 @@ void LevelTimer::LevelTimerStop() {
 
 			for (int i = 0; i < times.size(); i++) {
 				//std:: cout << WriteToTimeFile(times[i]) << endl;
-				timeFile << WriteToTimeFile(times[i]);
+				timeFile << CreateTimeFileString(times[i]);
 			}
 		}
 	}
@@ -98,7 +98,7 @@ void LevelTimer::LevelTimerStop() {
 }
 
 //Helper function for writing to the file. 
-string LevelTimer::WriteToTimeFile(float time) {
+string LevelTimer::CreateTimeFileString(float time) {
 	//New Time handling.
 	int timeMins = 0;
 	float timeSecs = 0.0f;

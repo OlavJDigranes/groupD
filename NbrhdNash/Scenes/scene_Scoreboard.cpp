@@ -41,6 +41,8 @@ void Scoreboard::Load() {
 		auto s = txt->addComponent<TextComponent>(std::to_string(i+1) + lines[i] + "\n ");
 	}
 	timeFile.close(); 
+
+	setLoaded(true); 
 }
 
 void Scoreboard::UnLoad() {
