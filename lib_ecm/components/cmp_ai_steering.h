@@ -64,6 +64,7 @@ public:
     void SetTargetLocation(const sf::Vector2f* target) { _target = *target; fly.setTarget(&_target); _targetingEntity = false; };
     void SetEntityAsTarget(Entity* target_entity) { _entityTarget = target_entity; fly.setEntityTarget(target_entity); _targetingEntity = true;  }
     sf::Vector2f GetTargetLocation() { return _target; };
+    bool IsTargetingEntity() { return _targetingEntity; }
     void rotate(SteeringOutput rot, float dt);
     void update(double) override;
     ~BirdSteering();

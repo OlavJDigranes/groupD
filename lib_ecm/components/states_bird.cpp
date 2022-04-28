@@ -5,6 +5,7 @@ void WaitingState::execute(Entity* p, double dt) noexcept {
 	std::shared_ptr<BirdSteering> bc = AI[0]->GetSteeringComponent();
 	if (bc != nullptr && bc->IsActive() == true) {
 		bc->SetActive(false);
+		bc->SetTargetLocation(&AI[0]->GetHomeLocation());
 	}
 	bc.reset();
 }
@@ -23,7 +24,7 @@ void ReturningHomeState::execute(Entity* p, double dt) noexcept {
 	auto AI = p->get_components<AIBirdComponent>();
 	std::shared_ptr<BirdSteering> bc = AI[0]->GetSteeringComponent();
 	if (bc != nullptr) {
-		if (bc->GetTargetLocation() != AI[0]->GetHomeLocation()) {
+		if (bc->GetTargetLocation() != AI[0]->GetHomeLocation() || bc->IsTargetingEntity()) {
 			bc->SetTargetLocation(&AI[0]->GetHomeLocation());
 		}
 	}
