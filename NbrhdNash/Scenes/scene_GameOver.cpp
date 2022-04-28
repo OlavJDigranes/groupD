@@ -29,6 +29,13 @@ void GameOver::Load() {
 	txt->addTag("GameOverText");
 	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
 	auto y = txt->addComponent<RedTextComponent>("GAME OVER");
+
+	//Game over sound
+	gameOverBuffer.loadFromFile("res/music/GameOver.mp3");
+	gameOverSound.setBuffer(gameOverBuffer);
+	gameOverSound.setVolume(80);
+	gameOverSound.play();
+
 	setLoaded(true);
 }
 
