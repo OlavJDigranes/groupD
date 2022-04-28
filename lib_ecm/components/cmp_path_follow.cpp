@@ -20,9 +20,9 @@ void PathfindingComponent::update(double dt) {
                 _parent->getPosition().y >= new_y && _parent->getPosition().y <= new_y + ls::getTileSize()) {
                 ++*_index;
 
-                printf("AI Pathfinding Index: %u\n", *_index);
-                printf("New target: %f, %f\n", new_x, new_y);
-                printf("Parent position: %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
+                //printf("AI Pathfinding Index: %u\n", *_index);
+                //printf("New target: %f, %f\n", new_x, new_y);
+                //printf("Parent position: %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
             }
             /*if (_parent->getPosition() == sf::Vector2f(new_x, new_y)) {
                 ++_index;
@@ -44,9 +44,9 @@ void PathfindingComponent::setPath(std::vector<sf::Vector2i>& path) {
     *_path = path;
     float new_x = ls::getOffset().x + _path->at(*_index).x * ls::getTileSize();
     float new_y = ls::getOffset().y + _path->at(*_index).y * ls::getTileSize();
-    printf("AI Pathfinding Index: %u\n", *_index);
-    printf("New target: %f, %f\n", new_x, new_y);
-    printf("Parent position: %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
+    //printf("AI Pathfinding Index: %u\n", *_index);
+    //printf("New target: %f, %f\n", new_x, new_y);
+    //printf("Parent position: %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
 }
 
 void PathfindingComponent::FindNewCheckpoint() {

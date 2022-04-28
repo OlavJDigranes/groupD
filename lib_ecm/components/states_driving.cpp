@@ -7,10 +7,9 @@ void AcceleratingState::execute(Entity* p, double dt) noexcept {
 }
 
 void BrakingState::execute(Entity* p, double dt) noexcept {
-	//_driver->Brake(dt);
 	auto AI = p->get_components<AIDrivingComponent>();
 	auto driver = AI[0]->getDriver();
-	driver->Drive(1, dt);
+	driver->Brake(dt);
 }
 
 void TurningLeftState::execute(Entity* p, double dt) noexcept {
