@@ -11,7 +11,7 @@ protected:
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;
 	std::shared_ptr<PhysicsTriggerComponent> _goalShop;
 	std::shared_ptr<PhysicsTriggerComponent> _home;
-	std::vector<std::shared_ptr<SteeringComponent>> _birds;
+	std::vector<std::shared_ptr<Entity>> _birds;
 	std::shared_ptr<LevelTimer> _timer;
 	bool _reachedShop;
 	bool _complete;

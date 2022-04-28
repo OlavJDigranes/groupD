@@ -2,6 +2,7 @@
 #pragma once
 #include <../lib_ecm/ecm.h>
 #include "../NbrhdNash/steering.h"
+#include "steering_bird.h"
 #include "Box2D/Dynamics/b2Body.h"
 #include "system_physics.h"
 #include <maths.h>
@@ -17,15 +18,12 @@ protected:
     b2Vec2 _direction;
     float32 _rotation;
     sf::Vector2i _mapBounds;
-    sf::Vector2f _targetLoc;
     bool _isActive;
     bool _atTarget;
     bool validMove(const sf::Vector2f&) const;
 public:
     void SetActive(bool Active);
     bool IsActive();
-    void SetTargetLocation(sf::Vector2f loc) { _targetLoc = loc; };
-    sf::Vector2f GetTargetLocation() { return _targetLoc; };
     bool HasArrived() { return _atTarget; }
     void update(double) override;
     void move(const sf::Vector2f&, float f);
@@ -53,3 +51,20 @@ public:
 };
 
 */
+
+class BirdSteering : public SteeringComponent {
+protected:
+    BirdFlyToTarget fly;
+    sf::Vector2f _target;
+    Entity* _entityTarget;
+    bool _targetingEntity;
+public:
+    BirdSteering() = delete;
+    explicit BirdSteering(Entity* p, Entity* player, bool ActiveOnCreation, sf::Vector2i mapBounds);
+    void SetTargetLocation(const sf::Vector2f* target) { _target = *target; fly.setTarget(&_target); _targetingEntity = false; };
+    void SetEntityAsTarget(Entity* target_entity) { _entityTarget = target_entity; fly.setEntityTarget(target_entity); _targetingEntity = true;  }
+    sf::Vector2f GetTargetLocation() { return _target; };
+    void rotate(SteeringOutput rot, float dt);
+    void update(double) override;
+    ~BirdSteering();
+};

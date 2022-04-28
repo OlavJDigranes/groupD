@@ -5,18 +5,12 @@
 #include "components/cmp_drive.h"
 
 class AcceleratingState : public State {
-private:
-	
-
 public:
 	AcceleratingState() = default;
 	void execute(Entity*, double) noexcept override;
 };
 
 class BrakingState : public State {
-private:
-	
-
 public:
 	BrakingState() = default;
 	void execute(Entity*, double) noexcept override;
@@ -24,7 +18,6 @@ public:
 
 class TurningLeftState : public State {
 private:
-	
 	std::shared_ptr<double> _angle;
 
 public:
@@ -34,7 +27,6 @@ public:
 
 class TurningRightState : public State {
 private:
-	
 	std::shared_ptr<double> _angle;
 
 public:

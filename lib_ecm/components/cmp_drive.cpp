@@ -160,7 +160,7 @@ void AIDrivingComponent::ComputeActions(double dt) {
     auto bottom = (sqrt(pow(dir.x, 2) + pow(dir.y, 2))) * (sqrt(pow(trg.x, 2) + pow(trg.y, 2)));
     auto sum = top / bottom;
     *_angle = sf::rad2deg(acos(sum));
-    printf("Angle: %f\n", *_angle);
+    //printf("Angle: %f\n", *_angle);
     if (std::isnan(*_angle)) {
        *_angle = 0;
     }

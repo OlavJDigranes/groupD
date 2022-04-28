@@ -42,6 +42,20 @@ void Level1::Load() {
 	view = player->getPosition();
 #endif // !RENDER_TO_TEX
 
+	// Setting up birds
+	{
+		for (auto tree : ls::findTiles(ls::BIRDSPAWN)) {
+			auto enemy = makeEntity();
+			_birds.push_back(enemy);
+			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t / 2, t / 2)));
+			auto s = enemy->addComponent<ShapeComponent>();
+			s->setShape<CircleShape>(10.0f, 30.0f);
+			s->getShape().setFillColor(Color::Blue);
+			s->getShape().setOrigin(Vector2f(10.f, 10.f));
+			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
+		}
+	}
+
 	// Setting up colliders and sensors for statics (houses/shops etc.)
 	{
 		std::vector<Vector2ul> all;
@@ -87,7 +101,7 @@ void Level1::Load() {
 				_shops.push_back(m);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
-				auto m = e->addComponent<GrateComponent>(Vector2f(t, t));
+				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
 				auto dbg_m = e->addComponent<ShapeComponent>();
 				dbg_m->setShape<sf::CircleShape>(1.0f, 30.f);
@@ -108,20 +122,6 @@ void Level1::Load() {
 		}
 		
 
-	}
-
-	// Setting up birds
-	{
-		for (auto tree : ls::findTiles(ls::BIRDSPAWN)) {
-			auto enemy = makeEntity();
-			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t/2, t/2)));
-			auto s = enemy->addComponent<ShapeComponent>();
-			s->setShape<CircleShape>(10.0f, 30.0f);
-			s->getShape().setFillColor(Color::Blue);
-			s->getShape().setOrigin(Vector2f(10.f, 10.f));
-			auto bird = enemy->addComponent<SteeringComponent>(player.get(), false, Vector2i(ls::getWidth(), ls::getHeight()));
-			_birds.push_back(bird);
-		}
 	}
 
 	// Setting up cars
