@@ -61,8 +61,8 @@ void MainMenu::Update(const double& dt) {
 		Engine::ChangeScene(&settings);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-		//Engine::ChangeScene(&scoreboard);
-		Engine::ChangeScene(&gameover);
+		Engine::ChangeScene(&scoreboard);
+		//Engine::ChangeScene(&gameover);
 		//Engine::ChangeScene(&celebration);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
