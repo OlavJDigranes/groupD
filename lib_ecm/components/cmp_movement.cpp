@@ -18,6 +18,7 @@ void BasicMovementComponent::update(double dt) {
     if (Keyboard::isKeyPressed(Keyboard::S)) {
         direction.y += 1.0f;
     }
+
     move(normalize(direction) * _speed * (float)dt);
 }
 

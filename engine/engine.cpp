@@ -8,6 +8,8 @@
 #include <iostream>
 #include <stdexcept>
 #include "../NbrhdNash/game.h"
+#include "SFML/Window.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 using namespace sf;
 using namespace std;
@@ -88,7 +90,8 @@ void Engine::Render(RenderWindow& window) {
 void Engine::Start(unsigned int width, unsigned int height,
                    const std::string& gameName, Scene* scn) {
     btnTimer = 0; 
-  RenderWindow window(VideoMode(width, height), gameName);
+  //RenderWindow window(VideoMode(width, height), gameName, sf::Style::Fullscreen);
+  RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close);
   _gameName = gameName;
   _window = &window;
   Renderer::initialise(window);
@@ -100,6 +103,38 @@ void Engine::Start(unsigned int width, unsigned int height,
       if (event.type == Event::Closed) {
         window.close();
       }
+      //Window resizing
+      //https://www.sfml-dev.org/tutorials/2.2/graphics-view.php#showing-more-when-the-window-is-resized
+      if (event.type == sf::Event::Resized) {
+          sf::FloatRect screenSize(Vector2f(0, 0), Vector2f(event.size.width, event.size.height));
+          window.setView(sf::View(screenSize)); 
+      }
+    }
+
+    //Window resizing actions
+    if (_activeScene->resTag == 1) {
+        int w = 1280; 
+        int h = 720;
+        sf::FloatRect screenSize1(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize1));
+        //sf::VideoMode(w, h);
+        window.setSize(Vector2u(w, h));
+    }
+    if (_activeScene->resTag == 2) {
+        int w = 1920;
+        int h = 1080;
+        sf::FloatRect screenSize2(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize2));
+        //sf::VideoMode(1920, 1080);
+        window.setSize(Vector2u(w, h));
+    }
+    if (_activeScene->resTag == 3) {
+        int w = 2560;
+        int h = 1440;
+        sf::FloatRect screenSize3(Vector2f(0, 0), Vector2f(w, h));
+        window.setView(sf::View(screenSize3));
+        //sf::VideoMode(2560, 1440);
+        window.setSize(Vector2u(w, h));
     }
 
     //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 
@@ -113,6 +148,22 @@ void Engine::Start(unsigned int width, unsigned int height,
         
         btnTimer = 1.3f; 
         
+    }
+
+    //Joystick handling for ESC
+    sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
+    if (Joystick::isConnected(0)) {
+        if (Joystick::isButtonPressed(0, 7) && btnTimer <= 0.0f) {
+            if (_activeScene->tag == 0) {
+                window.close();
+            }
+            if (_activeScene->tag == 1 || _activeScene->tag == -1 || _activeScene->tag == -2 || _activeScene->tag == -3 || _activeScene->tag == -4 || _activeScene->tag == -5) {
+                ChangeScene(&menu);
+            }
+
+            btnTimer = 1.3f;
+        }
+
     }
 
     window.clear();

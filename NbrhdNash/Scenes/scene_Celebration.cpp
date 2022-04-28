@@ -11,9 +11,16 @@ using namespace sf;
 void Celebration::Load() {
 	tag = -4;
 
+	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
+
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
-	auto t = esc->addComponent<ESCTextComponent>("Press ESC to return to menu");
+	if (Joystick::isConnected(0)) {
+		auto y = esc->addComponent<ESCTextComponent>("Press Start to exit the game");
+	}
+	else {
+		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
+	}
 
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));

@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "components/cmp_sprite.h"
 
+//Credits scene class
 class Credits : public Scene {
 public:
 	Credits() = default;

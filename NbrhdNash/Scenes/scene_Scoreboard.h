@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "components/components.h"
 
+//Scoreboard scene class
 class Scoreboard : public Scene {
 protected:
 public:

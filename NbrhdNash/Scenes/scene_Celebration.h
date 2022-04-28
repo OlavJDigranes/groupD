@@ -3,7 +3,10 @@
 #include "LevelSystem.h"
 #include "engine.h"
 #include "components/cmp_sprite.h"
+#include "SFML/Window.hpp"
+#include "SFML/Window/Joystick.hpp"
 
+//Celebration scene class
 class Celebration : public Scene {
 public:
 	Celebration () = default;
