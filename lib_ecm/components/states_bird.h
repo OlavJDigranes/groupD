@@ -6,7 +6,7 @@
 class WaitingState : public State {
 public:
 	WaitingState() = default;
-	void execute(Entity* p, double dt) noexcept override {};
+	void execute(Entity* p, double dt) noexcept override;
 };
 
 class ChasingState : public State {

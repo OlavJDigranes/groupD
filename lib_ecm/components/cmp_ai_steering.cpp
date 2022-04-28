@@ -105,7 +105,7 @@ void SteeringComponent::move(float x, float y) { move(Vector2f(x, y)); }
 */
 
 BirdSteering::BirdSteering(Entity* p, Entity* player,bool ActiveOnCreation, sf::Vector2i mapBounds) : SteeringComponent(p, player, ActiveOnCreation, mapBounds), 
-_targetingEntity(), fly(BirdFlyToTarget(p, player, p->getPosition(), 200, _targetingEntity)) {
+_targetingEntity(), fly(BirdFlyToTarget(p, player, p->getPosition(), 100, _targetingEntity)), _entityTarget(nullptr) {
 }
 
 void BirdSteering::rotate(SteeringOutput rot, float dt) {

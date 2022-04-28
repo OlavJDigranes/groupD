@@ -84,6 +84,9 @@ void AIBirdComponent::update(double dt) {
         _timeToPoop = 0;
         _sm->changeState("ReturnHome");
     }
+    if (sf::Vector2f(_parent->getPosition() - GetHomeLocation()).lengthSq() < pow(5, 2) && _sm->currentState() == "ReturnHome") {
+        _sm->changeState("Waiting");
+    }
     _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), 0);
     _str->update(dt);
     _sm->update(dt);

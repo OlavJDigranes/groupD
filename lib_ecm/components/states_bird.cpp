@@ -1,5 +1,14 @@
 #include "states_bird.h"
 
+void WaitingState::execute(Entity* p, double dt) noexcept {
+	auto AI = p->get_components<AIBirdComponent>();
+	std::shared_ptr<BirdSteering> bc = AI[0]->GetSteeringComponent();
+	if (bc != nullptr && bc->IsActive() == true) {
+		bc->SetActive(false);
+	}
+	bc.reset();
+}
+
 void ChasingState::execute(Entity* p, double dt) noexcept {
 	auto AI = p->get_components<AIBirdComponent>();
 	std::shared_ptr<BirdSteering> bc = AI[0]->GetSteeringComponent();
