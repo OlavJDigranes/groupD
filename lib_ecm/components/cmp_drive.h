@@ -43,7 +43,7 @@ public:
 };
 
 class AIDrivingComponent : public Component {
-#define DEBUG_AI_PATH
+//#define DEBUG_AI_PATH
 protected:
 	struct PathNode {
 		sf::Vector2ul tilePos;

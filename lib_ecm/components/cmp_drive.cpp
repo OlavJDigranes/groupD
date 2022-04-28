@@ -218,7 +218,7 @@ void AIDrivingComponent::ComputeActions(double dt) {
 }
 
 void AIDrivingComponent::update(double dt) {
-    if (_path->size() != 0) {
+    if (_path->size() != 0 && *_index < _path->size()) {
         if (lastNode.idx < *_index - 1 && *_index != 0) {
             lastNode = _analysedPath->at(*_index - 1);
         }

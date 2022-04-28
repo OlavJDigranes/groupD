@@ -13,6 +13,7 @@ protected:
 	std::shared_ptr<PhysicsTriggerComponent> _home;
 	std::vector<std::shared_ptr<Entity>> _birds;
 	std::shared_ptr<LevelTimer> _timer;
+	std::shared_ptr<PlayerDataComponent> _playerData;
 	bool _reachedShop;
 	bool _complete;
 public:

@@ -2,6 +2,7 @@
 #include "../lib_ecm/ecm.h"
 #include "cmp_ai_steering.h"
 #include "cmp_state_machine.h"
+#include "cmp_player_data.h"
 #include "states_bird.h"
 #include "maths.h"
 

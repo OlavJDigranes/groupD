@@ -31,9 +31,11 @@ void Level1::Load() {
 		s->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
 		s->getShape().setFillColor(sf::Color::White);
 		s->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+		//auto t = player->addComponent<SpriteComponent>();
 		
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(20.f, 30.f), "Player");
 		player->addComponent<PlayerController>(d);
+		player->addComponent<PlayerDataComponent>(100, 100);
 	}
 
 	// Setting view to player's location
@@ -133,7 +135,7 @@ void Level1::Load() {
 		//cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
 		cars.insert(cars.begin(), cars_2.begin(), cars_2.end());
 		//cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
-#if 0
+#if 1
 		for (auto c : cars) {
 			auto car = makeEntity();
 			auto pos = ls::getTilePosition(c) + Vector2f(t / 2, t / 2);
@@ -146,18 +148,18 @@ void Level1::Load() {
 		}
 #endif // 0
 
-		auto car = makeEntity();
+		/*auto car = makeEntity();
 		auto pos = ls::getTilePosition(cars.at(3)) + Vector2f(t / 2, t / 2);
 		car->setPosition(pos);
 		auto shp = car->addComponent<ShapeComponent>();
-		shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f/2, 30.f/2));
+		shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f / 2, 30.f / 2));
 		shp->getShape().setFillColor(sf::Color::Red);
-		shp->getShape().setOrigin(sf::Vector2f(10.f/2, 15.f/2));
-		auto ai = car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f/2, 30.f/2));
+		shp->getShape().setOrigin(sf::Vector2f(10.f / 2, 15.f / 2));
+		auto ai = car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f / 2, 30.f / 2));*/
 #ifdef DEBUG_AI_PATH
 		auto debugPath = *ai->getPath();
 		for (auto p : debugPath) {
-			auto pos = p.worldPos + Vector2f(t/2, t/2);
+			auto pos = p.worldPos + Vector2f(t / 2, t / 2);
 			auto e = makeEntity();
 			e->setPosition(pos);
 			auto shp = e->addComponent<ShapeComponent>();
@@ -169,9 +171,8 @@ void Level1::Load() {
 				shp->getShape().setFillColor(Color::Red);
 			}
 			shp->getShape().setOrigin(Vector2f(5.f, 5.f));
-#endif // DEBUG_AI_PATH
-
 		}
+#endif // DEBUG_AI_PATH
 	}
 
 	_timer = player->addComponent<LevelTimer>(tag);

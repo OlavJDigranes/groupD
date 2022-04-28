@@ -79,7 +79,11 @@ void AIBirdComponent::update(double dt) {
         printf("poop time = %f\n", _timeToPoop);
     }
     if (_isChasing && _timeToPoop > 1) {
-        //Poop();
+        auto p = _player->get_components<PlayerDataComponent>();
+        if (p[0] != nullptr) {
+            p[0]->TakeDamage(10);
+            printf("Health: %i", p[0]->GetHealth());
+        }
         _isChasing = false;
         _timeToPoop = 0;
         _sm->changeState("ReturnHome");
