@@ -7,12 +7,18 @@
 //#define FAKE_LOADING
 //#define DEBUG_BIRDS
 
-const float t = 64.f;
+const float t = 128.f;
 static std::shared_ptr<Entity> player;
 static sf::View playerView;
 
 void Level1::Load() {
 	tag = 1; 
+
+	for (auto tex : _textures) {
+		if (tex.second->loadFromFile(tex.first)) {
+			tex.second->loadFromFile(tex.first);
+		}
+	}
 
 	//ls::loadLevelFile("res/levels/Level1_testing.txt", t);
 	ls::loadLevelFile("res/levels/level1.txt", t);
@@ -40,7 +46,7 @@ void Level1::Load() {
 
 	// Setting view to player's location
 #ifndef RENDER_TO_TEX
-	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(1920.f, 1080.f)));
+	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(Engine::getWindowSize().x, Engine::getWindowSize().y)));
 	view = player->getPosition();
 #endif // !RENDER_TO_TEX
 
@@ -101,9 +107,14 @@ void Level1::Load() {
 			if (ls::getTileAt(pos) == ls::SHOPS) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
+				auto tex = e->addComponent<SpriteComponent>();
+				if (_textures["res/img/shop.jpg"])
+				tex->setTexure(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
+				auto sp = e->addComponent<SpriteComponent>();
+				sp->setTexure(_textures["res/img/road.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
 				auto dbg_m = e->addComponent<ShapeComponent>();
 				dbg_m->setShape<sf::CircleShape>(1.0f, 30.f);
@@ -190,6 +201,9 @@ void Level1::Load() {
 }
 
 void Level1::UnLoad() {
+	for (auto tex : _textures) {
+		tex.second.reset();
+	}
 	_shops.clear();
 	_birds.clear();
 	_goalShop = nullptr;
@@ -215,17 +229,18 @@ void Level1::Render() {
 void Level1::Update(const double& dt) {
 	// Update view to stay within map bounds
 #ifndef RENDER_TO_TEX
-	if (player->getPosition().x > 960 && player->getPosition().x < 2880) {
+	// TODO: Update this to use view x and y, if greater than half res or if less than map max x/y minus half res x/y
+	if (player->getPosition().x > Engine::getWindowSize().x/2 && player->getPosition().x < (ls::getWidth() * ls::getTileSize()) - Engine::getWindowSize().x/2) {
 		view.x = player->getPosition().x;
 	}
 	else {
-		player->getPosition().x > 960 ? view.x = 2880 : view.x = 960;
+		player->getPosition().x > Engine::getWindowSize().x / 2 ? view.x = (ls::getWidth() * ls::getTileSize()) - Engine::getWindowSize().x/2 : view.x = Engine::getWindowSize().x / 2;
 	}
-	if (player->getPosition().y > 540 && player->getPosition().y < 3300) {
+	if (player->getPosition().y > Engine::getWindowSize().y / 2 && player->getPosition().y < (ls::getWidth() * ls::getTileSize()) - Engine::getWindowSize().y/2) {
 		view.y = player->getPosition().y;
 	}
 	else {
-		player->getPosition().y > 540 ? view.y = 3300 : view.y = 540;
+		player->getPosition().y > Engine::getWindowSize().y / 2 ? view.y = (ls::getWidth() * ls::getTileSize()) - Engine::getWindowSize().y/2 : view.y = Engine::getWindowSize().y / 2;
 	}
 #endif // !RENDER_TO_TEX
 	// Goal checking for arrival at correct shop
