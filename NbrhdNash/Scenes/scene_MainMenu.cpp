@@ -40,6 +40,14 @@ void MainMenu::Load() {
 	menuLoop.setVolume(70);
 	menuLoop.play();
 
+	settings.ingestFile(); 
+	if (settings.vsyncSetting == "V") {
+		Engine::setVsync(true); 
+	}
+	if (settings.vsyncSetting == "B") {
+		Engine::setVsync(false); 
+	}
+
 	setLoaded(true);
 }
 

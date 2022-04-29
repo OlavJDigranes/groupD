@@ -2,6 +2,7 @@
 #include <thread>
 #include "LevelSystem.h"
 #include "scene_Settings.h"
+#include "scene_MainMenu.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 #include "SFML/Window.hpp"
@@ -17,10 +18,7 @@ void Settings::Load() {
 	tag = -1;
 
 	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
-
-	setSavedSettings(); 
-	settingsFile.open("settings.txt", std::ios_base::out);
-
+	
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	if (Joystick::isConnected(0)) {
@@ -33,16 +31,16 @@ void Settings::Load() {
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
 	if (Joystick::isConnected(0)) {
-		auto i = info->addComponent<TextComponent>("CONTROLS:\nRT for acceleration\nLT for braking\nLeft Joystick for turning");
+		auto i = info->addComponent<TextComponent>("CONTROLS:\nRT for acceleration\nLT for braking\nLeft Joystick for turning\n\nPress BACK to save settings");
 	}
 	else {
-		auto i = info->addComponent<TextComponent>("CONTROLS:\nW for acceleration\nS for braking\nA for turning left\nD for turning right");
+		auto i = info->addComponent<TextComponent>("CONTROLS:\nW for acceleration\nS for braking\nA for turning left\nD for turning rightz\n\nPress X to save settings");
 	}
 
 	auto info2 = makeEntity(); 
 	info2->setPosition(Vector2f(Engine::getWindowSize().x * 0.5, Engine::getWindowSize().y * 0.2));
 	if (Joystick::isConnected(0)) {
-		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nA: 1280 x 720\nB: 1920 x 1080\nX: 2560 x 1440\n\nV-SYNC:\nLB: On\nRB: Off");
+		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nA: 1280 x 720\nY: 1920 x 1080\nX: 2560 x 1440\n\nV-SYNC:\nLB: On\nRB: Off");
 	}
 	else {
 		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440\n\nV-SYNC:\nV: On\nB: Off");
@@ -53,9 +51,6 @@ void Settings::Load() {
 }
 
 void Settings::UnLoad() {
-	settingsFile << imageSetting; 
-	settingsFile << vsyncSetting; 
-	settingsFile.close(); 
 	Scene::UnLoad(); 
 }
 
@@ -87,6 +82,9 @@ void Settings::Update(const double& dt) {
 		Engine::setVsync(false); 
 		vsyncSetting = "B ";
 	}
+	if (Keyboard::isKeyPressed(Keyboard::X)) {
+		saveSettings();
+	}
 
 	if (Joystick::isConnected(0)) {
 		if (sf::Joystick::isButtonPressed(0, 0)) {
@@ -95,7 +93,7 @@ void Settings::Update(const double& dt) {
 			Settings::UnLoad();
 			Settings::Load();
 		}
-		if (sf::Joystick::isButtonPressed(0, 1)) {
+		if (sf::Joystick::isButtonPressed(0, 3)) {
 			resTag = 2;
 			imageSetting = "W ";
 			Settings::UnLoad();
@@ -115,6 +113,9 @@ void Settings::Update(const double& dt) {
 			Engine::setVsync(false);
 			vsyncSetting = "B ";
 		}
+		if (sf::Joystick::isButtonPressed(0, 7)) {
+			saveSettings(); 
+		}
 	}
 }
 
@@ -122,28 +123,11 @@ void Settings::Render() {
 	Scene::Render();
 }
 
-void Settings::setSavedSettings() {
-	ingestFile(); 
-
-	if (counter > 0) {
-		for (int i = 0; i < counter; i++) {
-			if (lines[i] == "Q") {
-				resTag = 1;
-			}
-			if (lines[i] == "W") {
-				resTag = 2;
-			}
-			if (lines[i] == "E") {
-				resTag = 3;
-			}
-			if (lines[i] == "V") {
-				Engine::setVsync(true);
-			}
-			if (lines[i] == "B") {
-				Engine::setVsync(false);
-			}
-		}
-	}
+void Settings::saveSettings() {
+	settingsFile.open("settings.txt", std::ios_base::out);
+	settingsFile << imageSetting;
+	settingsFile << vsyncSetting;
+	settingsFile.close();
 }
 
 //Helper function for ingesting file if it exists
@@ -162,7 +146,7 @@ void Settings::ingestFile() {
 		}
 	}
 
-	if (counter == 1) {
+	if (counter-1 == 1) {
 		if (lines[0] == "Q") {
 			imageSetting = lines[0];
 		}
@@ -179,8 +163,10 @@ void Settings::ingestFile() {
 			vsyncSetting = lines[0];
 		}
 	}
-	if (counter == 2) {
+	if (counter-1 == 2) {
 		imageSetting = lines[0]; 
 		vsyncSetting = lines[1]; 
 	}
+
+	settingsFileIn.close(); 
 }

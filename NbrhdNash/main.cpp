@@ -19,6 +19,56 @@ SteeringScene steering;
 Scoreboard scoreboard;
 
 int main() {
-	Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
-	settings.setSavedSettings();
+	//Ingest save state file 
+	std::string line;
+	ifstream settingsFileIn;
+	vector<string> lines;
+	int counter = 0;
+	settingsFileIn.open("settings.txt", std::ios_base::in);
+	string vsyncSetting = " ";
+	string imageSetting = " ";
+
+	//checking if file is empty
+	if (settingsFileIn.is_open()) {
+		while (!settingsFileIn.eof()) {
+			line.resize(settingsFileIn.tellg());
+			settingsFileIn >> line;
+			lines.push_back(line);
+			counter++;
+		}
+	}
+
+	if (counter-1 == 1) {
+		if (lines[0] == "Q") {
+			imageSetting = lines[0];
+		}
+		if (lines[0] == "W") {
+			imageSetting = lines[0];
+		}
+		if (lines[0] == "E") {
+			imageSetting = lines[0];
+		}
+		if (lines[0] == "V") {
+			vsyncSetting = lines[0];
+		}
+		if (lines[0] == "B") {
+			vsyncSetting = lines[0];
+		}
+	}
+	if (counter-1 == 2) {
+		imageSetting = lines[0];
+		vsyncSetting = lines[1];
+	}
+
+	settingsFileIn.close();
+
+	if (imageSetting == " " || imageSetting == "W") {
+		Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
+	}
+	if (imageSetting == "Q") {
+		Engine::Start(1280, 720, "Neighbourhood Nash!", &menu);
+	}
+	if (imageSetting == "E") {
+		Engine::Start(2560, 1440, "Neighbourhood Nash!", &menu);
+	}	
 }

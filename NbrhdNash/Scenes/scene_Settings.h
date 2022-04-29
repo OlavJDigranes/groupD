@@ -16,9 +16,10 @@ protected:
 	ofstream settingsFile;
 	vector<string> lines;
 	int counter = 0;
+public:
 	string vsyncSetting;
 	string imageSetting;
-public:
+
 	Settings() = default; 
 	~Settings() = default; 
 
@@ -31,6 +32,5 @@ public:
 	void Render() override;
 
 	void ingestFile();
-
-	void setSavedSettings();
+	void saveSettings();
 };
