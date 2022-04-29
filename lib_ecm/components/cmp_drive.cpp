@@ -1,9 +1,10 @@
 #include "cmp_drive.h"
 
-DrivingComponent::DrivingComponent(Entity* parent, const sf::Vector2f size, const char data[]) : Component(parent) {
+DrivingComponent::DrivingComponent(Entity* parent, const sf::Vector2f size, const char data[], float TopSpeed) : Component(parent), _topSpeed(24) {
 	_parent = parent;
     _direction = std::make_shared<b2Vec2>(b2Vec2(0, -1));
     _currentSpeed = 0;
+    _topSpeed = TopSpeed;
     _size = Physics::sv2_to_bv2(size, true);
     _halfSize = Physics::sv2_to_bv2(0.5f * size);
 
@@ -39,7 +40,7 @@ void DrivingComponent::Drive(float speed, double dt) {
         _body->SetLinearDamping(0.5);
     }
     // If below top speed, set body velocity to increase in direction and let parent (sprite) update
-    if (_body->GetLinearVelocity().LengthSquared() <= pow(24, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= 24) {
+    if (_body->GetLinearVelocity().LengthSquared() <= pow(_topSpeed, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= _topSpeed) {
         _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * *_direction));
         _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
         _currentSpeed += speed * dt;
@@ -86,9 +87,9 @@ void DrivingComponent::teleport(sf::Vector2f pos) {
 }
 #endif
 
-AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size) : Component(parent), 
+AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size, float TopSpeed) : Component(parent), 
     _angle(std::make_shared<double>(0)) {
-    _driver = std::make_shared<DrivingComponent>(parent, size, "AI");
+    _driver = std::make_shared<DrivingComponent>(parent, size, "AI", TopSpeed);
     _pather = std::make_unique<PathfindingComponent>(parent);
     _sm = std::make_unique<StateMachineComponent>(parent);
     _sm->addState("Accelerating", std::make_shared<AcceleratingState>());

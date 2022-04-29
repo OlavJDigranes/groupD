@@ -5,6 +5,7 @@
 #include "cmp_player_data.h"
 #include "states_bird.h"
 #include "maths.h"
+#include <LevelSystem.h>
 
 class AIBirdComponent : public Component {
 protected:

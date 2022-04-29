@@ -34,12 +34,12 @@ void Level1::Load() {
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(20, 0));
 		auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
+		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
+		s->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
 		//auto t = player->addComponent<SpriteComponent>();
 		
-		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(20.f, 30.f), "Player");
+		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
 		player->addComponent<PlayerDataComponent>(100, 100);
 	}
@@ -108,7 +108,6 @@ void Level1::Load() {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
 				auto tex = e->addComponent<SpriteComponent>();
-				if (_textures["res/img/shop.jpg"])
 				tex->setTexure(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
@@ -125,6 +124,8 @@ void Level1::Load() {
 			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
 				_goalShop = m;
+				auto tex = e->addComponent<SpriteComponent>();
+				tex->setTexure(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::HOME) {
 				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
@@ -140,22 +141,22 @@ void Level1::Load() {
 	// Setting up cars
 	{
 		std::vector<Vector2ul> cars;
-		//auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
+		auto cars_1 = ls::findTiles(ls::CAR1SPAWN);
 		auto cars_2 = ls::findTiles(ls::CAR2SPAWN);
-		//auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
-		//cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
+		auto cars_3 = ls::findTiles(ls::CAR3SPAWN);
+		cars.insert(cars.begin(), cars_1.begin(), cars_1.end());
 		cars.insert(cars.begin(), cars_2.begin(), cars_2.end());
-		//cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
+		cars.insert(cars.begin(), cars_3.begin(), cars_3.end());
 #if 1
 		for (auto c : cars) {
 			auto car = makeEntity();
 			auto pos = ls::getTilePosition(c) + Vector2f(t / 2, t / 2);
 			car->setPosition(pos);
 			auto shp = car->addComponent<ShapeComponent>();
-			shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f, 30.f));
+			shp->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 			shp->getShape().setFillColor(sf::Color::Red);
-			shp->getShape().setOrigin(sf::Vector2f(10.f, 15.f));
-			car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f, 30.f));
+			shp->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
+			car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
 		}
 #endif // 0
 

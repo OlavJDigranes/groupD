@@ -73,6 +73,10 @@ void AIBirdComponent::update(double dt) {
             _sm->changeState("Chasing");
         }
         CheckForPlayer(dt);
+        if (_isChasing && sf::Vector2f(_parent->getPosition() - _player->getPosition()).lengthSq() > pow(ls::getTileSize() * 10, 2)) {
+            _isChasing = false;
+            _sm->changeState("ReturnHome");
+        }
     }
     if (_overPlayer && _isChasing) {
         _timeToPoop += dt;

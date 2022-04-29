@@ -21,6 +21,7 @@ protected:
 	b2Vec2 _halfSize;
 	std::shared_ptr<b2Vec2> _direction;
 	bodyUserData* _data;
+	float _topSpeed;
 
 public:
 	void Drive(float speed, double dt);
@@ -34,7 +35,7 @@ public:
 	void render() override {};
 	void update(double dt) override;
 
-	explicit DrivingComponent(Entity* parent, sf::Vector2f size, const char data[]);
+	explicit DrivingComponent(Entity* parent, sf::Vector2f size, const char data[], float TopSpeed);
 	DrivingComponent() = delete;
 	~DrivingComponent();
 #ifdef DEBUG_TELEPORT
@@ -63,6 +64,7 @@ protected:
 	std::shared_ptr<size_t> _index;
 	std::shared_ptr<std::vector<PathNode>> _analysedPath;
 	std::shared_ptr<double> _angle;
+	float _topSpeed;
 	PathNode lastNode;
 	void AnalysePath();
 	void ComputeActions(double dt);
@@ -75,6 +77,6 @@ public:
 	std::shared_ptr<double> getAngle() { return _angle; };
 
 	AIDrivingComponent() = delete;
-	explicit AIDrivingComponent(Entity* parent, sf::Vector2f size);
+	explicit AIDrivingComponent(Entity* parent, sf::Vector2f size, float TopSpeed);
 	~AIDrivingComponent();
 };
