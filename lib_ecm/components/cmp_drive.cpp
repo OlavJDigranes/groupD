@@ -229,6 +229,7 @@ void AIDrivingComponent::update(double dt) {
     }
     else {
         _pather->FindNewCheckpoint();
+        _index = _pather->getIndex();
         return;
     }
     _sm->update(dt);

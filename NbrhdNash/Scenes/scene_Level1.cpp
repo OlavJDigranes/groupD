@@ -32,7 +32,7 @@ void Level1::Load() {
 	// Create player entity
 	{
 		player = makeEntity();
-		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(20, 0));
+		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		s->getShape().setFillColor(sf::Color::White);
@@ -158,16 +158,17 @@ void Level1::Load() {
 			shp->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
 			car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
 		}
-#endif // 0
+#else // 0
 
-		/*auto car = makeEntity();
+		auto car = makeEntity();
 		auto pos = ls::getTilePosition(cars.at(3)) + Vector2f(t / 2, t / 2);
 		car->setPosition(pos);
 		auto shp = car->addComponent<ShapeComponent>();
-		shp->setShape<sf::RectangleShape>(sf::Vector2f(20.f / 2, 30.f / 2));
+		shp->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		shp->getShape().setFillColor(sf::Color::Red);
-		shp->getShape().setOrigin(sf::Vector2f(10.f / 2, 15.f / 2));
-		auto ai = car->addComponent<AIDrivingComponent>(sf::Vector2f(20.f / 2, 30.f / 2));*/
+		shp->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
+		auto ai = car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
+#endif
 #ifdef DEBUG_AI_PATH
 		auto debugPath = *ai->getPath();
 		for (auto p : debugPath) {
@@ -277,7 +278,7 @@ void Level1::Update(const double& dt) {
 	}
 #endif
 	
-	ls::updateMap();
-	ents.mapPosition = ls::getMapMovement();
+	//ls::updateMap();
+	//ents.mapPosition = ls::getMapMovement();
 	Scene::Update(dt);
 }

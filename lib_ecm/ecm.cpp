@@ -84,14 +84,19 @@ Component::~Component() {}
 
 bool Component::is_fordeletion() const { return _fordeletion; }
 
-void EntityManager::update(double dt) {
+void EntityManager::update(double dt, sf::Vector2f centreOfScreen, sf::Vector2u screenSize) {
   for (size_t i = 0; i < list.size(); i++) {
     if (list[i]->is_fordeletion()) {
       list.erase(list.begin() + i);
       --i;
       continue;
     }
-    if (list[i]->_alive) {
+    if (list[i]->_alive 
+        && list[i]->getPosition().x < centreOfScreen.x + screenSize.x / 1.25 
+        && list[i]->getPosition().x > centreOfScreen.x - screenSize.x / 1.25
+        && list[i]->getPosition().y < centreOfScreen.y + screenSize.y / 1.25
+        && list[i]->getPosition().y > centreOfScreen.y - screenSize.y / 1.25
+        ) {
       list[i]->update(dt);
       list[i]->setPosition(list[i]->getPosition() + mapPosition);
     }

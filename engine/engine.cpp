@@ -200,14 +200,15 @@ void Engine::ChangeScene(Scene* s) {
   if (!s->isLoaded()) {
     cout << "Eng: Entering Loading Screen\n";
     loadingTime =0;
-    //_activeScene->LoadAsync();
-    _activeScene->Load();
+    _activeScene->LoadAsync();
+    //_activeScene->Load();
     loading = true;
   }
 }
 
 void Scene::Update(const double& dt) { 
-    ents.update(dt); 
+    auto test = Engine::GetWindow().getView().getCenter();
+    ents.update(dt, Engine::GetWindow().getView().getCenter(), Engine::getWindowSize());
 }
 
 void Scene::Render() { ents.render(); }
