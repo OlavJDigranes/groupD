@@ -22,9 +22,9 @@ void Celebration::Load() {
 		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
 	}
 
+	//Multicolour CONGRATULATIONS text. 
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
-	//auto y = info->addComponent<TextComponent>("CONGRATULATIONS!");
 	auto g = info->addComponent<GreenTextComponent>("C    A       N  ");
 	auto r = info->addComponent<RedTextComponent>("  N     L       ");
 	auto b = info->addComponent<BlueTextComponent>(" O  R           !");

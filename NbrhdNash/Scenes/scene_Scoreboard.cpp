@@ -27,7 +27,6 @@ void Scoreboard::Load() {
 			counter++;
 
 			//Make a vector of 5 text elements.
-				//Put them off screen?
 			if (counter == 1) {
 				auto txt1 = makeEntity();
 				scoreboardText.push_back(txt1);

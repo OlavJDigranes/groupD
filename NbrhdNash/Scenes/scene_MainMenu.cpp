@@ -22,8 +22,6 @@ void MainMenu::Load() {
 	else {
 		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
 	}
-	
-	//setLoaded(true);
 
 	auto txt = makeEntity();
 	txt->addTag("MenuText"); 
@@ -35,11 +33,13 @@ void MainMenu::Load() {
 		auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for scoreboard\nPress 4 for credits");
 	}
 	
+	//Game music loop handling. 
 	menuLoop.openFromFile("res/music/MainMenuLoop.mp3");
 	menuLoop.setLoop(true);
 	menuLoop.setVolume(70);
 	menuLoop.play();
 
+	//Handling Vsync settings once the game is loaded. 
 	settings.ingestFile(); 
 	if (settings.vsyncSetting == "V") {
 		Engine::setVsync(true); 
@@ -63,16 +63,12 @@ void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&L1);
 		menuLoop.setVolume(60); 
-		//Engine::ChangeScene(&steering); 
-		//mainMenuLoop.stop(); 
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
 		Engine::ChangeScene(&settings);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
 		Engine::ChangeScene(&scoreboard);
-		//Engine::ChangeScene(&gameover);
-		//Engine::ChangeScene(&celebration);
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
 		Engine::ChangeScene(&credits); 

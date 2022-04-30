@@ -38,6 +38,7 @@ int main() {
 		}
 	}
 
+	//Ingesting saved settings, setting image resolution
 	if (counter-1 == 1) {
 		if (lines[0] == "Q") {
 			imageSetting = lines[0];
@@ -62,6 +63,7 @@ int main() {
 
 	settingsFileIn.close();
 
+	//Starting application with provided settings. 
 	if (imageSetting == " " || imageSetting == "W") {
 		Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
 	}

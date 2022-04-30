@@ -19,9 +19,7 @@ void LevelTimer::LevelTimerStop() {
 	
 	ingestFile();
 
-	//timeInSeconds = LevelTimer::roundTime(timer.getElapsedTime().asSeconds());
 	timeInSeconds = LevelTimer::timer.getElapsedTime().asSeconds();
-	//timeFile.open("times.txt", std::ios_base::app); 
 	timeFile.open("times.txt", std::ios_base::out);
 
 	//Local variables
@@ -30,12 +28,10 @@ void LevelTimer::LevelTimerStop() {
 
 	outputLine = CreateTimeFileString(timeInSeconds);
 	
-	//std::cout << outputLine << endl;
 
 	//if file is empty or has less than 5 lines add new line. 
 	if (timeFile.is_open()) {
 		if (counter < 5) {
-			//std::cout << "boo" << endl; 
 			timeFile << outputLine;
 
 			//Only runs the for loop if there was sometihng in the file
@@ -48,7 +44,6 @@ void LevelTimer::LevelTimerStop() {
 		}
 		//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
 		if (counter >= 5) {
-			std::cout << "boo3gjperugh" << endl; 
 			//PSEUDOCODE:
 				//make a vecotr of floats. use int a = 3; float b = (float)a;
 				//make the minute andd second substrings into int and float. std::stof() - convert string to float.
@@ -87,7 +82,6 @@ void LevelTimer::LevelTimerStop() {
 			sort(times.begin(), times.end());
 
 			for (int i = 0; i < times.size(); i++) {
-				//std:: cout << WriteToTimeFile(times[i]) << endl;
 				timeFile << CreateTimeFileString(times[i]);
 			}
 		}
@@ -122,7 +116,6 @@ string LevelTimer::CreateTimeFileString(float time) {
 	if (timeMins > 0) {
 		newLine = "Level_" + std::to_string(tempLevelTag) + ":_" + std::to_string(timeMins) + "_minute(s)_and_" + std::to_string(LevelTimer::roundTime(timeSecs)) + "_seconds! ";
 	}
-	//std::cout << newLine << endl; 
 	return newLine; 
 }
 
