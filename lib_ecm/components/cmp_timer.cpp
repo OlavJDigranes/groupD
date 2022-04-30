@@ -72,13 +72,13 @@ void LevelTimer::LevelTimerStop() {
 					tempSubStringMins = lines[i].substr(9, 2);
 					tempOldMinutes = std::stof(tempSubStringMins);
 
-					tempSubStringSecs = lines[i].substr(25, 4);
+					tempSubStringSecs = lines[i].substr(25, 7);
 					tempOldSeconds = std::stof(tempSubStringSecs);
 					tempOldTimeInSeconds = (tempOldMinutes * 60) + tempOldSeconds;
 					times.push_back(tempOldTimeInSeconds);
 				}
 				else {
-					tempSubStringSecs = lines[i].substr(9, 4);
+					tempSubStringSecs = lines[i].substr(9, 7);
 					tempOldTimeInSeconds = std::stof(tempSubStringSecs);
 					times.push_back(tempOldTimeInSeconds);
 				}

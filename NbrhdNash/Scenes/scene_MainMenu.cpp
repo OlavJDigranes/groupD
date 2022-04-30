@@ -62,6 +62,7 @@ void MainMenu::Render() {
 void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&L1);
+		menuLoop.setVolume(60); 
 		//Engine::ChangeScene(&steering); 
 		//mainMenuLoop.stop(); 
 	}
@@ -80,6 +81,7 @@ void MainMenu::Update(const double& dt) {
 	if (Joystick::isConnected(0)) {
 		if (sf::Joystick::isButtonPressed(0, 0)) {
 			Engine::ChangeScene(&L1);
+			menuLoop.setVolume(60);
 		}
 		if (sf::Joystick::isButtonPressed(0, 1)) {
 			Engine::ChangeScene(&settings);
