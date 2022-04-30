@@ -92,10 +92,10 @@ void EntityManager::update(double dt, sf::Vector2f centreOfScreen, sf::Vector2u 
       continue;
     }
     if (list[i]->_alive 
-        && list[i]->getPosition().x < centreOfScreen.x + screenSize.x / 1.25 
-        && list[i]->getPosition().x > centreOfScreen.x - screenSize.x / 1.25
-        && list[i]->getPosition().y < centreOfScreen.y + screenSize.y / 1.25
-        && list[i]->getPosition().y > centreOfScreen.y - screenSize.y / 1.25
+        && list[i]->getPosition().x < centreOfScreen.x + screenSize.x 
+        && list[i]->getPosition().x > centreOfScreen.x - screenSize.x
+        && list[i]->getPosition().y < centreOfScreen.y + screenSize.y
+        && list[i]->getPosition().y > centreOfScreen.y - screenSize.y
         ) {
       list[i]->update(dt);
       list[i]->setPosition(list[i]->getPosition() + mapPosition);
@@ -103,9 +103,12 @@ void EntityManager::update(double dt, sf::Vector2f centreOfScreen, sf::Vector2u 
   }
 }
 
-void EntityManager::render() {
+void EntityManager::render(sf::Vector2f centreOfScreen, sf::Vector2u screenSize) {
   for (auto& e : list) {
-    if (e->_visible) {
+    if (e->_visible && e->getPosition().x < centreOfScreen.x + screenSize.x
+        && e->getPosition().x > centreOfScreen.x - screenSize.x
+        && e->getPosition().y < centreOfScreen.y + screenSize.y
+        && e->getPosition().y > centreOfScreen.y - screenSize.y) {
       e->render();
     }
   }

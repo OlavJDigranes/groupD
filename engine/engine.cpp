@@ -211,7 +211,7 @@ void Scene::Update(const double& dt) {
     ents.update(dt, Engine::GetWindow().getView().getCenter(), Engine::getWindowSize());
 }
 
-void Scene::Render() { ents.render(); }
+void Scene::Render() { ents.render(Engine::GetWindow().getView().getCenter(), Engine::getWindowSize()); }
 
 bool Scene::isLoaded() const {
   {

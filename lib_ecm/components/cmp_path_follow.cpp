@@ -30,7 +30,18 @@ void PathfindingComponent::update(double dt) {
         }
     }
     if (*_index == _path->size()) {
-        FindNewCheckpoint();
+        std::lock_guard<std::mutex> lck(_hasPath_mtx);
+        // Are we already loading asynchronously?
+        if (_hasPath_future.valid() // yes
+            &&                     // Has it finished?
+            _hasPath_future.wait_for(std::chrono::seconds(0)) ==
+            std::future_status::ready) {
+            // Yes
+            //_hasPath_future.get();
+            FindNewCheckpoint_async();
+            _hasPath = true;
+        }
+        //FindNewCheckpoint();
     }
 }
 
@@ -56,12 +67,16 @@ void PathfindingComponent::FindNewCheckpoint() {
     auto newTileVal = rand() % 4 + 50;
     if (newTileVal != currentTile) {
         auto newChkPt = ls::findTiles(newTileVal).at(0);
-        std::vector<sf::Vector2i> _newPath;
         Vector2i loc = Vector2i((int)newChkPt.x, (int)newChkPt.y);
         Vector2i init = Vector2i(cur.x, cur.y);
         auto path = pathFind(init, loc);
         setPath(path);
     }
+}
+
+void PathfindingComponent::FindNewCheckpoint_async() {
+    std::lock_guard<std::mutex> lck(_hasPath_mtx);
+    std::async(&PathfindingComponent::FindNewCheckpoint, this);
 }
 
 PathfindingComponent::~PathfindingComponent() {

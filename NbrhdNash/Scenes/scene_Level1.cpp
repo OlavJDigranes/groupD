@@ -29,41 +29,6 @@ void Level1::Load() {
 	ls::setMapPosition(sf::Vector2f(0, ho));
 #endif // RENDER_TO_TEX
 
-	// Create player entity
-	{
-		player = makeEntity();
-		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
-		auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
-		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
-		//auto t = player->addComponent<SpriteComponent>();
-		
-		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
-		player->addComponent<PlayerController>(d);
-		player->addComponent<PlayerDataComponent>(100, 100);
-	}
-
-	// Setting view to player's location
-#ifndef RENDER_TO_TEX
-	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(Engine::getWindowSize().x, Engine::getWindowSize().y)));
-	view = player->getPosition();
-#endif // !RENDER_TO_TEX
-
-	// Setting up birds
-	{
-		for (auto tree : ls::findTiles(ls::BIRDSPAWN)) {
-			auto enemy = makeEntity();
-			_birds.push_back(enemy);
-			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t / 2, t / 2)));
-			auto s = enemy->addComponent<ShapeComponent>();
-			s->setShape<CircleShape>(10.0f, 30.0f);
-			s->getShape().setFillColor(Color::Blue);
-			s->getShape().setOrigin(Vector2f(10.f, 10.f));
-			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
-		}
-	}
-
 	// Setting up colliders and sensors for statics (houses/shops etc.)
 	{
 		std::vector<Vector2ul> all;
@@ -188,6 +153,42 @@ void Level1::Load() {
 #endif // DEBUG_AI_PATH
 	}
 
+	// Create player entity
+	{
+		player = makeEntity();
+		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
+		auto s = player->addComponent<ShapeComponent>();
+		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
+		s->getShape().setFillColor(sf::Color::White);
+		s->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
+		//auto t = player->addComponent<SpriteComponent>();
+
+		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
+		player->addComponent<PlayerController>(d);
+		player->addComponent<PlayerDataComponent>(100, 100);
+	}
+
+	// Setting view to player's location
+#ifndef RENDER_TO_TEX
+	playerView = std::make_shared<sf::View>(sf::View(player->getPosition(), Vector2f(Engine::getWindowSize().x, Engine::getWindowSize().y)));
+	view = player->getPosition();
+#endif // !RENDER_TO_TEX
+
+	// Setting up birds
+	{
+		for (auto tree : ls::findTiles(ls::BIRDSPAWN)) {
+			auto enemy = makeEntity();
+			_birds->push_back(enemy);
+			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t / 2, t / 2)));
+			auto s = enemy->addComponent<ShapeComponent>();
+			s->setShape<CircleShape>(10.0f, 30.0f);
+			s->getShape().setFillColor(Color::Blue);
+			s->getShape().setOrigin(Vector2f(10.f, 10.f));
+			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
+		}
+	}
+
+
 	_timer = player->addComponent<LevelTimer>(tag);
 	_reachedShop = false;
 	_complete = false;
@@ -207,7 +208,7 @@ void Level1::UnLoad() {
 		tex.second.reset();
 	}
 	_shops.clear();
-	_birds.clear();
+	_birds->clear();
 	_goalShop = nullptr;
 	_home = nullptr;
 	_timer = nullptr;

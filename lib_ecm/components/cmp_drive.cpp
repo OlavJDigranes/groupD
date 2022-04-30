@@ -96,7 +96,7 @@ AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size, 
     _sm->addState("Braking", std::make_shared<BrakingState>());
     _sm->addState("TurningLeft", std::make_shared<TurningLeftState>(_angle));
     _sm->addState("TurningRight", std::make_shared<TurningRightState>(_angle));
-    _pather->FindNewCheckpoint();
+    _pather->FindNewCheckpoint_async();
     _path = _pather->getPath();
     _index = _pather->getIndex();
     _analysedPath = std::make_shared<std::vector<PathNode>>();
@@ -228,7 +228,7 @@ void AIDrivingComponent::update(double dt) {
         _pather->update(dt);
     }
     else {
-        _pather->FindNewCheckpoint();
+        _pather->FindNewCheckpoint_async();
         _index = _pather->getIndex();
         return;
     }
