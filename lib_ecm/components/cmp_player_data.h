@@ -17,6 +17,7 @@ public:
 	void IncreaseReputation(int Rep) { _rep += Rep; }
 	void DecreaseReputation(int Rep) { _rep -= Rep; }
 	int GetHealth() { return _hp; };
+	int getReputation() { return _rep; }
 	int GetTimesPoopedOn() { return _timesPoopedOn; };
 	void update(double dt) override {};
 	void render() override {};

@@ -49,6 +49,10 @@ void Level1::Load() {
 			debug_shape->getShape().setOrigin(Vector2f(t / 2, t / 2));
 #endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
+			if (ls::getTileAt(pos) == ls::EMPTYHOUSE) {
+				auto t = e->addComponent<SpriteComponent>();
+				t->setTexture(_textures["res/img/house.jpg"]);
+			}
 		}
 		all.clear();
 		auto chkpt = ls::findTiles(ls::CHECKPOINT);
@@ -73,12 +77,12 @@ void Level1::Load() {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
 				auto tex = e->addComponent<SpriteComponent>();
-				tex->setTexure(_textures["res/img/shop.jpg"]);
+				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
 				auto sp = e->addComponent<SpriteComponent>();
-				sp->setTexure(_textures["res/img/road.jpg"]);
+				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
 				auto dbg_m = e->addComponent<ShapeComponent>();
 				dbg_m->setShape<sf::CircleShape>(1.0f, 30.f);
@@ -90,7 +94,7 @@ void Level1::Load() {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
 				_goalShop = m;
 				auto tex = e->addComponent<SpriteComponent>();
-				tex->setTexure(_textures["res/img/shop.jpg"]);
+				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::HOME) {
 				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
@@ -259,6 +263,9 @@ void Level1::Update(const double& dt) {
 			//_timer->LevelTimerStop();
 			_complete = true;
 		}
+	}
+	if (_playerData->GetHealth() <= 0 && _playerData->getReputation() <= 0) {
+		_hasFailed = true;
 	}
 	// Debug birds chasing player
 #ifdef DEBUG_BIRDS

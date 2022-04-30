@@ -7,7 +7,7 @@ using namespace sf;
 using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
-  _parent->setPosition(bv2_to_sv2(_body->GetPosition()));
+  //_parent->setPosition(bv2_to_sv2(_body->GetPosition()));
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
