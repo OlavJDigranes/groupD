@@ -7,6 +7,7 @@
 #include "components/cmp_sprite.h"
 #include "components/cmp_state_machine.h"
 #include "components/states_driving.h"
+#include "cmp_player_data.h"
 #include <LevelSystem.h>
 #include <maths.h>
 
@@ -22,6 +23,7 @@ protected:
 	std::shared_ptr<b2Vec2> _direction;
 	bodyUserData* _data;
 	float _topSpeed;
+	bool _colliding;
 
 public:
 	void Drive(float speed, double dt);
@@ -31,6 +33,10 @@ public:
 	void SetDirection(b2Vec2 newDir) { *_direction = newDir; };
 	void SetDirection(sf::Vector2i newDir) { SetDirection(b2Vec2(newDir.x, newDir.y)); };
 	float32 GetCurrentSpeed() { return _currentSpeed; }
+
+	void IsColliding();
+	std::vector<const b2Contact const*> _dirtyCheck;
+
 
 	void render() override {};
 	void update(double dt) override;

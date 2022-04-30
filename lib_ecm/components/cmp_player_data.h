@@ -4,20 +4,21 @@
 
 class PlayerDataComponent : public Component {
 protected:
-	int _playerHealth = 100;
-	int _reputation = 100;
+	int _hp = 100;
+	int _rep = 100;
 	int _collisionCount = 0;
 	int _timesPoopedOn = 0;
 
 public:
 	PlayerDataComponent() = delete;
-	explicit PlayerDataComponent(Entity* p, int startingHP, int startingRep) : _playerHealth(startingHP), _reputation(startingRep), Component(p) {};
-	void TakeDamage(int HP) { _playerHealth -= HP; };
-	void Heal(int HP) { _playerHealth += HP; }
-	void IncreaseReputation(int Rep) { _reputation += Rep; }
-	void DecreaseReputation(int Rep) { _reputation -= Rep; }
-	int GetHealth() { return _playerHealth; };
+	explicit PlayerDataComponent(Entity* p, int startingHP, int startingRep) : _hp(startingHP), _rep(startingRep), Component(p) {};
+	void TakeDamage(int HP) { _hp -= HP; };
+	void Heal(int HP) { _hp += HP; }
+	void IncreaseReputation(int Rep) { _rep += Rep; }
+	void DecreaseReputation(int Rep) { _rep -= Rep; }
+	int GetHealth() { return _hp; };
 	int GetTimesPoopedOn() { return _timesPoopedOn; };
 	void update(double dt) override {};
 	void render() override {};
+	//~PlayerDataComponent() {};
 };

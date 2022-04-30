@@ -34,6 +34,38 @@ DrivingComponent::DrivingComponent(Entity* parent, const sf::Vector2f size, cons
     _body->CreateFixture(&fixDef);
 }
 
+void DrivingComponent::IsColliding() {
+    std::vector<const b2Contact const*> ret;
+    b2ContactEdge* edge = _body->GetContactList();
+    while (edge != NULL) {
+        const b2Contact* contact = edge->contact;
+        if (contact->IsTouching() && contact->GetFixtureA()->GetUserData() != "AI" && contact->GetFixtureB()->GetUserData() != "AI") {
+            ret.push_back(contact);
+        }
+        edge = edge->next;
+    }
+    if (_dirtyCheck != ret && ret.size() > _dirtyCheck.size()) {
+        for (auto ent : ret) {
+            auto bodyA = (bodyUserData*)ent->GetFixtureA()->GetBody()->GetUserData();
+            auto bodyB = (bodyUserData*)ent->GetFixtureB()->GetBody()->GetUserData();
+            if (bodyA->_tag == "AI" || bodyB->_tag == "AI") {
+                printf("Successfully detected AI\n");
+                _dirtyCheck = ret;
+                _colliding = true;
+                if (_parent->get_components<PlayerDataComponent>().size() != 0) {
+                    _parent->get_components<PlayerDataComponent>()[0]->TakeDamage(20);
+                    printf("taken damage\n");
+                }
+            }
+        }
+    }
+    else if (_dirtyCheck.size() > ret.size()) {
+        printf("AI has left detection area\n");
+        _colliding = false;
+        _dirtyCheck = ret;
+    }
+}
+
 void DrivingComponent::Drive(float speed, double dt) {
     // If brakes have been activated then reset damping
     if (_body->GetLinearDamping() > 0.5) {
@@ -71,6 +103,10 @@ void DrivingComponent::update(double dt) {
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * *_direction); // ensure the car is always travelling forwards when turning with no accel
     _currentSpeed = _body->GetLinearVelocity().Length(); // Update speed to follow damping effects
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition())); // Set parent to follow body when not moving
+
+    if (_data->_tag != "AI") {
+        IsColliding();
+    }
 }
 
 DrivingComponent::~DrivingComponent() {

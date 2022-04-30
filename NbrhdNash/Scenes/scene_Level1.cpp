@@ -165,7 +165,7 @@ void Level1::Load() {
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		player->addComponent<PlayerDataComponent>(100, 100);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100);
 	}
 
 	// Setting view to player's location
@@ -215,6 +215,7 @@ void Level1::UnLoad() {
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
 	player = nullptr;
+	_playerData = nullptr;
 	ls::unload();
 	Scene::UnLoad();
 }
@@ -255,7 +256,7 @@ void Level1::Update(const double& dt) {
 	}
 	if (_home->HasGoalBeenReached() && _reachedShop == true && _complete == false) {
 		if (_home->HasGoalBeenReached()) {
-			_timer->LevelTimerStop();
+			//_timer->LevelTimerStop();
 			_complete = true;
 		}
 	}

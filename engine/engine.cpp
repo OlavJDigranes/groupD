@@ -165,6 +165,14 @@ void Engine::Start(unsigned int width, unsigned int height,
         }
 
     }
+    if (_activeScene == &L1) {
+        if (L1.IsCompleted()) {
+            Engine::ChangeScene(&celebration);
+        }
+        else if (L1.HasFailedLevel()) {
+            Engine::ChangeScene(&gameover);
+        }
+    }
 
     window.clear();
     Update();

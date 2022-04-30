@@ -24,7 +24,12 @@ protected:
 	std::shared_ptr<PlayerDataComponent> _playerData;
 	bool _reachedShop;
 	bool _complete;
+	bool _hasFailed;
 public:
+	bool IsCompleted() { return _complete; }
+
+	bool HasFailedLevel () { return _hasFailed; }
+
 	void Load() override;
 
 	void UnLoad() override;
