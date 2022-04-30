@@ -65,13 +65,13 @@ void AIBirdComponent::CheckForPlayer(double dt) {
         auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
         auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
         if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
-            printf("Successfully detected Player\n");
+            //printf("Successfully detected Player\n");
             _dirtyCheck = ret;
             _overPlayer = true;
         }
     }
     else if (_dirtyCheck.size() > ret.size()) {
-        printf("Player has left detection area\n");
+        //printf("Player has left detection area\n");
         _dirtyCheck = ret;
         _overPlayer = false;
     }
@@ -92,13 +92,13 @@ void AIBirdComponent::update(double dt) {
     }
     if (_overPlayer && _isChasing) {
         _timeToPoop += dt;
-        printf("poop time = %f\n", _timeToPoop);
+        //printf("poop time = %f\n", _timeToPoop);
     }
     if (_isChasing && _timeToPoop > 1) {
         auto p = _player->get_components<PlayerDataComponent>();
         if (p[0] != nullptr) {
             p[0]->TakeDamage(10);
-            printf("Health: %i\n", p[0]->GetHealth());
+            //printf("Health: %i\n", p[0]->GetHealth());
         }
         splat.play(); 
         _isChasing = false;

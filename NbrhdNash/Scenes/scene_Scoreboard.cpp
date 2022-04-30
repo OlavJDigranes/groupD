@@ -73,7 +73,6 @@ void Scoreboard::Load() {
 	//Populate the elements if needed, and place on screen. 
 	for (int i = 0; i < counter; i++) {
 		int dist = i * 35;
-		std::cout << dist << endl; 
 		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, (Engine::getWindowSize().y * 0.2) + dist));
 		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i + 1) + ": " + lines[i] + "\n");
 	}
