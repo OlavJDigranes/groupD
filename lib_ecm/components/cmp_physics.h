@@ -6,6 +6,7 @@
 #include <Box2D/Box2D.h>
 #include "Box2D/Dynamics/b2Body.h"
 #include <LevelSystem.h>
+#include <SFML/Audio.hpp>
 
 //#define DEBUG_GRATE_TRIGGER_RADIUS
 
@@ -47,6 +48,8 @@ protected:
 	bool _isActive;
 	bool goalReached;
 	bool _playerOverlap;
+	sf::SoundBuffer checkpointSoundBuffer; 
+	sf::Sound checkpointSound; 
 public:
 	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal, bool isActive);
 	void IsPlayerOverlapping();

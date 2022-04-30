@@ -6,6 +6,7 @@
 #include "states_bird.h"
 #include "maths.h"
 #include <LevelSystem.h>
+#include <SFML/Audio.hpp>
 
 class AIBirdComponent : public Component {
 protected:
@@ -20,6 +21,13 @@ protected:
 	sf::Vector2f homeLoc;
 	bool _overPlayer = false;
 	double _timeToPoop = 0;
+
+	//Sounds
+	sf::SoundBuffer splatBuffer;
+	sf::Sound splat; 
+
+	sf::SoundBuffer flyingBuffer;
+	sf::Sound flying; 
 
 	//TODO: Fix birds with homeloc as tree
 public:

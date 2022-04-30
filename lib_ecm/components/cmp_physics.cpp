@@ -186,6 +186,11 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
         edge = edge->next;
     }
     _dirtyCheck = ret;
+
+    //Checkpoint Sound
+    checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
+    checkpointSound.setBuffer(checkpointSoundBuffer);
+    checkpointSound.setVolume(70);
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {
@@ -215,17 +220,19 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
             auto bodyA = (bodyUserData*)ent->GetFixtureA()->GetBody()->GetUserData();
             auto bodyB = (bodyUserData*)ent->GetFixtureB()->GetBody()->GetUserData();
             if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
-                printf("Successfully detected Player\n");
+                //printf("Successfully detected Player\n");
                 _dirtyCheck = ret;
                 _playerOverlap = true;
                 if (_isGoal) {
                     goalReached = true;
+                    //Checkpoint Sound
+                    checkpointSound.play();
                 }
             }
         }
     }
     else if (_dirtyCheck.size() > ret.size()) {
-        printf("Player has left detection area\n");
+        //printf("Player has left detection area\n");
         _playerOverlap = false;
         _dirtyCheck = ret;
     }

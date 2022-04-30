@@ -49,18 +49,18 @@ void DrivingComponent::IsColliding() {
             auto bodyA = (bodyUserData*)ent->GetFixtureA()->GetBody()->GetUserData();
             auto bodyB = (bodyUserData*)ent->GetFixtureB()->GetBody()->GetUserData();
             if (bodyA->_tag == "AI" || bodyB->_tag == "AI") {
-                printf("Successfully detected AI\n");
+                //printf("Successfully detected AI\n");
                 _dirtyCheck = ret;
                 _colliding = true;
                 if (_parent->get_components<PlayerDataComponent>().size() != 0) {
                     _parent->get_components<PlayerDataComponent>()[0]->TakeDamage(20);
-                    printf("taken damage\n");
+                    //printf("taken damage\n");
                 }
             }
         }
     }
     else if (_dirtyCheck.size() > ret.size()) {
-        printf("AI has left detection area\n");
+        //printf("AI has left detection area\n");
         _colliding = false;
         _dirtyCheck = ret;
     }
@@ -138,7 +138,7 @@ AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size, 
     _analysedPath = std::make_shared<std::vector<PathNode>>();
     AnalysePath();
     lastNode = _analysedPath->at(0);
-    printf("Set up path for AI\n");
+    //printf("Set up path for AI\n");
     _sm->changeState("Accelerating");
 }
 

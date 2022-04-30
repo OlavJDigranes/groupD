@@ -4,6 +4,8 @@ using namespace std;
 using namespace sf; 
 
 PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> drive_cmp) : Component(p), _driver(drive_cmp) {
+    
+    /*
     for (unsigned int i = 0; i < sf::Joystick::Count; ++i)
     {
         if (sf::Joystick::isConnected(i))
@@ -11,6 +13,7 @@ PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> dr
         else
             std::cout << "Joystick " << i << " is NOT connected!" << std::endl;
     }    
+    */
 
     //Driving sound
     carEngineBuffer.loadFromFile("res/music/CarSound.mp3");
@@ -74,7 +77,7 @@ void PlayerController::update(double dt) {
         }
 	}
 	else {
-        printf("No driving component connected. Destroying controller instance.");
+        //printf("No driving component connected. Destroying controller instance.");
 		PlayerController::~PlayerController();
 	}
 }

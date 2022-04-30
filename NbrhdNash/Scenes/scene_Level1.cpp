@@ -254,7 +254,7 @@ void Level1::Update(const double& dt) {
 	// Goal checking for arrival at correct shop
 	if (_goalShop->HasGoalBeenReached() && _reachedShop == false) {
 		_reachedShop = true;
-		printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
+		//printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
 		_home->SetActive(true);
 		_goalShop->SetActive(false);
 	}

@@ -38,7 +38,7 @@ void SteeringScene::Load() {
         enemy->addComponent<SteeringComponent>(player.get(), true, sf::Vector2i(ls::getWidth(), ls::getHeight()));
     }
 
-    std::cout << " Scene 1 Load Done" << std::endl;
+    //std::cout << " Scene 1 Load Done" << std::endl;
 
     setLoaded(true);
 }
