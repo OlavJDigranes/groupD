@@ -29,6 +29,6 @@ SteeringOutput Face::getSteering() const noexcept {
     tan = atan2(steering.direction.y, steering.direction.x);
     steering.rotation = (sf::rad2deg(tan));
     steering.direction *= _maxSpeed;
-    std::cout << steering.rotation << std::endl; 
+    //std::cout << steering.rotation << std::endl; 
     return steering;
 }

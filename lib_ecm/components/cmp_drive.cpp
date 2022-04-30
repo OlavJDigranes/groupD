@@ -1,9 +1,10 @@
 #include "cmp_drive.h"
 
-DrivingComponent::DrivingComponent(Entity* parent, const sf::Vector2f size, const char data[]) : Component(parent) {
+DrivingComponent::DrivingComponent(Entity* parent, const sf::Vector2f size, const char data[], float TopSpeed) : Component(parent), _topSpeed(24) {
 	_parent = parent;
     _direction = std::make_shared<b2Vec2>(b2Vec2(0, -1));
     _currentSpeed = 0;
+    _topSpeed = TopSpeed;
     _size = Physics::sv2_to_bv2(size, true);
     _halfSize = Physics::sv2_to_bv2(0.5f * size);
 
@@ -39,7 +40,7 @@ void DrivingComponent::Drive(float speed, double dt) {
         _body->SetLinearDamping(0.5);
     }
     // If below top speed, set body velocity to increase in direction and let parent (sprite) update
-    if (_body->GetLinearVelocity().LengthSquared() <= pow(8, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= 8) {
+    if (_body->GetLinearVelocity().LengthSquared() <= pow(_topSpeed, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= _topSpeed) {
         _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * *_direction));
         _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
         _currentSpeed += speed * dt;
@@ -86,119 +87,152 @@ void DrivingComponent::teleport(sf::Vector2f pos) {
 }
 #endif
 
-AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size) : Component(parent) {
-    _driver = std::make_unique<DrivingComponent>(parent, size, "AI");
+AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size, float TopSpeed) : Component(parent), 
+    _angle(std::make_shared<double>(0)) {
+    _driver = std::make_shared<DrivingComponent>(parent, size, "AI", TopSpeed);
     _pather = std::make_unique<PathfindingComponent>(parent);
-    _pather->FindNewCheckpoint();
+    _sm = std::make_unique<StateMachineComponent>(parent);
+    _sm->addState("Accelerating", std::make_shared<AcceleratingState>());
+    _sm->addState("Braking", std::make_shared<BrakingState>());
+    _sm->addState("TurningLeft", std::make_shared<TurningLeftState>(_angle));
+    _sm->addState("TurningRight", std::make_shared<TurningRightState>(_angle));
+    _pather->FindNewCheckpoint_async();
     _path = _pather->getPath();
     _index = _pather->getIndex();
+    _analysedPath = std::make_shared<std::vector<PathNode>>();
     AnalysePath();
-    lastNode = _analysedPath.at(0);
+    lastNode = _analysedPath->at(0);
     printf("Set up path for AI\n");
+    _sm->changeState("Accelerating");
 }
 
 void AIDrivingComponent::AnalysePath() {
+    sf::Vector2i prev_dir;
     for (int i = 0; i < _path->size(); i++) {
         PathNode p;
         sf::Vector2i dir = sf::Vector2i(0,0);
-        p.pos = ls::getTilePosition(sf::Vector2ul(_path->at(i).x, _path->at(i).y));
+        p.tilePos = sf::Vector2ul(_path->at(i).x, _path->at(i).y);
+        p.worldPos = ls::getTilePosition(sf::Vector2ul(_path->at(i).x, _path->at(i).y));
         p.idx = i;
         p.isCorner = false;
         p.turnLeft = false;
-        if (i + 2 < _path->size()) {
-            dir = _path->at(i + 2) - _path->at(i);
+        if (i + 1 < _path->size()) {
+            dir = _path->at(i + 1) - _path->at(i);
+            if (i == 0) {
+                prev_dir = dir;
+            }
         }
-        if (dir.x != 0 && dir.y != 0)
+        bool dX = dir.x != prev_dir.x;
+        bool dY = dir.y != prev_dir.y;
+        if (dX && dY)
         {
             p.isCorner = true;
-            if (dir.y > 0) {
-                if (dir.x < 0) {
-                    p.turnLeft = true;
-                }
+            if (prev_dir.x == -1 && dir.y == 1) {
+                p.turnLeft = true;
             }
-            else {
-                if (dir.x > 0) {
-                    p.turnLeft = true;
-                }
+            if (prev_dir.x == 1 && dir.y == -1) {
+                p.turnLeft = true;
+            }
+            if (prev_dir.y == 1 && dir.x == 1) {
+                p.turnLeft = true;
+            }
+            if (prev_dir.y == -1 && dir.x == -1) {
+                p.turnLeft = true;
             }
         }
-        /*auto horizontalDiff = _path->at(i + 2).x != _path->at(i).x;
-        auto verticalDiff = _path->at(i + 2).y != _path->at(i).y;
-        if (horizontalDiff && verticalDiff) {
-            p.isCorner = true;
-            if (p.pos.x < _path->at(*_index + 2).x) {
-                if (p.pos.y < _path->at(*_index + 2).y) {
-                    p.turnLeft = true;
-                }
-            }
-            else {
-                if (p.pos.x > _path->at(*_index + 2).x) {
-                    if (p.pos.y > _path->at(*_index + 2).y) {
-                        p.turnLeft = true;
-                    }
-                }
-            }
-        }*/
-        _analysedPath.push_back(p);
+        _analysedPath->push_back(p);
+        prev_dir = dir;
     }
 }
 
 void AIDrivingComponent::ComputeActions(double dt) {
-    bool braking = false;
-    //printf("Current Position = %f, %f\n", _parent->getPosition().x, _parent->getPosition().y);
-    //printf("Target = %f, %f\n", _analysedPath.at(*_index).pos.x, _analysedPath.at(*_index).pos.y);
-    //printf("Target index = %f\n", *_index);
-    //system("cls");
-    if (_analysedPath.at(*_index).isCorner) {
-        if (_driver->GetCurrentSpeed() > 1) {
-            _driver->Brake(dt);
-            braking = true;
+    if (_analysedPath->at(*_index).isCorner) {
+        if (_driver->GetCurrentSpeed() > 4) {
+            _sm->changeState("Braking");
+            return;
         }
     }
     auto dir = *_driver->GetDirection();
-    sf::Vector2ul nextLoc = sf::Vector2ul(_analysedPath.at(*_index).pos.x, _analysedPath.at(*_index).pos.y);
-    auto trg = Physics::sv2_to_bv2(sf::Vector2f(nextLoc + sf::Vector2ul(ls::getTileSize()/2, ls::getTileSize() / 2)) - _parent->getPosition());
-    trg.Normalize();
+    sf::Vector2f nextLoc = _analysedPath->at(*_index).worldPos + sf::Vector2f(ls::getTileSize() / 2, ls::getTileSize() / 2); //sf::Vector2ul(_analysedPath->at(*_index).worldPos.x, _analysedPath->at(*_index).worldPos.y);
+    auto trg = nextLoc - _parent->getPosition();
+    trg = trg.normalized();
 
-    if (dir.x > trg.x + 0.025 || dir.y > trg.y + 0.025) {
-        float adj_rate;
-        dir.x > trg.x + 0.025 ? adj_rate = dir.x - trg.x : adj_rate = dir.y - trg.y;
-        _driver->Rotate(-180 * (1 + adj_rate), dt);
-        if (_driver->GetCurrentSpeed() > 1) {
-            _driver->Brake(dt);
-            braking = true;
-        }
+    auto top = (dir.x * trg.x) + (dir.y * trg.y);
+    auto bottom = (sqrt(pow(dir.x, 2) + pow(dir.y, 2))) * (sqrt(pow(trg.x, 2) + pow(trg.y, 2)));
+    auto sum = top / bottom;
+    *_angle = sf::rad2deg(acos(sum));
+    if (std::isnan(*_angle)) {
+       *_angle = 0;
     }
-    if (dir.x < trg.x - 0.025 || dir.y < trg.y - 0.025) {
-        float adj_rate;
-        dir.x < trg.x + 0.025 ? adj_rate = trg.x - dir.x : adj_rate = trg.y - dir.y;
-        _driver->Rotate(180 * (1 + adj_rate), dt);
-        if (_driver->GetCurrentSpeed() > 1) {
-            _driver->Brake(dt);
-            braking = true;
+    else {
+        //if facing right
+        if (dir.x > dir.y && dir.x > 0) {
+            if (nextLoc.y < _parent->getPosition().y) {
+                _sm->changeState("TurningLeft");
+                return;
+            }
+            else {
+                _sm->changeState("TurningRight");
+                return;
+            }
         }
+        else if (dir.x < dir.y && dir.x < 0) {
+            if (nextLoc.y > _parent->getPosition().y) {
+                _sm->changeState("TurningLeft");
+                return;
+            }
+            else {
+                _sm->changeState("TurningRight");
+                return;
+            }
+        }
+        // if facing down
+        else if (dir.y > dir.x && dir.y > 0) {
+            if (nextLoc.x > _parent->getPosition().x) {
+                _sm->changeState("TurningLeft");
+                return;
+            }
+            else {
+                _sm->changeState("TurningRight");
+                return;
+            }
+        }
+        // if facing up
+        else if (dir.y < dir.x && dir.y < 0) {
+            if (nextLoc.x < _parent->getPosition().x) {
+                //angle = -angle;
+                _sm->changeState("TurningLeft");
+                return;
+            }
+            else {
+                _sm->changeState("TurningRight");
+                return;
+            }
+        }
+
     }
    
-    if (!braking && _parent->getPosition() != _analysedPath.at(*_index).pos) {
-        _driver->Drive(0.1, dt);
+    if (_parent->getPosition() != _analysedPath->at(*_index).worldPos) {
+        _sm->changeState("Accelerating");
+        return;
     }
 }
 
 void AIDrivingComponent::update(double dt) {
-    if (_path->size() != 0) {
+    if (_path->size() != 0 && *_index < _path->size()) {
         if (lastNode.idx < *_index - 1 && *_index != 0) {
-            lastNode = _analysedPath.at(*_index - 1);
+            lastNode = _analysedPath->at(*_index - 1);
         }
         ComputeActions(dt);
-        //_driver->Drive(1, dt);
         _driver->update(dt);
         _pather->update(dt);
     }
     else {
-        _pather->FindNewCheckpoint();
+        _pather->FindNewCheckpoint_async();
+        _index = _pather->getIndex();
         return;
     }
-    //Component::update(dt);
+    _sm->update(dt);
 }
 
 AIDrivingComponent::~AIDrivingComponent() {

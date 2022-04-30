@@ -33,7 +33,7 @@ void PlayerController::update(double dt) {
             d->Rotate(180, dt);    // Turn right
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            d->Drive(1, dt);   // Drive forwards
+            d->Drive(3, dt);   // Drive forwards
             //Driving sound
             soundOn = true;
         }
@@ -53,7 +53,7 @@ void PlayerController::update(double dt) {
                 d->Rotate(180, dt);    // Turn right
             }
             if (joystickTAxisPos < 0) {
-                d->Drive(1, dt);   // Drive forwards
+                d->Drive(3, dt);   // Drive forwards
                 soundOn = true;
             }
             if (joystickTAxisPos > 0) {

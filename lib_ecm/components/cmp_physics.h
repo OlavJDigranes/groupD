@@ -1,9 +1,13 @@
 #pragma once
 
 #include "cmp_sprite.h"
+#include "cmp_ai_bird.h"
 #include "../lib_ecm/ecm.h"
 #include <Box2D/Box2D.h>
 #include "Box2D/Dynamics/b2Body.h"
+#include <LevelSystem.h>
+
+//#define DEBUG_GRATE_TRIGGER_RADIUS
 
 class PhysicsComponent : public Component {
 protected:
@@ -42,6 +46,7 @@ protected:
 	bool _isGoal;
 	bool _isActive;
 	bool goalReached;
+	bool _playerOverlap;
 public:
 	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal, bool isActive);
 	void IsPlayerOverlapping();
@@ -51,4 +56,36 @@ public:
 	void update(double dt) override;
 	void render() override;
 	~PhysicsTriggerComponent() override;
+};
+
+//class GrateComponent : public PhysicsTriggerComponent {
+//protected:
+//	b2Fixture* _trigger;
+//	std::vector<const b2Contact const*> _triggerDirtyCheck;
+//	bool _isExpanding;
+//public:
+//	GrateComponent() = delete;
+//	explicit GrateComponent(Entity* p, const sf::Vector2f& size);
+//	void ExpandAndNotify(double dt);
+//	void ResetSize(double dt);
+//	float32 ReturnTriggerRadius() { return _trigger->GetShape()->m_radius; };
+//	void update(double dt) override;
+//	~GrateComponent() override;
+//#ifdef DEBUG_GRATE_TRIGGER_RADIUS
+//	void ConsumeDebugCmp(std::shared_ptr<ShapeComponent> cmp);
+//	std::shared_ptr<ShapeComponent> debug;
+//#endif
+//};
+
+class GrateComponent : public PhysicsTriggerComponent {
+protected:
+	std::vector<std::shared_ptr<Entity>> *_birds = new std::vector<std::shared_ptr<Entity>>();
+	bool _toReset;
+public:
+	GrateComponent() = delete;
+	explicit GrateComponent(Entity* p, const sf::Vector2f& size, std::vector<std::shared_ptr<Entity>> *birds)
+		: PhysicsTriggerComponent(p, size, false, true), _birds(birds), _toReset(false) {};
+	void update(double dt) override;
+	void render() override {};
+	~GrateComponent();
 };

@@ -2,6 +2,7 @@
 #include "maths.h"
 #include <algorithm>
 #include <memory>
+#include "SFML/Graphics/Rect.hpp"
 #include <set>
 #include <typeindex>
 #include <vector>
@@ -36,8 +37,8 @@ public:
 
 struct EntityManager {
   std::vector<std::shared_ptr<Entity>> list;
-  void update(double dt);
-  void render();
+  void update(double dt, sf::Vector2f centreOfScreen, sf::Vector2u screenSize);
+  void render(sf::Vector2f centreOfScreen, sf::Vector2u screenSize);
   std::vector<std::shared_ptr<Entity>> find(const std::string& tag) const;
   std::vector<std::shared_ptr<Entity>>
   find(const std::vector<std::string>& tags) const;

@@ -94,6 +94,7 @@ PhysicsComponent::~PhysicsComponent() {
   Physics::GetWorld()->DestroyBody(_body);
   // delete _body;
   _body = nullptr;
+  _fixture = nullptr;
 }
 
 void PhysicsComponent::render() {}
@@ -154,7 +155,7 @@ void PhysicsComponent::setRestitution(float r) {
 }
 
 PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal, bool isActive) 
-    : Component(p), _dynamic(false), _isGoal(isGoal), _isActive(isActive), goalReached(false) {
+    : Component(p), _dynamic(false), _isGoal(isGoal), _isActive(isActive), goalReached(false), _playerOverlap(false) {
     b2BodyDef BodyDef;
     BodyDef.type = b2_staticBody;
     BodyDef.position = sv2_to_bv2((p->getPosition() + (0.5f * size)));
@@ -200,30 +201,32 @@ void PhysicsTriggerComponent::SetActive(bool active) {
 }
 
 void PhysicsTriggerComponent::IsPlayerOverlapping() {
-    std::string* p_check = new std::string("Player");
-
     std::vector<const b2Contact const*> ret;
     b2ContactEdge* edge = _body->GetContactList();
     while (edge != NULL) {
         const b2Contact* contact = edge->contact;
-        if (contact->IsTouching()) {
+        if (contact->IsTouching() && contact->GetFixtureA()->GetUserData() != "AI" && contact->GetFixtureB()->GetUserData() != "AI") {
             ret.push_back(contact);
         }
         edge = edge->next;
     }
     if (_dirtyCheck != ret && ret.size() > _dirtyCheck.size()) {
-        auto bodyA = (bodyUserData*)ret.back()->GetFixtureA()->GetBody()->GetUserData();
-        auto bodyB = (bodyUserData*)ret.back()->GetFixtureB()->GetBody()->GetUserData();
-        if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
-            printf("Successfully detected Player\n");
-            _dirtyCheck = ret;
-            if (_isGoal) {
-                goalReached = true;
+        for (auto ent : ret) {
+            auto bodyA = (bodyUserData*)ent->GetFixtureA()->GetBody()->GetUserData();
+            auto bodyB = (bodyUserData*)ent->GetFixtureB()->GetBody()->GetUserData();
+            if (bodyA->_tag == "Player" || bodyB->_tag == "Player") {
+                printf("Successfully detected Player\n");
+                _dirtyCheck = ret;
+                _playerOverlap = true;
+                if (_isGoal) {
+                    goalReached = true;
+                }
             }
         }
     }
     else if (_dirtyCheck.size() > ret.size()) {
         printf("Player has left detection area\n");
+        _playerOverlap = false;
         _dirtyCheck = ret;
     }
 }
@@ -243,4 +246,29 @@ PhysicsTriggerComponent::~PhysicsTriggerComponent() {
     Physics::GetWorld()->DestroyBody(_body);
     // delete _body;
     _body = nullptr;
+    _fixture = nullptr;
+}
+
+void GrateComponent::update(double dt) {
+    PhysicsTriggerComponent::update(dt);
+    if (_playerOverlap && !_toReset) {
+        for (const auto& b : *_birds) {
+            auto pos = b->getPosition();
+            if (sf::Vector2f(pos - _parent->getPosition()).lengthSq() < pow((ls::getTileSize() * 5), 2)) {
+                auto cmp = b->GetCompatibleComponent<AIBirdComponent>();
+                if (cmp.size() > 0 && cmp[0] != nullptr) {
+                    cmp[0]->SetChasing(true);
+                    _toReset = true;
+                }
+            }
+        }
+    }
+    else if (!_playerOverlap && _toReset) {
+        _toReset = false;
+    }
+}
+
+GrateComponent::~GrateComponent() {
+    _birds->clear();
+    _birds = nullptr;
 }

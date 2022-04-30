@@ -23,8 +23,8 @@ void SteeringComponent::update(double dt) {
 }
 
 SteeringComponent::SteeringComponent(Entity* p, Entity* player, bool ActiveOnCreation, Vector2i mapBounds)
-    : _player(player), _isActive(ActiveOnCreation), _mapBounds(mapBounds),_seek(Seek(p, player, 100.0f)),
-    _flee(Flee(p, player, 100.0f)), _face(Face(p, player, 100.0f)), Component(p) {
+    : _player(player), _isActive(ActiveOnCreation), _mapBounds(mapBounds), _seek(Seek(p, player, 100.0f)),
+    _flee(Flee(p, player, 100.0f)), _face(Face(p, player, 100.0f)), _atTarget(false), _rotation(0), Component(p) {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = Physics::sv2_to_bv2(_parent->getPosition());
@@ -103,3 +103,25 @@ void SteeringComponent::move(const sf::Vector2f& p) {
 
 void SteeringComponent::move(float x, float y) { move(Vector2f(x, y)); }
 */
+
+BirdSteering::BirdSteering(Entity* p, Entity* player,bool ActiveOnCreation, sf::Vector2i mapBounds) : SteeringComponent(p, player, ActiveOnCreation, mapBounds), 
+_targetingEntity(), fly(BirdFlyToTarget(p, player, p->getPosition(), 100, _targetingEntity)), _entityTarget(nullptr) {
+}
+
+void BirdSteering::rotate(SteeringOutput rot, float dt) {
+    _body->SetTransform(_body->GetPosition(), _body->GetAngle() + rot.rotation);
+    _parent->setRotation(_parent->getRotation() + (rot.rotation * dt));
+}
+
+void BirdSteering::update(double dt) {
+    if (_isActive) {
+        auto rot = fly.getSteering();
+        rotate(rot, dt);
+        move(rot.direction * (float)dt, rot.rotation * (float)dt);
+    }
+}
+
+BirdSteering::~BirdSteering() {
+    _entityTarget = nullptr;
+    delete _entityTarget;
+}

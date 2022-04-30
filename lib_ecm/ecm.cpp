@@ -84,23 +84,31 @@ Component::~Component() {}
 
 bool Component::is_fordeletion() const { return _fordeletion; }
 
-void EntityManager::update(double dt) {
+void EntityManager::update(double dt, sf::Vector2f centreOfScreen, sf::Vector2u screenSize) {
   for (size_t i = 0; i < list.size(); i++) {
     if (list[i]->is_fordeletion()) {
       list.erase(list.begin() + i);
       --i;
       continue;
     }
-    if (list[i]->_alive) {
+    if (list[i]->_alive 
+        && list[i]->getPosition().x < centreOfScreen.x + screenSize.x 
+        && list[i]->getPosition().x > centreOfScreen.x - screenSize.x
+        && list[i]->getPosition().y < centreOfScreen.y + screenSize.y
+        && list[i]->getPosition().y > centreOfScreen.y - screenSize.y
+        ) {
       list[i]->update(dt);
       list[i]->setPosition(list[i]->getPosition() + mapPosition);
     }
   }
 }
 
-void EntityManager::render() {
+void EntityManager::render(sf::Vector2f centreOfScreen, sf::Vector2u screenSize) {
   for (auto& e : list) {
-    if (e->_visible) {
+    if (e->_visible && e->getPosition().x < centreOfScreen.x + screenSize.x
+        && e->getPosition().x > centreOfScreen.x - screenSize.x
+        && e->getPosition().y < centreOfScreen.y + screenSize.y
+        && e->getPosition().y > centreOfScreen.y - screenSize.y) {
       e->render();
     }
   }
