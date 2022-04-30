@@ -49,7 +49,7 @@ void Level1::Load() {
 			debug_shape->getShape().setOrigin(Vector2f(t / 2, t / 2));
 #endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
-			if (ls::getTileAt(pos) == ls::EMPTYHOUSE) {
+			if (ls::getTileAt(pos) == ls::EMPTYHOUSE || ls::getTileAt(pos) == ls::NEIGHBOURHOUSE) {
 				auto t = e->addComponent<SpriteComponent>();
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
