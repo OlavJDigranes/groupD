@@ -186,6 +186,11 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
         edge = edge->next;
     }
     _dirtyCheck = ret;
+
+    //Checkpoint Sound
+    checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
+    checkpointSound.setBuffer(checkpointSoundBuffer);
+    checkpointSound.setVolume(70);
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {
@@ -220,6 +225,8 @@ void PhysicsTriggerComponent::IsPlayerOverlapping() {
                 _playerOverlap = true;
                 if (_isGoal) {
                     goalReached = true;
+                    //Checkpoint Sound
+                    checkpointSound.play();
                 }
             }
         }

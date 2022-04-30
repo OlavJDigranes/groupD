@@ -38,6 +38,16 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
     _dirtyCheck = ret;
     _sm->changeState("Waiting");
     homeLoc = _parent->getPosition();
+
+    //Sounds
+    splatBuffer.loadFromFile("res/music/BirdSplat.mp3");
+    flyingBuffer.loadFromFile("res/music/PigeonFlight.mp3");
+
+    splat.setBuffer(splatBuffer);
+    flying.setBuffer(flyingBuffer); 
+
+    splat.setVolume(70);
+    flying.setVolume(65); 
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {
@@ -71,6 +81,8 @@ void AIBirdComponent::update(double dt) {
     if (_isChasing) {
         if (_sm->currentState() != "Chasing") {
             _sm->changeState("Chasing");
+            flying.play(); 
+            flying.setLoop(true); 
         }
         CheckForPlayer(dt);
         if (_isChasing && sf::Vector2f(_parent->getPosition() - _player->getPosition()).lengthSq() > pow(ls::getTileSize() * 10, 2)) {
@@ -88,11 +100,13 @@ void AIBirdComponent::update(double dt) {
             p[0]->TakeDamage(10);
             printf("Health: %i\n", p[0]->GetHealth());
         }
+        splat.play(); 
         _isChasing = false;
         _timeToPoop = 0;
         _sm->changeState("ReturnHome");
     }
     if (sf::Vector2f(_parent->getPosition() - GetHomeLocation()).lengthSq() < pow(5, 2) && _sm->currentState() == "ReturnHome") {
+        flying.stop(); 
         _sm->changeState("Waiting");
     }
     _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), 0);
