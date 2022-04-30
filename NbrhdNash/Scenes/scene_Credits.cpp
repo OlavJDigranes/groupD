@@ -26,7 +26,7 @@ void Credits::Load() {
 
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.3));
-	auto y = info->addComponent<TextComponent>("Game Programming:\nRory Gatens\nOlav J. Digranes\n\nSound Design:\nNicholas Di Biase");
+	auto y = info->addComponent<TextComponent>("Game Programming:\n  Rory Gatens\n  Olav J. Digranes\n\nSound Design:\n  Nicolas Di Biase\n  Olav J. Digranes\n\nGame Art:\n  Rory Gatens");
 	setLoaded(true);
 }
 
