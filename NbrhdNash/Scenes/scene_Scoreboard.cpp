@@ -8,19 +8,55 @@ using namespace std;
 using namespace sf; 
 
 void Scoreboard::Load() {
-	tag = -5; 
+	
+	tag = -5;
 
-	int counter = 0; 
-	vector<string> lines; 
-	std::string line; 
-	ifstream timeFile; 
+	int counter = 0;
+	vector<string> lines;
+	std::string line;
+	vector<shared_ptr<Entity>> scoreboardText;
+	ifstream timeFile;
 
-	timeFile.open("times.txt");
+	//Removing underscores for readability
+	timeFile.open("times.txt", std::ios_base::in);
 	if (timeFile.is_open()) {
 		while (!timeFile.eof()) {
-			timeFile >> line; 
-			lines.push_back(line); 
-			counter++; 
+			line.resize(timeFile.tellg());
+			timeFile >> line;
+			lines.push_back(line);
+			counter++;
+
+			//Make a vector of 5 text elements.
+				//Put them off screen?
+			if (counter == 1) {
+				auto txt1 = makeEntity();
+				scoreboardText.push_back(txt1);
+			}
+			if (counter == 2) {
+				auto txt2 = makeEntity();
+				scoreboardText.push_back(txt2);
+			}
+			if (counter == 3) {
+				auto txt3 = makeEntity();
+				scoreboardText.push_back(txt3);
+			}
+			if (counter == 4) {
+				auto txt4 = makeEntity();
+				scoreboardText.push_back(txt4);
+			}
+			if (counter == 5) {
+				auto txt5 = makeEntity();
+				scoreboardText.push_back(txt5);
+			}
+		}
+	}
+
+	//Removing underscores for readability
+	for (int i = 0; i < lines.size(); i++) {
+		for (int j = 0; j < lines[i].length(); j++) {
+			if (lines[i][j] == '_') {
+				lines[i][j] = ' ';
+			}
 		}
 	}
 
@@ -35,14 +71,16 @@ void Scoreboard::Load() {
 		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
 	}
 
-	auto txt = makeEntity();
-	txt->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
+	//Populate the elements if needed, and place on screen. 
 	for (int i = 0; i < counter; i++) {
-		auto s = txt->addComponent<TextComponent>(std::to_string(i+1) + lines[i] + "\n ");
+		int dist = i * 35;
+		std::cout << dist << endl; 
+		scoreboardText[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, (Engine::getWindowSize().y * 0.2) + dist));
+		auto s = scoreboardText[i]->addComponent<TextComponent>(std::to_string(i + 1) + ": " + lines[i] + "\n");
 	}
-	timeFile.close(); 
+	timeFile.close();
+	setLoaded(true);
 
-	setLoaded(true); 
 }
 
 void Scoreboard::UnLoad() {
