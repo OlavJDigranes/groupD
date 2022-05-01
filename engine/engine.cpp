@@ -88,7 +88,7 @@ void Engine::Render(RenderWindow& window) {
 }
 
 void Engine::Start(unsigned int width, unsigned int height,
-                   const std::string& gameName, Scene* scn) {
+                   const std::string& gameName, Scene* scn, bool vsyncState) {
     btnTimer = 0; 
   //RenderWindow window(VideoMode(width, height), gameName, sf::Style::Fullscreen);
   RenderWindow window(VideoMode(width, height), gameName, sf::Style::Close);
@@ -135,6 +135,13 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.setView(sf::View(screenSize3));
         //sf::VideoMode(2560, 1440);
         window.setSize(Vector2u(w, h));
+    }
+
+    if (vsyncState == true) {
+        Engine::setVsync(true); 
+    }
+    if (vsyncState == false) {
+        Engine::setVsync(false);
     }
 
     //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 

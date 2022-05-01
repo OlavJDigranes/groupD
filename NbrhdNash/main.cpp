@@ -27,6 +27,7 @@ int main() {
 	settingsFileIn.open("settings.txt", std::ios_base::in);
 	string vsyncSetting = " ";
 	string imageSetting = " ";
+	bool vsyncState = false; 
 
 	//checking if file is empty
 	if (settingsFileIn.is_open()) {
@@ -64,13 +65,17 @@ int main() {
 	settingsFileIn.close();
 
 	//Starting application with provided settings. 
+	if (vsyncSetting == "V") {
+		vsyncState = true; 
+	}
+
 	if (imageSetting == " " || imageSetting == "W") {
-		Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu);
+		Engine::Start(gameWidth, gameHeight, "Neighbourhood Nash!", &menu, vsyncState);
 	}
 	if (imageSetting == "Q") {
-		Engine::Start(1280, 720, "Neighbourhood Nash!", &menu);
+		Engine::Start(1280, 720, "Neighbourhood Nash!", &menu, vsyncState);
 	}
 	if (imageSetting == "E") {
-		Engine::Start(2560, 1440, "Neighbourhood Nash!", &menu);
+		Engine::Start(2560, 1440, "Neighbourhood Nash!", &menu, vsyncState);
 	}	
 }

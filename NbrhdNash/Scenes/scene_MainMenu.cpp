@@ -41,13 +41,13 @@ void MainMenu::Load() {
 	menuLoop.play();
 
 	//Handling Vsync settings once the game is loaded. 
-	settings.ingestFile(); 
-	if (settings.vsyncSetting == "V") {
-		Engine::setVsync(true); 
-	}
-	if (settings.vsyncSetting == "B") {
-		Engine::setVsync(false); 
-	}
+	//settings.ingestFile(); 
+	//if (settings.vsyncSetting == "V") {
+	//	Engine::setVsync(true); 
+	//}
+	//if (settings.vsyncSetting == "B") {
+	//	Engine::setVsync(false); 
+	//}
 
 	setLoaded(true);
 }
