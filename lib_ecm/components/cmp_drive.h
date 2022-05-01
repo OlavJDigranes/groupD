@@ -11,7 +11,7 @@
 #include <LevelSystem.h>
 #include <maths.h>
 
-#define DEBUG_TELEPORT
+//#define DEBUG_TELEPORT
 
 class DrivingComponent : public Component {
 protected:
