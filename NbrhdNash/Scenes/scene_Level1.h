@@ -33,7 +33,9 @@ protected:
 	bool _reachedShop;
 	bool _complete;
 	bool _hasFailed;
+	 
 public:
+	sf::Music cityAtmos;
 	bool IsCompleted() { return _complete; }
 
 	bool HasFailedLevel () { return _hasFailed; }
