@@ -114,13 +114,11 @@ void AIBirdComponent::update(double dt) {
     }
     if (_overPlayer && _isChasing) {
         _timeToPoop += dt;
-        //printf("poop time = %f\n", _timeToPoop);
     }
     if (_isChasing && _timeToPoop > 1) {
         auto p = _player->get_components<PlayerDataComponent>();
         if (p[0] != nullptr) {
             p[0]->TakeDamage(10);
-            //printf("Health: %i\n", p[0]->GetHealth());
         }
         splat.play(); 
         _isChasing = false;

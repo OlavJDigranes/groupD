@@ -369,7 +369,7 @@ void Level1::Update(const double& dt) {
 			_complete = true;
 		}
 	}
-	if (_playerData->GetHealth() <= 0 && _playerData->getReputation() <= 0) {
+	if (_playerData->GetHealth() <= 0 || _playerData->getReputation() <= 0) {
 		_hasFailed = true;
 	}
 
