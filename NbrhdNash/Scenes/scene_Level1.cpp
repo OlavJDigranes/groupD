@@ -118,6 +118,10 @@ void Level1::Load() {
 				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
+			if (ls::getTileAt(pos) == ls::EDGEWALL) {
+				auto t = e->addComponent<SpriteComponent>(true);
+				t->setTexture(_textures["res/img/tree.jpg"]);
+			}
 		}
 		all.clear();
 		auto chkpt = ls::findTiles(ls::CHECKPOINT);
