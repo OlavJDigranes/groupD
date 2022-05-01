@@ -87,7 +87,7 @@ Section "Uninstall"
   RMDir /r $INSTDIR
 
   ; Remove shortcuts, if any
-  Delete "$SMPROGRAMS\nbrhdnash\*.lnk"
+  Delete "$SMPROGRAMS\nbrhdnash\NeighbourhoodNash.lnk"
   Delete "$desktop\NeighbourhoodNash.lnk"
 
   ; Remove directories
