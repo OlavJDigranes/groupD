@@ -14,7 +14,7 @@ RequestExecutionLevel admin
 Unicode True
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\nbrhdnash
+InstallDir $APPDATA\nbrhdnash
 
 ; Registry key to check for directory (so if you install again, it will
 ; overwrite the old one automatically)
