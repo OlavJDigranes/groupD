@@ -31,6 +31,7 @@ void LevelTimer::LevelTimerStop() {
 
 	//if file is empty or has less than 5 lines add new line. 
 	if (timeFile.is_open()) {
+		/*
 		if (counter < 5) {
 			timeFile << outputLine;
 
@@ -42,8 +43,9 @@ void LevelTimer::LevelTimerStop() {
 			}
 
 		}
+		*/ 
 		//if file is has 5 lines Compare the times of current and existing lines and keep the 5 highest times. 
-		if (counter >= 5) {
+		if (counter > 0) {
 			//PSEUDOCODE:
 				//make a vecotr of floats. use int a = 3; float b = (float)a;
 				//make the minute andd second substrings into int and float. std::stof() - convert string to float.
@@ -81,9 +83,18 @@ void LevelTimer::LevelTimerStop() {
 
 			sort(times.begin(), times.end());
 
+			for (int i = 1; i < times.size(); i++) {
+				if (times[i] == times [i-1]) {
+					times.erase(times.begin() + (i-1)); 
+				}
+			}
+
 			for (int i = 0; i < times.size(); i++) {
 				timeFile << CreateTimeFileString(times[i]);
 			}
+		}
+		else {
+			timeFile << outputLine;
 		}
 	}
 	
