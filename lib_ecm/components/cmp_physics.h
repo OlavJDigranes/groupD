@@ -50,6 +50,8 @@ protected:
 	bool _playerOverlap;
 	sf::SoundBuffer checkpointSoundBuffer; 
 	sf::Sound checkpointSound; 
+	sf::SoundBuffer grateQueBuffer;
+	sf::Sound grateQue;
 public:
 	PhysicsTriggerComponent(Entity* p, const sf::Vector2f& size, bool isGoal, bool isActive);
 	void IsPlayerOverlapping();

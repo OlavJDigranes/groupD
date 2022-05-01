@@ -154,7 +154,7 @@ void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
 }
 
-PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal, bool isActive) 
+PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size, bool isGoal, bool isActive)
     : Component(p), _dynamic(false), _isGoal(isGoal), _isActive(isActive), goalReached(false), _playerOverlap(false) {
     b2BodyDef BodyDef;
     BodyDef.type = b2_staticBody;
@@ -190,7 +190,12 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
     //Checkpoint Sound
     checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
     checkpointSound.setBuffer(checkpointSoundBuffer);
-    checkpointSound.setVolume(70);
+    checkpointSound.setVolume(73);
+
+    //Grate sound
+    grateQueBuffer.loadFromFile("res/Music/Grate.mp3");
+    grateQue.setBuffer(grateQueBuffer);
+    grateQue.setVolume(55);
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {
@@ -277,6 +282,8 @@ void GrateComponent::update(double dt) {
                 }
             }
         }
+        //Grate sound
+        grateQue.play();
     }
     else if (!_playerOverlap && _toReset) {
         _toReset = false;

@@ -3,6 +3,7 @@
 #include "LevelSystem.h"
 #include "scene_MainMenu.h"
 #include "scene_Settings.h"
+#include "scene_Level1.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 #include "engine.h"
@@ -32,7 +33,7 @@ void MainMenu::Load() {
 	else {
 		auto t = txt->addComponent<TextComponent>("Neighbourhood Nash:\n\nPress 1 for game\nPress 2 for settings\nPress 3 for scoreboard\nPress 4 for credits");
 	}
-	
+	L1.cityAtmos.stop(); 
 	//Game music loop handling. 
 	menuLoop.openFromFile("res/music/MainMenuLoop.mp3");
 	menuLoop.setLoop(true);
@@ -62,7 +63,7 @@ void MainMenu::Render() {
 void MainMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&L1);
-		menuLoop.setVolume(60); 
+		menuLoop.stop(); 
 	}
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
 		Engine::ChangeScene(&settings);
