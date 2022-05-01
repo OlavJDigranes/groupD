@@ -195,7 +195,7 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
     //Grate sound
     grateQueBuffer.loadFromFile("res/Music/Grate.mp3");
     grateQue.setBuffer(grateQueBuffer);
-    grateQue.setVolume(65); 
+    grateQue.setVolume(55); 
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {

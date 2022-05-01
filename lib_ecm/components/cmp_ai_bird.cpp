@@ -42,12 +42,15 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
     //Sounds
     splatBuffer.loadFromFile("res/music/BirdSplat.mp3");
     flyingBuffer.loadFromFile("res/music/PigeonFlight.mp3");
+    birdQueBuffer.loadFromFile("res/music/BirdQue.mp3"); 
 
     splat.setBuffer(splatBuffer);
     flying.setBuffer(flyingBuffer); 
+    birdQue.setBuffer(birdQueBuffer); 
 
     splat.setVolume(70);
     flying.setVolume(65); 
+    birdQue.setVolume(65); 
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {
@@ -81,6 +84,7 @@ void AIBirdComponent::update(double dt) {
     if (_isChasing) {
         if (_sm->currentState() != "Chasing") {
             _sm->changeState("Chasing");
+            birdQue.play(); 
             flying.play(); 
             flying.setLoop(true); 
         }

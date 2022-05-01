@@ -29,6 +29,9 @@ protected:
 	sf::SoundBuffer flyingBuffer;
 	sf::Sound flying; 
 
+	sf::SoundBuffer birdQueBuffer;
+	sf::Sound birdQue; 
+
 	//TODO: Fix birds with homeloc as tree
 public:
 	void CheckForPlayer(double dt);
