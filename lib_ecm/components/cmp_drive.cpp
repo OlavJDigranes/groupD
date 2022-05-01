@@ -53,7 +53,6 @@ void DrivingComponent::IsColliding() {
                 _colliding = true;
                 if (_parent->get_components<PlayerDataComponent>().size() != 0) {
                     _parent->get_components<PlayerDataComponent>()[0]->TakeDamage(20);
-                    printf("taken damage \n");
                 }
             }
         }

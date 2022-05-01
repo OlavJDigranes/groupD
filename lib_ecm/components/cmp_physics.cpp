@@ -279,7 +279,6 @@ void GrateComponent::update(double dt) {
                 if (t.size() != 0 && t[0] != nullptr) {
                     t[0]->SetFadeOut(true);
                     _playerData->DecreaseReputation(20);
-                    printf("player health and rep: %i, %i", _playerData->GetHealth(), _playerData->getReputation());
                     _toReset = true;
                 }
             }

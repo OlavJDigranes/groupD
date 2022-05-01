@@ -293,7 +293,7 @@ void Level1::Load() {
 	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 #endif // FAKE_LOADING
 
-	std::cout << " Scene 1 Load Done" << std::endl;
+	//std::cout << " Scene 1 Load Done" << std::endl;
 
 	//City atmos Sound:
 	cityAtmos.openFromFile("res/music/CityAtmos.mp3");
