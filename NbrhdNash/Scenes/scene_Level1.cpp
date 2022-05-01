@@ -253,7 +253,7 @@ void Level1::Load() {
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"]);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"], _textures["res/img/alert_64x64.png"]);
 		for (auto g : _grates) {
 			g->SetPlayerData(_playerData);
 		}
@@ -319,8 +319,7 @@ void Level1::UnLoad() {
 	_timer = nullptr;
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
-	player = nullptr;
-	_playerData = nullptr;
+	_playerData.reset();
 	playerView = nullptr;
 	_reachedShop = false;
 	_complete = false;
