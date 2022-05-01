@@ -50,7 +50,7 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
 
     splat.setVolume(70);
     flying.setVolume(65); 
-    birdQue.setVolume(65); 
+    birdQue.setVolume(55); 
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {
