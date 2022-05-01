@@ -9,7 +9,6 @@ protected:
 	std::shared_ptr<sf::View> playerView;
 	Vector2f view;
 	std::map<string, std::shared_ptr<sf::Texture>> _textures{
-		{"res/img/player.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/house.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/grass.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/tree.jpg", std::make_shared<sf::Texture>()},
