@@ -52,7 +52,7 @@ Section "NeighbourhoodNash (required)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nbrhdnash" "UninstallString" '"$INSTDIR\uninstall_nbrhdnash.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nbrhdnash" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nbrhdnash" "NoRepair" 1
-  WriteUninstaller "$INSTDIR\uninstall.exe"
+  WriteUninstaller "$INSTDIR\uninstall_nbrhdnash.exe"
 
 SectionEnd
 
