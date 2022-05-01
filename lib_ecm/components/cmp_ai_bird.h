@@ -21,13 +21,18 @@ protected:
 	sf::Vector2f homeLoc;
 	bool _overPlayer = false;
 	double _timeToPoop = 0;
+	int randNum; 
 
 	//Sounds
 	sf::SoundBuffer splatBuffer;
 	sf::Sound splat; 
 
-	sf::SoundBuffer flyingBuffer;
-	sf::Sound flying; 
+	sf::SoundBuffer flyingBuffer1;
+	sf::Sound flying1;
+	sf::SoundBuffer flyingBuffer2;
+	sf::Sound flying2;
+	sf::SoundBuffer flyingBuffer3;
+	sf::Sound flying3;
 
 	sf::SoundBuffer birdQueBuffer;
 	sf::Sound birdQue; 
