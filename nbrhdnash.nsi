@@ -66,6 +66,13 @@ Section "Start Menu Shortcuts"
 
 SectionEnd
 
+Section "Desktop Shortcut"
+
+  CreateShortcut "$desktop\NeighbourhoodNash.lnk" "$instdir\nbrhdnash.exe"
+
+SectionEnd
+
+
 ;--------------------------------
 
 ; Uninstaller
