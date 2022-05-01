@@ -11,6 +11,8 @@ protected:
 	std::map<string, std::shared_ptr<sf::Texture>> _textures{
 		{"res/img/player.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/house.jpg", std::make_shared<sf::Texture>()},
+		{"res/img/grass.jpg", std::make_shared<sf::Texture>()},
+		{"res/img/tree.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/grateRoad.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/road.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/shop.jpg", std::make_shared<sf::Texture>()},

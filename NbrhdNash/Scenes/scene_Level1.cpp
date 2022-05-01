@@ -29,6 +29,54 @@ void Level1::Load() {
 	ls::setMapPosition(sf::Vector2f(0, ho));
 #endif // RENDER_TO_TEX
 
+	// Grass textures
+	{
+		std::vector<Vector2ul> all{};
+		auto grass = ls::findTiles(ls::GRASS);
+		auto trees = ls::findTiles(ls::TREE);
+		auto birdspawns = ls::findTiles(ls::BIRDSPAWN);
+		all.insert(all.begin(), grass.begin(), grass.end());
+		all.insert(all.begin(), trees.begin(), trees.end());
+		all.insert(all.begin(), birdspawns.begin(), birdspawns.end());
+		for (auto a : all) {
+			auto pos = ls::getTilePosition(a);
+			auto e = makeEntity();
+			e->setPosition(pos);
+			auto tx = e->addComponent<SpriteComponent>();
+			if (ls::getTile(a) == ls::GRASS) {
+				tx->setTexture(_textures["res/img/grass.jpg"]);
+			}
+			else {
+				tx->setTexture(_textures["res/img/tree.jpg"]);
+			}
+		}
+	}
+
+	// Road textures
+	{
+		std::vector<Vector2ul> all{};
+		auto roads = ls::findTiles(ls::ROAD);
+		auto chk1 = ls::findTiles(ls::AICHECKPOINT1);
+		auto chk2 = ls::findTiles(ls::AICHECKPOINT2);
+		auto chk3 = ls::findTiles(ls::AICHECKPOINT3);
+		auto chk4 = ls::findTiles(ls::AICHECKPOINT4);
+		auto chk5 = ls::findTiles(ls::AICHECKPOINT5);
+		all.insert(all.begin(), roads.begin(), roads.end());
+		all.insert(all.begin(), chk1.begin(), chk1.end());
+		all.insert(all.begin(), chk2.begin(), chk2.end());
+		all.insert(all.begin(), chk3.begin(), chk3.end());
+		all.insert(all.begin(), chk4.begin(), chk4.end());
+		all.insert(all.begin(), chk5.begin(), chk5.end());
+		for (auto a : all) {
+			auto pos = ls::getTilePosition(a);
+			auto e = makeEntity();
+			e->setPosition(pos);
+			auto tx = e->addComponent<SpriteComponent>();
+			tx->setTexture(_textures["res/img/road.jpg"]);
+		}
+	}
+
+
 	// Setting up colliders and sensors for statics (houses/shops etc.)
 	{
 		std::vector<Vector2ul> all;
