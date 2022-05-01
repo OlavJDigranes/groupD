@@ -19,6 +19,9 @@ protected:
 		{"res/img/pigeon1.png", std::make_shared<sf::Texture>()},
 		{"res/img/pigeon2.png", std::make_shared<sf::Texture>()},
 		{"res/img/car_blue.png", std::make_shared<sf::Texture>()},
+		{"res/img/car_green.png", std::make_shared<sf::Texture>()},
+		{"res/img/car_purple.png", std::make_shared<sf::Texture>()},
+		{"res/img/car_red.png", std::make_shared<sf::Texture>()},
 		{"res/img/heart_full.png", std::make_shared<sf::Texture>()}
 	};
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;

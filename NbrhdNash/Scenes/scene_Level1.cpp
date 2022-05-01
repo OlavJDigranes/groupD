@@ -189,10 +189,19 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(c) + Vector2f(t / 2, t / 2);
 			car->setPosition(pos);
 			auto shp = car->addComponent<ShapeComponent>();
-			shp->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
-			shp->getShape().setFillColor(sf::Color::Red);
-			shp->getShape().setOrigin(sf::Vector2f(12.f, 18.f));
 			car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
+			auto t = car->addComponent<SpriteComponent>(true);
+			t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
+			auto rng = rand() % 100;
+			if (rng <= 30) {
+				t->setTexture(_textures["res/img/car_green.png"]);
+			}
+			else if (rng <= 60) {
+				t->setTexture(_textures["res/img/car_red.png"]);
+			}
+			else {
+				t->setTexture(_textures["res/img/car_purple.png"]);
+			}
 		}
 #else // 0
 
@@ -228,11 +237,13 @@ void Level1::Load() {
 	{
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
-		auto s = player->addComponent<ShapeComponent>();
+		/*auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));
-		//auto t = player->addComponent<SpriteComponent>();
+		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));*/
+		auto t = player->addComponent<SpriteComponent>(true);
+		t->setTexture(_textures["res/img/car_blue.png"]);
+		t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
