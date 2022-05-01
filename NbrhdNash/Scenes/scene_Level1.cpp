@@ -191,7 +191,7 @@ void Level1::Load() {
 			auto shp = car->addComponent<ShapeComponent>();
 			shp->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 			shp->getShape().setFillColor(sf::Color::Red);
-			shp->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
+			shp->getShape().setOrigin(sf::Vector2f(12.f, 18.f));
 			car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
 		}
 #else // 0
@@ -231,7 +231,7 @@ void Level1::Load() {
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
+		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));
 		//auto t = player->addComponent<SpriteComponent>();
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
@@ -278,8 +278,11 @@ void Level1::UnLoad() {
 	for (auto tex : _textures) {
 		tex.second.reset();
 	}
-	_shops.clear();
 	_birds->clear();
+	for (auto b : *_birds) {
+		b = nullptr;
+	}
+	_shops.clear();
 	_goalShop = nullptr;
 	_home = nullptr;
 	_timer = nullptr;
@@ -287,6 +290,10 @@ void Level1::UnLoad() {
 	player.reset();
 	player = nullptr;
 	_playerData = nullptr;
+	playerView = nullptr;
+	_reachedShop = false;
+	_complete = false;
+	_hasFailed = false;
 	ls::unload();
 	Scene::UnLoad();
 }
