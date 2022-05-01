@@ -2,6 +2,7 @@
 #include <thread>
 #include "LevelSystem.h"
 #include "scene_GameOver.h"
+#include "scene_Level1.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 #include "SFML/Window.hpp"
@@ -13,6 +14,8 @@ using namespace sf;
 
 void GameOver::Load() {
 	tag = -3;
+
+	L1.cityAtmos.stop();
 
 	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
 

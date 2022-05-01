@@ -3,6 +3,9 @@
 PlayerDataComponent::PlayerDataComponent(Entity* p, int startingHP, int startingRep, std::shared_ptr<sf::Texture> hpTexture) : _hp(startingHP), _rep(startingRep), Component(p) {
 	_hpTexture = std::make_shared<SpriteComponent>(p, false);
 	_hpTexture->setTexture(hpTexture);
+	damageBuffer.loadFromFile("res/music/LifeLoss.mp3");
+	damage.setBuffer(damageBuffer); 
+	damage.setVolume(60); 
 }
 
 void PlayerDataComponent::update(double dt) {

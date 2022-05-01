@@ -190,7 +190,12 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
     //Checkpoint Sound
     checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
     checkpointSound.setBuffer(checkpointSoundBuffer);
-    checkpointSound.setVolume(70);
+    checkpointSound.setVolume(73);
+
+    //Grate sound
+    grateQueBuffer.loadFromFile("res/Music/Grate.mp3");
+    grateQue.setBuffer(grateQueBuffer);
+    grateQue.setVolume(55); 
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {
@@ -277,6 +282,8 @@ void GrateComponent::update(double dt) {
                 }
             }
         }
+        //Grate sound
+        grateQue.play(); 
     }
     else if (!_playerOverlap && _toReset) {
         _toReset = false;

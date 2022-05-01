@@ -41,13 +41,22 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
 
     //Sounds
     splatBuffer.loadFromFile("res/music/BirdSplat.mp3");
-    flyingBuffer.loadFromFile("res/music/PigeonFlight.mp3");
+    flyingBuffer1.loadFromFile("res/music/PigeonFlight1.mp3");
+    flyingBuffer2.loadFromFile("res/music/PigeonFlight2.mp3");
+    flyingBuffer3.loadFromFile("res/music/PigeonFlight3.mp3");
+    birdQueBuffer.loadFromFile("res/music/BirdQue.mp3"); 
 
     splat.setBuffer(splatBuffer);
-    flying.setBuffer(flyingBuffer); 
+    flying1.setBuffer(flyingBuffer1); 
+    flying2.setBuffer(flyingBuffer2); 
+    flying3.setBuffer(flyingBuffer3); 
+    birdQue.setBuffer(birdQueBuffer); 
 
     splat.setVolume(70);
-    flying.setVolume(65); 
+    flying1.setVolume(65); 
+    flying2.setVolume(65); 
+    flying3.setVolume(65); 
+    birdQue.setVolume(55); 
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {
@@ -81,8 +90,21 @@ void AIBirdComponent::update(double dt) {
     if (_isChasing) {
         if (_sm->currentState() != "Chasing") {
             _sm->changeState("Chasing");
-            flying.play(); 
-            flying.setLoop(true); 
+            birdQue.play(); 
+            randNum = rand() % 3; 
+            if (randNum == 0) {
+                flying1.play();
+                flying1.setLoop(true);
+            }
+            if (randNum == 1) {
+                flying2.play();
+                flying2.setLoop(true);
+            }
+            if (randNum == 2) {
+                flying3.play();
+                flying3.setLoop(true);
+            }
+            
         }
         CheckForPlayer(dt);
         if (_isChasing && sf::Vector2f(_parent->getPosition() - _player->getPosition()).lengthSq() > pow(ls::getTileSize() * 10, 2)) {
@@ -106,7 +128,9 @@ void AIBirdComponent::update(double dt) {
         _sm->changeState("ReturnHome");
     }
     if (sf::Vector2f(_parent->getPosition() - GetHomeLocation()).lengthSq() < pow(5, 2) && _sm->currentState() == "ReturnHome") {
-        flying.stop(); 
+        flying1.stop(); 
+        flying2.stop(); 
+        flying3.stop(); 
         _sm->changeState("Waiting");
     }
     _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), 0);

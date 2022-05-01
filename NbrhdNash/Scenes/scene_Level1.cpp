@@ -291,6 +291,12 @@ void Level1::Load() {
 
 	std::cout << " Scene 1 Load Done" << std::endl;
 
+	//City atmos Sound:
+	cityAtmos.openFromFile("res/music/CityAtmos.mp3");
+	cityAtmos.setLoop(true); 
+	cityAtmos.play(); 
+	cityAtmos.setVolume(10); 
+
 	setLoaded(true);
 }
 
@@ -361,6 +367,7 @@ void Level1::Update(const double& dt) {
 	if (_playerData->GetHealth() <= 0 && _playerData->getReputation() <= 0) {
 		_hasFailed = true;
 	}
+
 	// Debug birds chasing player
 #ifdef DEBUG_BIRDS
 	if (Keyboard::isKeyPressed(Keyboard::B)) {

@@ -2,6 +2,7 @@
 #include <thread>
 #include "LevelSystem.h"
 #include "scene_Celebration.h"
+#include "scene_Level1.h"
 #include "../lib_ecm/components/cmp_text.h"
 #include "../game.h"
 
@@ -10,6 +11,8 @@ using namespace sf;
 
 void Celebration::Load() {
 	tag = -4;
+
+	L1.cityAtmos.stop();
 
 	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
 
