@@ -48,6 +48,7 @@ void Level1::Load() {
 			}
 			else {
 				tx->setTexture(_textures["res/img/tree.jpg"]);
+				auto p = e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 			}
 		}
 	}
@@ -318,7 +319,7 @@ void Level1::Update(const double& dt) {
 	}
 	if (_home->HasGoalBeenReached() && _reachedShop == true && _complete == false) {
 		if (_home->HasGoalBeenReached()) {
-			//_timer->LevelTimerStop();
+			_timer->LevelTimerStop();
 			_complete = true;
 		}
 	}

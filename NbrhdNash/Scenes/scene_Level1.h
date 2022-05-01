@@ -17,8 +17,8 @@ protected:
 		{"res/img/road.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/parking.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/shop.jpg", std::make_shared<sf::Texture>()},
-		{"res/img/bird.jpg", std::make_shared<sf::Texture>()},
-		{"res/img/carAI.jpg", std::make_shared<sf::Texture>()}
+		{"res/img/pigeon.jpg", std::make_shared<sf::Texture>()},
+		{"res/img/car_blue.jpg", std::make_shared<sf::Texture>()}
 	};
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;
 	std::shared_ptr<PhysicsTriggerComponent> _goalShop;
