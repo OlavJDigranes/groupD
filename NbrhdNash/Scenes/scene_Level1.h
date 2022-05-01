@@ -15,6 +15,7 @@ protected:
 		{"res/img/tree.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/grateRoad.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/road.jpg", std::make_shared<sf::Texture>()},
+		{"res/img/parking.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/shop.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/bird.jpg", std::make_shared<sf::Texture>()},
 		{"res/img/carAI.jpg", std::make_shared<sf::Texture>()}

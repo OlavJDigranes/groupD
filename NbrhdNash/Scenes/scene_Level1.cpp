@@ -74,6 +74,16 @@ void Level1::Load() {
 			auto tx = e->addComponent<SpriteComponent>();
 			tx->setTexture(_textures["res/img/road.jpg"]);
 		}
+		all.clear();
+		auto park = ls::findTiles(ls::PARKINGSPACE);
+		all.insert(all.begin(), park.begin(), park.end());
+		for (auto p : all) {
+			auto pos = ls::getTilePosition(p);
+			auto e = makeEntity();
+			e->setPosition(pos);
+			auto tx = e->addComponent<SpriteComponent>();
+			tx->setTexture(_textures["res/img/parking.jpg"]);
+		}
 	}
 
 
