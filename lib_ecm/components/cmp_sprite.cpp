@@ -11,12 +11,14 @@ void SpriteComponent::setTexture(std::shared_ptr<sf::Texture> tex)
 }
 
 
-SpriteComponent::SpriteComponent(Entity* p)
-    : Component(p), _sprite(make_shared<sf::Sprite>()) {}
+SpriteComponent::SpriteComponent(Entity* p, bool updateToParent)
+    : Component(p), _sprite(make_shared<sf::Sprite>()), _updateToParent(updateToParent) {}
 
 void SpriteComponent::update(double dt) {
-    _sprite->setPosition(_parent->getPosition());
-    _sprite->setRotation(sf::degrees(_parent->getRotation()));
+    if (_updateToParent) {
+        _sprite->setPosition(_parent->getPosition());
+        _sprite->setRotation(sf::degrees(_parent->getRotation()));
+    }
 }
 
 void SpriteComponent::render() { Renderer::queue(_sprite.get()); }

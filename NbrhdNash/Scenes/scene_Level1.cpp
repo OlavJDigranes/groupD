@@ -42,7 +42,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(a);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			if (ls::getTile(a) == ls::GRASS) {
 				tx->setTexture(_textures["res/img/grass.jpg"]);
 			}
@@ -72,7 +72,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(a);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			tx->setTexture(_textures["res/img/road.jpg"]);
 		}
 		all.clear();
@@ -88,7 +88,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(p);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			tx->setTexture(_textures["res/img/parking.jpg"]);
 		}
 	}
@@ -115,7 +115,7 @@ void Level1::Load() {
 #endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 			if (ls::getTileAt(pos) == ls::EMPTYHOUSE || ls::getTileAt(pos) == ls::NEIGHBOURHOUSE) {
-				auto t = e->addComponent<SpriteComponent>();
+				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
 		}
@@ -141,12 +141,12 @@ void Level1::Load() {
 			if (ls::getTileAt(pos) == ls::SHOPS) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
-				auto tex = e->addComponent<SpriteComponent>();
+				auto tex = e->addComponent<SpriteComponent>(true);
 				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
-				auto sp = e->addComponent<SpriteComponent>();
+				auto sp = e->addComponent<SpriteComponent>(true);
 				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
 				auto dbg_m = e->addComponent<ShapeComponent>();
@@ -158,12 +158,12 @@ void Level1::Load() {
 			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
 				_goalShop = m;
-				auto tex = e->addComponent<SpriteComponent>();
+				auto tex = e->addComponent<SpriteComponent>(true);
 				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::HOME) {
 				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
-				auto t = e->addComponent<SpriteComponent>();
+				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
 			else {
@@ -189,10 +189,19 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(c) + Vector2f(t / 2, t / 2);
 			car->setPosition(pos);
 			auto shp = car->addComponent<ShapeComponent>();
-			shp->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
-			shp->getShape().setFillColor(sf::Color::Red);
-			shp->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
 			car->addComponent<AIDrivingComponent>(sf::Vector2f(24.f, 36.f), 20);
+			auto t = car->addComponent<SpriteComponent>(true);
+			t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
+			auto rng = rand() % 100;
+			if (rng <= 30) {
+				t->setTexture(_textures["res/img/car_green.png"]);
+			}
+			else if (rng <= 60) {
+				t->setTexture(_textures["res/img/car_red.png"]);
+			}
+			else {
+				t->setTexture(_textures["res/img/car_purple.png"]);
+			}
 		}
 #else // 0
 
@@ -228,15 +237,17 @@ void Level1::Load() {
 	{
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
-		auto s = player->addComponent<ShapeComponent>();
+		/*auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
 		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 16.f));
-		//auto t = player->addComponent<SpriteComponent>();
+		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));*/
+		auto t = player->addComponent<SpriteComponent>(true);
+		t->setTexture(_textures["res/img/car_blue.png"]);
+		t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		_playerData = player->addComponent<PlayerDataComponent>(100, 100);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"]);
 	}
 
 	// Setting view to player's location
@@ -278,8 +289,11 @@ void Level1::UnLoad() {
 	for (auto tex : _textures) {
 		tex.second.reset();
 	}
-	_shops.clear();
 	_birds->clear();
+	for (auto b : *_birds) {
+		b = nullptr;
+	}
+	_shops.clear();
 	_goalShop = nullptr;
 	_home = nullptr;
 	_timer = nullptr;
@@ -287,6 +301,10 @@ void Level1::UnLoad() {
 	player.reset();
 	player = nullptr;
 	_playerData = nullptr;
+	playerView = nullptr;
+	_reachedShop = false;
+	_complete = false;
+	_hasFailed = false;
 	ls::unload();
 	Scene::UnLoad();
 }
