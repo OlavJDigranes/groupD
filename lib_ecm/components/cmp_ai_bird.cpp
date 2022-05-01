@@ -109,7 +109,8 @@ void AIBirdComponent::update(double dt) {
         flying.stop(); 
         _sm->changeState("Waiting");
     }
-    _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), 0);
+    
+    _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), _body->GetAngle());
     _str->update(dt);
     _sm->update(dt);
 }

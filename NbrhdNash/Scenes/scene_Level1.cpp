@@ -272,10 +272,13 @@ void Level1::Load() {
 			_birds->push_back(enemy);
 			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t / 2, t / 2)));
 			auto s = enemy->addComponent<ShapeComponent>();
-			s->setShape<CircleShape>(10.0f, 30.0f);
-			s->getShape().setFillColor(Color::Blue);
-			s->getShape().setOrigin(Vector2f(10.f, 10.f));
+			//s->setShape<CircleShape>(10.0f, 30.0f);
+			//s->getShape().setFillColor(Color::Blue);
+			//s->getShape().setOrigin(Vector2f(10.f, 10.f));
 			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
+			auto texture = enemy->addComponent<SpriteComponent>(true);
+			texture->setTexture(_textures["res/img/pigeon1.png"]);
+			texture->getSprite().setOrigin(sf::Vector2f(16.f, 16.f));
 		}
 	}
 
