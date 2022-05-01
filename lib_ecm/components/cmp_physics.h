@@ -44,6 +44,7 @@ protected:
 	const bool _dynamic;
 	b2Fixture* _fixture;
 	std::vector<const b2Contact const*> _dirtyCheck;
+
 	bool _isGoal;
 	bool _isActive;
 	bool goalReached;
@@ -86,11 +87,13 @@ class GrateComponent : public PhysicsTriggerComponent {
 protected:
 	std::vector<std::shared_ptr<Entity>>* _birds = new std::vector<std::shared_ptr<Entity>>();
 	std::vector<std::shared_ptr<Entity>>* _nbrs = new std::vector<std::shared_ptr<Entity>>();
+	std::shared_ptr<PlayerDataComponent> _playerData;
 	bool _toReset;
 public:
 	GrateComponent() = delete;
 	explicit GrateComponent(Entity* p, const sf::Vector2f& size, std::vector<std::shared_ptr<Entity>>* birds, std::vector<std::shared_ptr<Entity>>* nbrs)
 		: PhysicsTriggerComponent(p, size, false, true), _birds(birds), _toReset(false), _nbrs(nbrs) {};
+	void SetPlayerData(std::shared_ptr<PlayerDataComponent> data) { _playerData = data; };
 	void update(double dt) override;
 	void render() override {};
 	~GrateComponent();

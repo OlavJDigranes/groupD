@@ -109,8 +109,8 @@ _targetingEntity(), fly(BirdFlyToTarget(p, player, p->getPosition(), 100, _targe
 }
 
 void BirdSteering::rotate(SteeringOutput rot, float dt) {
-    _body->SetTransform(_body->GetPosition(), _body->GetAngle() + rot.rotation);
-    _parent->setRotation(_parent->getRotation() + (rot.rotation * dt));
+    _body->SetTransform(_body->GetPosition(), rot.rotation + 90);
+    _parent->setRotation(rot.rotation + 90);
 }
 
 void BirdSteering::update(double dt) {

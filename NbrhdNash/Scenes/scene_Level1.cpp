@@ -155,6 +155,7 @@ void Level1::Load() {
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds, _nbrs);
+				_grates.push_back(m);
 				auto sp = e->addComponent<SpriteComponent>(true);
 				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
@@ -246,17 +247,17 @@ void Level1::Load() {
 	{
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
-		/*auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
-		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));*/
 		auto t = player->addComponent<SpriteComponent>(true);
 		t->setTexture(_textures["res/img/car_blue.png"]);
 		t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"]);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"], _textures["res/img/alert_64x64.png"]);
+		for (auto g : _grates) {
+			g->SetPlayerData(_playerData);
+		}
+
 	}
 
 	// Setting view to player's location
@@ -272,10 +273,13 @@ void Level1::Load() {
 			_birds->push_back(enemy);
 			enemy->setPosition(Vector2f(ls::getTilePosition(tree) + Vector2f(t / 2, t / 2)));
 			auto s = enemy->addComponent<ShapeComponent>();
-			s->setShape<CircleShape>(10.0f, 30.0f);
-			s->getShape().setFillColor(Color::Blue);
-			s->getShape().setOrigin(Vector2f(10.f, 10.f));
+			//s->setShape<CircleShape>(10.0f, 30.0f);
+			//s->getShape().setFillColor(Color::Blue);
+			//s->getShape().setOrigin(Vector2f(10.f, 10.f));
 			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
+			auto texture = enemy->addComponent<SpriteComponent>(true);
+			texture->setTexture(_textures["res/img/pigeon1.png"]);
+			texture->getSprite().setOrigin(sf::Vector2f(16.f, 16.f));
 		}
 	}
 
@@ -308,14 +312,14 @@ void Level1::UnLoad() {
 	for (auto b : *_birds) {
 		b = nullptr;
 	}
+	_grates.clear();
 	_shops.clear();
 	_goalShop = nullptr;
 	_home = nullptr;
 	_timer = nullptr;
 	Engine::GetWindow().setView(Engine::GetWindow().getDefaultView());
 	player.reset();
-	player = nullptr;
-	_playerData = nullptr;
+	_playerData.reset();
 	playerView = nullptr;
 	_reachedShop = false;
 	_complete = false;
@@ -364,7 +368,7 @@ void Level1::Update(const double& dt) {
 			_complete = true;
 		}
 	}
-	if (_playerData->GetHealth() <= 0 && _playerData->getReputation() <= 0) {
+	if (_playerData->GetHealth() <= 0 || _playerData->getReputation() <= 0) {
 		_hasFailed = true;
 	}
 

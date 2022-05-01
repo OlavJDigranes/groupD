@@ -12,6 +12,6 @@ SteeringOutput BirdFlyToTarget::getSteering() const noexcept {
 	steering.direction = normalize(steering.direction);
 	steering.direction *= _maxSpeed;
 	tan = atan2(steering.direction.y, steering.direction.x);
-	steering.rotation = sf::rad2deg(tan);
+	steering.rotation = tan * 180 / (4 *  atan(1));
 	return steering;
 }

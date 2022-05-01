@@ -60,11 +60,17 @@ void FadingTexture::update(double dt) {
         if (_sprite->getColor().a == 0) {
             _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, 255));
         }
+        else if (_sprite->getColor().a <= 0) {
+            _fadeOut = false;
+        }
         _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, _sprite->getColor().a - 1));
     }
     else if (_fadeIn) {
         if (_sprite->getColor().a == 255) {
             _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, 0));
+        }
+        else if (_sprite->getColor().a <= 0) {
+            _fadeIn = false;
         }
         _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, _sprite->getColor().a + 1));
     }

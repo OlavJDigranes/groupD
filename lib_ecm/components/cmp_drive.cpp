@@ -53,7 +53,7 @@ void DrivingComponent::IsColliding() {
                 _colliding = true;
                 if (_parent->get_components<PlayerDataComponent>().size() != 0) {
                     _parent->get_components<PlayerDataComponent>()[0]->TakeDamage(20);
-                    printf("taken damage");
+                    printf("taken damage \n");
                 }
             }
         }
@@ -80,7 +80,7 @@ void DrivingComponent::Drive(float speed, double dt) {
 void DrivingComponent::Brake(double dt) {
     // Increase damping if car is moving
     auto damping = _body->GetLinearDamping();
-    if (damping >= 0.5 && damping < 3) {
+    if (damping >= 0.5 && damping < 12) {
         _body->SetLinearDamping(damping + dt);
     }
 }
