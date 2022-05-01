@@ -42,7 +42,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(a);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			if (ls::getTile(a) == ls::GRASS) {
 				tx->setTexture(_textures["res/img/grass.jpg"]);
 			}
@@ -72,7 +72,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(a);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			tx->setTexture(_textures["res/img/road.jpg"]);
 		}
 		all.clear();
@@ -88,7 +88,7 @@ void Level1::Load() {
 			auto pos = ls::getTilePosition(p);
 			auto e = makeEntity();
 			e->setPosition(pos);
-			auto tx = e->addComponent<SpriteComponent>();
+			auto tx = e->addComponent<SpriteComponent>(true);
 			tx->setTexture(_textures["res/img/parking.jpg"]);
 		}
 	}
@@ -115,7 +115,7 @@ void Level1::Load() {
 #endif
 			e->addComponent<PhysicsComponent>(false, Vector2f(t, t));
 			if (ls::getTileAt(pos) == ls::EMPTYHOUSE || ls::getTileAt(pos) == ls::NEIGHBOURHOUSE) {
-				auto t = e->addComponent<SpriteComponent>();
+				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
 		}
@@ -141,12 +141,12 @@ void Level1::Load() {
 			if (ls::getTileAt(pos) == ls::SHOPS) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
 				_shops.push_back(m);
-				auto tex = e->addComponent<SpriteComponent>();
+				auto tex = e->addComponent<SpriteComponent>(true);
 				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
-				auto sp = e->addComponent<SpriteComponent>();
+				auto sp = e->addComponent<SpriteComponent>(true);
 				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
 				auto dbg_m = e->addComponent<ShapeComponent>();
@@ -158,12 +158,12 @@ void Level1::Load() {
 			else if (ls::getTileAt(pos) == ls::CHECKPOINT) {
 				auto m = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, true);
 				_goalShop = m;
-				auto tex = e->addComponent<SpriteComponent>();
+				auto tex = e->addComponent<SpriteComponent>(true);
 				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::HOME) {
 				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
-				auto t = e->addComponent<SpriteComponent>();
+				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
 			}
 			else {
@@ -236,7 +236,7 @@ void Level1::Load() {
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		_playerData = player->addComponent<PlayerDataComponent>(100, 100);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"]);
 	}
 
 	// Setting view to player's location

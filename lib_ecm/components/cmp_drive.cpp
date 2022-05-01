@@ -49,18 +49,16 @@ void DrivingComponent::IsColliding() {
             auto bodyA = (bodyUserData*)ent->GetFixtureA()->GetBody()->GetUserData();
             auto bodyB = (bodyUserData*)ent->GetFixtureB()->GetBody()->GetUserData();
             if (bodyA->_tag == "AI" || bodyB->_tag == "AI") {
-                //printf("Successfully detected AI\n");
                 _dirtyCheck = ret;
                 _colliding = true;
                 if (_parent->get_components<PlayerDataComponent>().size() != 0) {
                     _parent->get_components<PlayerDataComponent>()[0]->TakeDamage(20);
-                    //printf("taken damage\n");
+                    printf("taken damage");
                 }
             }
         }
     }
     else if (_dirtyCheck.size() > ret.size()) {
-        //printf("AI has left detection area\n");
         _colliding = false;
         _dirtyCheck = ret;
     }
