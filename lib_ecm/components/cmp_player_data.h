@@ -27,5 +27,5 @@ public:
 	int GetTimesPoopedOn() { return _timesPoopedOn; };
 	void update(double dt) override;
 	void render() override;
-	//~PlayerDataComponent() {};
+	~PlayerDataComponent();
 };

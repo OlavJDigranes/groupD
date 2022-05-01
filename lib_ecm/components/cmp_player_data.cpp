@@ -17,3 +17,7 @@ void PlayerDataComponent::update(double dt) {
 void PlayerDataComponent::render() {
 	_hpTexture->render();
 }
+
+PlayerDataComponent::~PlayerDataComponent() {
+	_hpTexture = nullptr;
+}

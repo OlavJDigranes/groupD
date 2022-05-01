@@ -274,10 +274,12 @@ void GrateComponent::update(double dt) {
         }
         for (const auto& n : *_nbrs) {
             auto pos = n->getPosition();
-            if (sf::Vector2f(pos - _parent->getPosition()).lengthSq() < pow((ls::getTileSize() * 3), 2)) {
+            if (sf::Vector2f(pos - _parent->getPosition()).lengthSq() <= pow((ls::getTileSize() * 4), 2)) {
                 auto t = n->get_components<FadingTexture>();
                 if (t.size() != 0 && t[0] != nullptr) {
                     t[0]->SetFadeOut(true);
+                    _playerData->DecreaseReputation(20);
+                    printf("player health and rep: %i, %i", _playerData->GetHealth(), _playerData->getReputation());
                     _toReset = true;
                 }
             }

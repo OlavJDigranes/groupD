@@ -155,6 +155,7 @@ void Level1::Load() {
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
 				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds, _nbrs);
+				_grates.push_back(m);
 				auto sp = e->addComponent<SpriteComponent>(true);
 				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS
@@ -246,10 +247,6 @@ void Level1::Load() {
 	{
 		player = makeEntity();
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::HOME)[0]) + Vector2f(24, 0));
-		/*auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(sf::Vector2f(24.f, 36.f));
-		s->getShape().setFillColor(sf::Color::White);
-		s->getShape().setOrigin(sf::Vector2f(12.f, 18.f));*/
 		auto t = player->addComponent<SpriteComponent>(true);
 		t->setTexture(_textures["res/img/car_blue.png"]);
 		t->getSprite().setOrigin(sf::Vector2f(12.f, 16.f));
@@ -257,6 +254,10 @@ void Level1::Load() {
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
 		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"]);
+		for (auto g : _grates) {
+			g->SetPlayerData(_playerData);
+		}
+
 	}
 
 	// Setting view to player's location
@@ -311,6 +312,7 @@ void Level1::UnLoad() {
 	for (auto b : *_birds) {
 		b = nullptr;
 	}
+	_grates.clear();
 	_shops.clear();
 	_goalShop = nullptr;
 	_home = nullptr;
