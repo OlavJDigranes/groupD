@@ -89,7 +89,7 @@ void LevelTimer::LevelTimerStop() {
 				}
 			}
 
-			for (int i = 0; i < times.size(); i++) {
+			for (int i = 0; i < 5; i++) {
 				timeFile << CreateTimeFileString(times[i]);
 			}
 		}
