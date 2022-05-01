@@ -96,6 +96,7 @@ void Engine::Start(unsigned int width, unsigned int height,
   _window = &window;
   Renderer::initialise(window);
   Physics::initialise();
+  bool toggle = vsyncState; 
   ChangeScene(scn);
   while (window.isOpen()) {
     Event event;
@@ -137,11 +138,13 @@ void Engine::Start(unsigned int width, unsigned int height,
         window.setSize(Vector2u(w, h));
     }
 
-    if (vsyncState == true) {
+    if (vsyncState == true && toggle == true) {
         Engine::setVsync(true); 
+        toggle = false; 
     }
-    if (vsyncState == false) {
+    if (vsyncState == false && toggle == false) {
         Engine::setVsync(false);
+        toggle = true; 
     }
 
     //Escape key handling. It is only meant to exit the game if pressed in the main menu. Elsewise it should return to main menu. The scenes are identified by the tag 
