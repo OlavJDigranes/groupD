@@ -77,7 +77,13 @@ void Level1::Load() {
 		}
 		all.clear();
 		auto park = ls::findTiles(ls::PARKINGSPACE);
+		auto car1 = ls::findTiles(ls::CAR1SPAWN);
+		auto car2 = ls::findTiles(ls::CAR2SPAWN);
+		auto car3 = ls::findTiles(ls::CAR3SPAWN);
 		all.insert(all.begin(), park.begin(), park.end());
+		all.insert(all.begin(), car1.begin(), car1.end());
+		all.insert(all.begin(), car2.begin(), car2.end());
+		all.insert(all.begin(), car3.begin(), car3.end());
 		for (auto p : all) {
 			auto pos = ls::getTilePosition(p);
 			auto e = makeEntity();
@@ -157,6 +163,8 @@ void Level1::Load() {
 			}
 			else if (ls::getTileAt(pos) == ls::HOME) {
 				_home = e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), true, false);
+				auto t = e->addComponent<SpriteComponent>();
+				t->setTexture(_textures["res/img/house.jpg"]);
 			}
 			else {
 				e->addComponent<PhysicsTriggerComponent>(Vector2f(t, t), false, true);
