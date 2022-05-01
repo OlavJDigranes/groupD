@@ -117,6 +117,11 @@ void Level1::Load() {
 			if (ls::getTileAt(pos) == ls::EMPTYHOUSE || ls::getTileAt(pos) == ls::NEIGHBOURHOUSE) {
 				auto t = e->addComponent<SpriteComponent>(true);
 				t->setTexture(_textures["res/img/house.jpg"]);
+				if (ls::getTileAt(pos) == ls::NEIGHBOURHOUSE) {
+					auto ft = e->addComponent<FadingTexture>(true);
+					ft->setTexture(_textures["res/img/alert.png"]);
+					_nbrs->push_back(e);
+				}
 			}
 			if (ls::getTileAt(pos) == ls::EDGEWALL) {
 				auto t = e->addComponent<SpriteComponent>(true);
@@ -149,7 +154,7 @@ void Level1::Load() {
 				tex->setTexture(_textures["res/img/shop.jpg"]);
 			}
 			else if (ls::getTileAt(pos) == ls::GRATEROAD) {
-				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds);
+				auto m = e->addComponent<GrateComponent>(Vector2f(t, t), _birds, _nbrs);
 				auto sp = e->addComponent<SpriteComponent>(true);
 				sp->setTexture(_textures["res/img/grateRoad.jpg"]);
 #ifdef DEBUG_GRATE_TRIGGER_RADIUS

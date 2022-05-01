@@ -82,12 +82,13 @@ public:
 
 class GrateComponent : public PhysicsTriggerComponent {
 protected:
-	std::vector<std::shared_ptr<Entity>> *_birds = new std::vector<std::shared_ptr<Entity>>();
+	std::vector<std::shared_ptr<Entity>>* _birds = new std::vector<std::shared_ptr<Entity>>();
+	std::vector<std::shared_ptr<Entity>>* _nbrs = new std::vector<std::shared_ptr<Entity>>();
 	bool _toReset;
 public:
 	GrateComponent() = delete;
-	explicit GrateComponent(Entity* p, const sf::Vector2f& size, std::vector<std::shared_ptr<Entity>> *birds)
-		: PhysicsTriggerComponent(p, size, false, true), _birds(birds), _toReset(false) {};
+	explicit GrateComponent(Entity* p, const sf::Vector2f& size, std::vector<std::shared_ptr<Entity>>* birds, std::vector<std::shared_ptr<Entity>>* nbrs)
+		: PhysicsTriggerComponent(p, size, false, true), _birds(birds), _toReset(false), _nbrs(nbrs) {};
 	void update(double dt) override;
 	void render() override {};
 	~GrateComponent();

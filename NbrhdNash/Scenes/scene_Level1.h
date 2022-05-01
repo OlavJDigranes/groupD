@@ -22,12 +22,14 @@ protected:
 		{"res/img/car_green.png", std::make_shared<sf::Texture>()},
 		{"res/img/car_purple.png", std::make_shared<sf::Texture>()},
 		{"res/img/car_red.png", std::make_shared<sf::Texture>()},
-		{"res/img/heart_full.png", std::make_shared<sf::Texture>()}
+		{"res/img/heart_full.png", std::make_shared<sf::Texture>()},
+		{"res/img/alert.png", std::make_shared<sf::Texture>()}
 	};
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;
 	std::shared_ptr<PhysicsTriggerComponent> _goalShop;
 	std::shared_ptr<PhysicsTriggerComponent> _home;
-	std::vector<std::shared_ptr<Entity>> *_birds = new std::vector<std::shared_ptr<Entity>>();
+	std::vector<std::shared_ptr<Entity>>* _birds = new std::vector<std::shared_ptr<Entity>>();
+	std::vector<std::shared_ptr<Entity>>* _nbrs = new std::vector<std::shared_ptr<Entity>>();
 	std::shared_ptr<LevelTimer> _timer;
 	std::shared_ptr<PlayerDataComponent> _playerData;
 	bool _reachedShop;

@@ -39,3 +39,22 @@ public:
         _shape.reset(new T(params...));
     }
 };
+
+class FadingTexture : public Component {
+protected:
+    std::shared_ptr<sf::Sprite> _sprite;
+    std::shared_ptr<sf::Texture> _texture;
+    bool _updateToParent;
+    bool _fadeOut;
+    bool _fadeIn;
+
+public:
+    FadingTexture() = delete;
+    explicit FadingTexture(Entity* p, bool updateToParent);
+    void setTexture(std::shared_ptr<sf::Texture> tex);
+    sf::Sprite& getSprite() const;
+    void SetFadeOut(bool fadeOut) { _fadeOut = fadeOut; };
+    void SetFadeIn(bool fadeIn) { _fadeIn = fadeIn; };
+    void update(double dt) override;
+    void render() override;
+};

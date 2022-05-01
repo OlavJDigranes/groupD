@@ -39,3 +39,37 @@ ShapeComponent::ShapeComponent(Entity* p)
     : Component(p), _shape(make_shared<sf::CircleShape>()) {}
 
 sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
+
+FadingTexture::FadingTexture(Entity* p, bool updateToParent) : _sprite(make_shared<sf::Sprite>()), _updateToParent(updateToParent), _fadeIn(false), _fadeOut(false),Component(p) {
+    //if (_sprite != nullptr) {
+    //    _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, 255));
+    //}
+}
+
+sf::Sprite& FadingTexture::getSprite() const { return *_sprite; }
+
+void FadingTexture::setTexture(std::shared_ptr<sf::Texture> tex)
+{
+    _texture = tex;
+    _sprite->setTexture(*_texture);
+}
+
+
+void FadingTexture::update(double dt) {
+    //if (_fadeOut) {
+    //    if (_sprite->getColor().a == 0) {
+    //        _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, 255));
+    //    }
+    //    _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, _sprite->getColor().a - 1));
+    //}
+    //else if (_fadeIn) {
+    //    if (_sprite->getColor().a == 255) {
+    //        _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, 0));
+    //    }
+    //    _sprite->setColor(sf::Color(_sprite->getColor().r, _sprite->getColor().g, _sprite->getColor().b, _sprite->getColor().a + 1));
+    //}
+}
+
+void FadingTexture::render() {
+    Renderer::queue(_sprite.get());
+}
