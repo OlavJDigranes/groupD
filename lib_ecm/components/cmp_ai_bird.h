@@ -3,6 +3,7 @@
 #include "cmp_ai_steering.h"
 #include "cmp_state_machine.h"
 #include "cmp_player_data.h"
+#include "cmp_sprite.h"
 #include "states_bird.h"
 #include "maths.h"
 #include <LevelSystem.h>
@@ -13,6 +14,7 @@ protected:
 	std::shared_ptr<BirdSteering> _str;
 	std::unique_ptr<StateMachineComponent> _sm;
 	std::shared_ptr<Entity> _player;
+	std::shared_ptr<AnimatedTexture> _tex;
 	b2Body* _body;
 	b2Fixture* _fixture;
 	bodyUserData* _data;
@@ -37,7 +39,6 @@ protected:
 	sf::SoundBuffer birdQueBuffer;
 	sf::Sound birdQue; 
 
-	//TODO: Fix birds with homeloc as tree
 public:
 	void CheckForPlayer(double dt);
 	void SetChasing(bool isChasing) { _isChasing = isChasing; }
@@ -45,9 +46,10 @@ public:
 	const sf::Vector2f GetHomeLocation() { return homeLoc; }
 	const bool IsOverPlayer() { return _overPlayer; };
 	std::shared_ptr<Entity> getPlayer() { return _player; }
+	void setAnimationCmp(std::shared_ptr<AnimatedTexture> tex) { _tex = tex; };
 	
 	void update(double dt) override;
-	void render() override {};
+	void render() override;
 	
 	AIBirdComponent() = delete;
 	explicit AIBirdComponent(Entity* p, std::shared_ptr<Entity> player, sf::Vector2i levelBounds, sf::Vector2f size);

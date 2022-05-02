@@ -58,3 +58,23 @@ public:
     void update(double dt) override;
     void render() override;
 };
+
+class AnimatedTexture : public Component {
+protected:
+    std::shared_ptr<sf::Sprite> _sprite;
+    std::vector<std::shared_ptr<sf::Texture>> _textures;
+    bool _updateToParent;
+    float _fps;
+    double time;
+    int frameCount;
+
+public:
+    AnimatedTexture() = delete;
+    explicit AnimatedTexture(Entity* p, bool updateToParent, float fps, std::vector<std::shared_ptr<sf::Texture>> textures);
+    void setTextures(std::vector<std::shared_ptr<sf::Texture>> tex);
+    sf::Sprite& getSprite() const;
+    void SetFPS(float fps) { _fps = fps; };
+    const float GetFPS() { return _fps; };
+    void update(double dt) override;
+    void render() override;
+};

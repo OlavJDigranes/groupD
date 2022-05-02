@@ -90,6 +90,7 @@ void AIBirdComponent::update(double dt) {
     if (_isChasing) {
         if (_sm->currentState() != "Chasing") {
             _sm->changeState("Chasing");
+            _tex->SetFPS(2);
             birdQue.play(); 
             randNum = rand() % 3; 
             if (randNum == 0) {
@@ -104,12 +105,14 @@ void AIBirdComponent::update(double dt) {
                 flying3.play();
                 flying3.setLoop(true);
             }
-            
         }
         CheckForPlayer(dt);
         if (_isChasing && sf::Vector2f(_parent->getPosition() - _player->getPosition()).lengthSq() > pow(ls::getTileSize() * 10, 2)) {
             _isChasing = false;
             _sm->changeState("ReturnHome");
+        }
+        if (_tex != nullptr) {
+            _tex->update(dt);
         }
     }
     if (_overPlayer && _isChasing) {
@@ -126,10 +129,14 @@ void AIBirdComponent::update(double dt) {
         _sm->changeState("ReturnHome");
     }
     if (sf::Vector2f(_parent->getPosition() - GetHomeLocation()).lengthSq() < pow(5, 2) && _sm->currentState() == "ReturnHome") {
+        _tex->SetFPS(0);
         flying1.stop(); 
         flying2.stop(); 
         flying3.stop(); 
         _sm->changeState("Waiting");
+    }
+    if (_sm->currentState() == "Waiting") {
+        _tex->SetFPS(0);
     }
     
     _body->SetTransform(Physics::sv2_to_bv2(_parent->getPosition()), _body->GetAngle());
@@ -137,9 +144,16 @@ void AIBirdComponent::update(double dt) {
     _sm->update(dt);
 }
 
+void AIBirdComponent::render() {
+    if (_tex != nullptr) {
+        _tex->render();
+    }
+}
+
 AIBirdComponent::~AIBirdComponent() {
 	_str.reset();
     _sm.reset();
+    _tex.reset();
 	_body = nullptr;
 	Component::~Component();
 }

@@ -277,9 +277,15 @@ void Level1::Load() {
 			//s->getShape().setFillColor(Color::Blue);
 			//s->getShape().setOrigin(Vector2f(10.f, 10.f));
 			auto bird = enemy->addComponent<AIBirdComponent>(player, Vector2i(ls::getWidth() * ls::getTileSize(), ls::getHeight() * ls::getTileSize()), sf::Vector2f(10.f, 10.f));
-			auto texture = enemy->addComponent<SpriteComponent>(true);
+			/*auto texture = enemy->addComponent<SpriteComponent>(true);
 			texture->setTexture(_textures["res/img/pigeon1.png"]);
+			texture->getSprite().setOrigin(sf::Vector2f(16.f, 16.f));*/
+			std::vector<std::shared_ptr<sf::Texture>> tx{};
+			tx.push_back(_textures["res/img/pigeon1.png"]);
+			tx.push_back(_textures["res/img/pigeon2.png"]);
+			auto texture = enemy->addComponent<AnimatedTexture>(true, 2, tx);
 			texture->getSprite().setOrigin(sf::Vector2f(16.f, 16.f));
+			bird->setAnimationCmp(std::move(texture));
 		}
 	}
 

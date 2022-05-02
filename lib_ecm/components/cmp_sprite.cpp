@@ -79,3 +79,46 @@ void FadingTexture::update(double dt) {
 void FadingTexture::render() {
     Renderer::queue(_sprite.get());
 }
+
+AnimatedTexture::AnimatedTexture(Entity* p, bool updateToParent, float fps, std::vector<std::shared_ptr<sf::Texture>> textures) : 
+    _sprite(make_shared<sf::Sprite>()), _updateToParent(updateToParent), _fps(fps), frameCount(0), time(0),_textures(textures), Component(p) {
+    setTextures(textures);
+}
+
+sf::Sprite& AnimatedTexture::getSprite() const { return *_sprite; }
+
+void AnimatedTexture::setTextures(std::vector<std::shared_ptr<sf::Texture>> tex) {
+    if (tex.size() > 0) {
+        _textures = tex;
+        _sprite->setTexture(*tex[0]);
+    }
+    else {
+        return;
+    }
+    
+}
+
+void AnimatedTexture::render() {
+    Renderer::queue(_sprite.get());
+}
+
+void AnimatedTexture::update(double dt) {
+    if (_fps != 0)
+    {
+        if (time < 1 / _fps) {
+            time += dt;
+        }
+        if (frameCount >= _textures.size()) {
+            frameCount = 0;
+        }
+        if (time >= 1 / _fps) {
+            _sprite->setTexture(*_textures[frameCount]);
+            time = 0;
+            ++frameCount;
+        }
+    }
+    if (_updateToParent) {
+        _sprite->setPosition(_parent->getPosition());
+        _sprite->setRotation(sf::degrees(_parent->getRotation()));
+    }
+}
