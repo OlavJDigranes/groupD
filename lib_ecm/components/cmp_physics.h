@@ -59,6 +59,7 @@ public:
 	bool HasGoalBeenReached();
 	bool IsActive();
 	void SetActive(bool active);
+	sf::Vector2f GetPosition() { return _parent->getPosition(); }
 	void update(double dt) override;
 	void render() override;
 	~PhysicsTriggerComponent() override;

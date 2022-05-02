@@ -253,7 +253,7 @@ void Level1::Load() {
 
 		auto d = player->addComponent<DrivingComponent>(sf::Vector2f(24.f, 36.f), "Player", 24);
 		player->addComponent<PlayerController>(d);
-		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _textures["res/img/heart_full.png"], _textures["res/img/alert_64x64.png"]);
+		_playerData = player->addComponent<PlayerDataComponent>(100, 100, _goalShop->GetPosition(), _textures["res/img/heart_full.png"], _textures["res/img/alert_64x64.png"], _textures["res/img/arrow.png"]);
 		for (auto g : _grates) {
 			g->SetPlayerData(_playerData);
 		}
@@ -367,6 +367,7 @@ void Level1::Update(const double& dt) {
 		//printf("Reached checkpoint! Turn back and head home to deliver the shopping.");
 		_home->SetActive(true);
 		_goalShop->SetActive(false);
+		_playerData->SetGoalPoint(_home->GetPosition());
 	}
 	if (_home->HasGoalBeenReached() && _reachedShop == true && _complete == false) {
 		if (_home->HasGoalBeenReached()) {

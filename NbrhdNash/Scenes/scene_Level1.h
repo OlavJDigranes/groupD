@@ -24,7 +24,8 @@ protected:
 		{"res/img/car_red.png", std::make_shared<sf::Texture>()},
 		{"res/img/heart_full.png", std::make_shared<sf::Texture>()},
 		{"res/img/alert.png", std::make_shared<sf::Texture>()},
-		{"res/img/alert_64x64.png", std::make_shared<sf::Texture>()}
+		{"res/img/alert_64x64.png", std::make_shared<sf::Texture>()},
+		{"res/img/arrow.png", std::make_shared<sf::Texture>()}
 	};
 	std::vector<std::shared_ptr<GrateComponent>> _grates;
 	std::vector<std::shared_ptr<PhysicsTriggerComponent>> _shops;

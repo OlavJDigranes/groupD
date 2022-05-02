@@ -57,6 +57,7 @@ public:
     void SetFadeIn(bool fadeIn) { _fadeIn = fadeIn; };
     void update(double dt) override;
     void render() override;
+    ~FadingTexture();
 };
 
 class AnimatedTexture : public Component {
@@ -77,4 +78,27 @@ public:
     const float GetFPS() { return _fps; };
     void update(double dt) override;
     void render() override;
+    ~AnimatedTexture();
+};
+
+class RotationTrackingTexture : public Component {
+protected:
+    std::shared_ptr<sf::Sprite> _sprite;
+    std::shared_ptr<sf::Texture> _texture;
+    float _rot;
+    bool _updateToParent;
+    sf::Vector2f _pointToTrack;
+
+public:
+    RotationTrackingTexture() = delete;
+    explicit RotationTrackingTexture(Entity* p, bool updateToParent);
+    void setTexture(std::shared_ptr<sf::Texture> tex);
+    sf::Sprite& getSprite() const { return *_sprite; };
+    void SetRotation(float rot) { _rot = rot; };
+    const float GetRotation() { return _rot; }
+    void SetPointToTrack(sf::Vector2f point) { _pointToTrack = point; }
+    sf::Vector2f GetTrackingPoint() { return _pointToTrack; }
+    void update(double dt) override;
+    void render() override;
+    ~RotationTrackingTexture();
 };

@@ -72,7 +72,7 @@ protected:
 	std::shared_ptr<double> _angle;
 	float _topSpeed;
 	PathNode lastNode;
-	void AnalysePath();
+	const void AnalysePath();
 	void ComputeActions(double dt);
 public:
 	void render() override {};

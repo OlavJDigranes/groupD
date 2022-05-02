@@ -139,7 +139,7 @@ AIDrivingComponent::AIDrivingComponent(Entity* parent, const sf::Vector2f size, 
     _sm->changeState("Accelerating");
 }
 
-void AIDrivingComponent::AnalysePath() {
+const void AIDrivingComponent::AnalysePath() {
     sf::Vector2i prev_dir;
     for (int i = 0; i < _path->size(); i++) {
         PathNode p;
