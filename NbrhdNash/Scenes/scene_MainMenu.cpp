@@ -73,7 +73,6 @@ void MainMenu::Render() {
 }
 
 void MainMenu::Update(const double& dt) {
-	std::cout << btnTimer2 << endl; 
 
 	//Keyboard
 	if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer2 <= 0) {
