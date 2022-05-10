@@ -24,6 +24,11 @@ void TextComponent::SetText(const std::string& str) {
   _text.setString(_string);
 }
 
+void TextComponent::ChangeColor(const sf::Color color)
+{
+    _text.setFillColor(color);
+}
+
 //ESC text component
 void ESCTextComponent::update(double dt) {
     _ESCtext.setPosition(_parent->getPosition());
