@@ -83,7 +83,6 @@ void Settings::Update(const double& dt) {
 			selectedOption2--;
 			settingsTexts[selectedOption2]->ChangeColor(Color::White);
 		}
-		printf("W");
 	}
 
 	if ((Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) && btnTimer3 <= 0) {
@@ -93,7 +92,6 @@ void Settings::Update(const double& dt) {
 			selectedOption2++;
 			settingsTexts[selectedOption2]->ChangeColor(Color::White);
 		}
-		printf("S");
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Enter) && btnTimer3 <= 0) {
@@ -102,13 +100,10 @@ void Settings::Update(const double& dt) {
 		settingsTexts.clear();
 		switch (selectedOption2) {
 		case 0:
-			printf("arse\n"); 
 			break;
 		case 1:
-			printf("fuck\n");
 			break;
 		case 2:
-			printf("yeee\n");
 			break;
 		case 3:
 			Engine::ChangeScene(&menu);
@@ -116,7 +111,47 @@ void Settings::Update(const double& dt) {
 		default:
 			break;
 		}
-		printf("EE");
+	}
+
+	//Joystick
+	if (Joystick::isConnected(0)) {
+		float joystickPovYPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY);
+		if ((joystickPovYPos > 0) && btnTimer3 <= 0) {
+			btnTimer3 = 1.0f;
+			if (selectedOption2 - 1 >= 0) {
+				settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+				selectedOption2--;
+				settingsTexts[selectedOption2]->ChangeColor(Color::White);
+			}
+		}
+
+		if ((joystickPovYPos < 0) && btnTimer3 <= 0) {
+			btnTimer3 = 1.0f;
+			if (selectedOption2 + 1 < settingsOptions.size()) {
+				settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+				selectedOption2++;
+				settingsTexts[selectedOption2]->ChangeColor(Color::White);
+			}
+		}
+
+		if (Joystick::isButtonPressed(0, 0) && btnTimer3 <= 0) {
+			btnTimer3 = 1.0f;
+			settingsOptions.clear();
+			settingsTexts.clear();
+			switch (selectedOption2) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				Engine::ChangeScene(&menu);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	btnTimer3 -= dt;
