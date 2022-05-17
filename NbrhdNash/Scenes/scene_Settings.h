@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include "components/components.h"
 
 using namespace std;
 using namespace sf;
@@ -16,6 +17,10 @@ protected:
 	ofstream settingsFile;
 	vector<string> lines;
 	int counter = 0;
+	int selectedOption;
+	std::vector<std::shared_ptr<Entity>> menuOptions;
+	std::vector<std::shared_ptr<TextComponent>> menuTexts;
+	float btnTimer3 = 1.0f;
 public:
 	string vsyncSetting;
 	string imageSetting;

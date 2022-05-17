@@ -22,12 +22,31 @@ void Settings::Load() {
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	if (Joystick::isConnected(0)) {
-		auto y = esc->addComponent<ESCTextComponent>("Press Start to exit the game");
+		auto y = esc->addComponent<ESCTextComponent>("Press Start to exit the game\nPress A to select a menu option");
 	}
 	else {
-		auto y = esc->addComponent<ESCTextComponent>("Press ESC to exit the game");
+		auto y = esc->addComponent<ESCTextComponent>("Press ESC to return to the menu\nPress Enter to select a menu option");
 	}
 
+	constexpr int optionNmb = 4;
+	const string options[optionNmb] = { "Audio","Controls","Video","Back" };
+	selectedOption = 0;
+
+	auto titleText = makeEntity();
+	titleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, Engine::getWindowSize().y * 0.25));
+	auto u = titleText->addComponent<TextComponent>("Settings & Help");
+	float txtOffset = 0.0f;
+	for (int i = 0; i < optionNmb; i++) {
+		menuOptions.push_back(makeEntity());
+		menuTexts.push_back(menuOptions[i]->addComponent<TextComponent>(options[i]));
+		if (i != 0) {
+			menuTexts[i]->ChangeColor(sf::Color(50, 50, 50, 255));
+		}
+		txtOffset -= 35.0f;
+		menuOptions[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, (Engine::getWindowSize().y * 0.25) - txtOffset));
+	}
+
+	/*
 	auto info = makeEntity();
 	info->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
 	if (Joystick::isConnected(0)) {
@@ -45,7 +64,7 @@ void Settings::Load() {
 	else {
 		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440\n\nV-SYNC:\nV: On\nB: Off");
 	}
-	
+	*/
 
 	setLoaded(true);
 }
@@ -56,6 +75,53 @@ void Settings::UnLoad() {
 
 void Settings::Update(const double& dt) {
 	Scene::Update(dt);
+
+	//Keyboard
+	if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer3 <= 0) {
+		btnTimer3 = 1.0f;
+		if (selectedOption - 1 >= 0) {
+			menuTexts[selectedOption]->ChangeColor(sf::Color(50, 50, 50, 255));
+			selectedOption--;
+			menuTexts[selectedOption]->ChangeColor(Color::White);
+		}
+		printf("W");
+	}
+
+	if ((Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) && btnTimer3 <= 0) {
+		btnTimer3 = 1.0f;
+		if (selectedOption + 1 < menuOptions.size()) {
+			menuTexts[selectedOption]->ChangeColor(sf::Color(50, 50, 50, 255));
+			selectedOption++;
+			menuTexts[selectedOption]->ChangeColor(Color::White);
+		}
+		printf("S");
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::Enter) && btnTimer3 <= 0) {
+		btnTimer3 = 1.0f;
+		menuOptions.clear();
+		menuTexts.clear();
+		switch (selectedOption) {
+		case 0:
+			printf("arse\n"); 
+			break;
+		case 1:
+			printf("fuck\n");
+			break;
+		case 2:
+			printf("yeee\n");
+			break;
+		case 3:
+			Engine::ChangeScene(&menu);
+			break;
+		default:
+			break;
+		}
+		printf("EE");
+	}
+
+	/*
+	* OLD
 	if (Keyboard::isKeyPressed(Keyboard::Q)) {
 		resTag = 1;
 		imageSetting = "Q "; 
@@ -117,6 +183,7 @@ void Settings::Update(const double& dt) {
 			saveSettings(); 
 		}
 	}
+	*/
 }
 
 void Settings::Render() {

@@ -14,7 +14,7 @@ protected:
 	int selectedOption; 
 	std::vector<std::shared_ptr<Entity>> menuOptions;
 	std::vector<std::shared_ptr<TextComponent>> menuTexts;
-	float btnTimer2 = 1.3f;
+	float btnTimer2 = 1.0f;
 
 public:
 	MainMenu() = default;
