@@ -30,20 +30,20 @@ void Settings::Load() {
 
 	constexpr int optionNmb = 4;
 	const string options[optionNmb] = { "Audio","Controls","Video","Back" };
-	selectedOption = 0;
+	selectedOption2 = 0;
 
 	auto titleText = makeEntity();
 	titleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, Engine::getWindowSize().y * 0.25));
 	auto u = titleText->addComponent<TextComponent>("Settings & Help");
 	float txtOffset = 0.0f;
 	for (int i = 0; i < optionNmb; i++) {
-		menuOptions.push_back(makeEntity());
-		menuTexts.push_back(menuOptions[i]->addComponent<TextComponent>(options[i]));
+		settingsOptions.push_back(makeEntity());
+		settingsTexts.push_back(settingsOptions[i]->addComponent<TextComponent>(options[i]));
 		if (i != 0) {
-			menuTexts[i]->ChangeColor(sf::Color(50, 50, 50, 255));
+			settingsTexts[i]->ChangeColor(sf::Color(50, 50, 50, 255));
 		}
 		txtOffset -= 35.0f;
-		menuOptions[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, (Engine::getWindowSize().y * 0.25) - txtOffset));
+		settingsOptions[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, (Engine::getWindowSize().y * 0.25) - txtOffset));
 	}
 
 	/*
@@ -74,34 +74,33 @@ void Settings::UnLoad() {
 }
 
 void Settings::Update(const double& dt) {
-	Scene::Update(dt);
 
 	//Keyboard
 	if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer3 <= 0) {
 		btnTimer3 = 1.0f;
-		if (selectedOption - 1 >= 0) {
-			menuTexts[selectedOption]->ChangeColor(sf::Color(50, 50, 50, 255));
-			selectedOption--;
-			menuTexts[selectedOption]->ChangeColor(Color::White);
+		if (selectedOption2 - 1 >= 0) {
+			settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+			selectedOption2--;
+			settingsTexts[selectedOption2]->ChangeColor(Color::White);
 		}
 		printf("W");
 	}
 
 	if ((Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) && btnTimer3 <= 0) {
 		btnTimer3 = 1.0f;
-		if (selectedOption + 1 < menuOptions.size()) {
-			menuTexts[selectedOption]->ChangeColor(sf::Color(50, 50, 50, 255));
-			selectedOption++;
-			menuTexts[selectedOption]->ChangeColor(Color::White);
+		if (selectedOption2 + 1 < settingsOptions.size()) {
+			settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+			selectedOption2++;
+			settingsTexts[selectedOption2]->ChangeColor(Color::White);
 		}
 		printf("S");
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Enter) && btnTimer3 <= 0) {
 		btnTimer3 = 1.0f;
-		menuOptions.clear();
-		menuTexts.clear();
-		switch (selectedOption) {
+		settingsOptions.clear();
+		settingsTexts.clear();
+		switch (selectedOption2) {
 		case 0:
 			printf("arse\n"); 
 			break;
@@ -120,6 +119,9 @@ void Settings::Update(const double& dt) {
 		printf("EE");
 	}
 
+	btnTimer3 -= dt;
+
+	Scene::Update(dt);
 	/*
 	* OLD
 	if (Keyboard::isKeyPressed(Keyboard::Q)) {

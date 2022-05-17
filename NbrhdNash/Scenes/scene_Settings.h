@@ -17,9 +17,9 @@ protected:
 	ofstream settingsFile;
 	vector<string> lines;
 	int counter = 0;
-	int selectedOption;
-	std::vector<std::shared_ptr<Entity>> menuOptions;
-	std::vector<std::shared_ptr<TextComponent>> menuTexts;
+	int selectedOption2;
+	std::vector<std::shared_ptr<Entity>> settingsOptions;
+	std::vector<std::shared_ptr<TextComponent>> settingsTexts;
 	float btnTimer3 = 1.0f;
 public:
 	string vsyncSetting;
