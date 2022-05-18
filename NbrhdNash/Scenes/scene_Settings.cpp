@@ -228,6 +228,7 @@ void Settings::Render() {
 }
 
 void Settings::saveSettings() {
+	//Change this tu use a csv instead of txt
 	settingsFile.open("settings.txt", std::ios_base::out);
 	settingsFile << imageSetting;
 	settingsFile << vsyncSetting;
