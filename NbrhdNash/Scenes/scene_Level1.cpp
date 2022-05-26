@@ -299,7 +299,7 @@ void Level1::Load() {
 	cityAtmos.openFromFile("res/music/CityAtmos.mp3");
 	cityAtmos.setLoop(true); 
 	cityAtmos.play(); 
-	cityAtmos.setVolume(10 * ambienceVolumeMod); 
+	cityAtmos.setVolume(10 * audioVol.ambienceVolumeMod);
 
 	setLoaded(true);
 }

@@ -190,12 +190,12 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
     //Checkpoint Sound
     checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
     checkpointSound.setBuffer(checkpointSoundBuffer);
-    checkpointSound.setVolume(73 * sfxVolumeMod);
+    checkpointSound.setVolume(73 * audioVol.sfxVolumeMod);
 
     //Grate sound
     grateQueBuffer.loadFromFile("res/Music/Grate.mp3");
     grateQue.setBuffer(grateQueBuffer);
-    grateQue.setVolume(55 * sfxVolumeMod);
+    grateQue.setVolume(55 * audioVol.sfxVolumeMod);
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {

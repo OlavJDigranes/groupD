@@ -18,7 +18,7 @@ PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> dr
     //Driving sound
     carEngineBuffer.loadFromFile("res/music/CarSound.mp3");
     carEngine.setBuffer(carEngineBuffer);
-    carEngine.setVolume(70 * sfxVolumeMod);
+    carEngine.setVolume(70 * audioVol.sfxVolumeMod);
     
 }
 

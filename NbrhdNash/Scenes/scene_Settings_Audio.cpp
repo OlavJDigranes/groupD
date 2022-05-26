@@ -20,16 +20,16 @@ void SettingsAudio::Load() {
 
 	//Settings texts from settings scene
 	constexpr int optionNmbS = 4;
-	const string options[optionNmbS] = { "Audio","Controls","Video","Back" };
+	const string optionsS[optionNmbS] = { "Audio","Controls","Video","Back" };
 	//selectedOption2 = 0;
 
-	auto titleText = makeEntity();
-	titleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, Engine::getWindowSize().y * 0.25));
-	auto u = titleText->addComponent<TextComponent>("Settings & Help");
+	auto titleTextS = makeEntity();
+	titleTextS->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, Engine::getWindowSize().y * 0.25));
+	auto uS = titleTextS->addComponent<TextComponent>("Settings & Help");
 	float txtOffset = 0.0f;
 	for (int i = 0; i < optionNmbS; i++) {
 		settingsOptions.push_back(makeEntity());
-		settingsTexts.push_back(settingsOptions[i]->addComponent<TextComponent>(options[i]));
+		settingsTexts.push_back(settingsOptions[i]->addComponent<TextComponent>(optionsS[i]));
 		if (i != 0) {
 			settingsTexts[i]->ChangeColor(sf::Color(50, 50, 50, 255));
 		}
@@ -40,13 +40,13 @@ void SettingsAudio::Load() {
 
 	//audio settings texts. 
 	constexpr int optionNmb = 3;
-	const string options[optionNmb] = { "Main Menu: " + std::to_string(menuLoopVolume),"SFX Modifier: " + std::to_string(sfxVolumeMod),"Ambiance Modifier: " + std::to_string(ambienceVolumeMod) };
+	const string options[optionNmb] = { "Main Menu: " + std::to_string(audioVol.menuLoopVolume),"SFX Modifier: " + std::to_string(audioVol.sfxVolumeMod),"Ambiance Modifier: " + std::to_string(audioVol.ambienceVolumeMod) };
 	selectedOption3 = 0;
 
 	auto titleText = makeEntity();
 	titleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.5, Engine::getWindowSize().y * 0.25));
 	auto u = titleText->addComponent<TextComponent>("Volume Settings");
-	float txtOffset = 0.0f;
+	//float txtOffset = 0.0f;
 	for (int i = 0; i < optionNmb; i++) {
 		audioOptions.push_back(makeEntity());
 		audioTexts.push_back(audioOptions[i]->addComponent<TextComponent>(options[i]));
