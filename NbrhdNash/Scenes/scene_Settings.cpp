@@ -100,6 +100,7 @@ void Settings::Update(const double& dt) {
 		settingsTexts.clear();
 		switch (selectedOption2) {
 		case 0:
+			Engine::ChangeScene(&audio); 
 			break;
 		case 1:
 			break;
@@ -140,6 +141,7 @@ void Settings::Update(const double& dt) {
 			settingsTexts.clear();
 			switch (selectedOption2) {
 			case 0:
+				Engine::ChangeScene(&audio);
 				break;
 			case 1:
 				break;

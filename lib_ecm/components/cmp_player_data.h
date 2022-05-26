@@ -4,6 +4,7 @@
 #include "../components/cmp_sprite.h"
 #include "engine.h"
 #include <SFML/Audio.hpp>
+#include "components.h"
 
 class PlayerDataComponent : public Component {
 protected:

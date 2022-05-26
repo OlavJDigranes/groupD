@@ -17,6 +17,7 @@ Celebration celebration;
 GameOver gameover; 
 SteeringScene steering; 
 Scoreboard scoreboard;
+SettingsAudio audio; 
 
 int main() {
 	//Ingest save state file 
