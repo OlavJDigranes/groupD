@@ -7,6 +7,7 @@
 #include "Box2D/Dynamics/b2Body.h"
 #include <LevelSystem.h>
 #include <SFML/Audio.hpp>
+#include "cmp_audio_volumes.h"
 
 //#define DEBUG_GRATE_TRIGGER_RADIUS
 
