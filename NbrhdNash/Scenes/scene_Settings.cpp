@@ -17,6 +17,10 @@ using namespace sf;
 void Settings::Load() {
 	tag = -1;
 
+	audioSettings = false; 
+	videoSettings = false; 
+	controllerSettings = false; 
+
 	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
 	
 	auto esc = makeEntity();
@@ -44,6 +48,23 @@ void Settings::Load() {
 		}
 		txtOffset -= 35.0f;
 		settingsOptions[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, (Engine::getWindowSize().y * 0.25) - txtOffset));
+	}
+
+	auto secondTitleText = makeEntity(); 
+	secondTitleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.5, Engine::getWindowSize().y * 0.25));
+	if (audioSettings == true) {
+		auto uu = secondTitleText->addComponent<TextComponent>("Audio Settings:"); 
+		cout << "one" << endl; 
+	}
+
+	if (videoSettings == true) {
+		auto uu = secondTitleText->addComponent<TextComponent>("Video Settings:");
+		cout << "tvo" << endl;
+	}
+
+	if (controllerSettings == true) {
+		auto uu = secondTitleText->addComponent<TextComponent>("Controller Settings:");
+		cout << "tree" << endl;
 	}
 
 	/*
@@ -75,48 +96,9 @@ void Settings::UnLoad() {
 
 void Settings::Update(const double& dt) {
 
-	//Keyboard
-	if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer3 <= 0) {
-		btnTimer3 = 1.0f;
-		if (selectedOption2 - 1 >= 0) {
-			settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
-			selectedOption2--;
-			settingsTexts[selectedOption2]->ChangeColor(Color::White);
-		}
-	}
-
-	if ((Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) && btnTimer3 <= 0) {
-		btnTimer3 = 1.0f;
-		if (selectedOption2 + 1 < settingsOptions.size()) {
-			settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
-			selectedOption2++;
-			settingsTexts[selectedOption2]->ChangeColor(Color::White);
-		}
-	}
-
-	if (Keyboard::isKeyPressed(Keyboard::Enter) && btnTimer3 <= 0) {
-		btnTimer3 = 1.0f;
-		settingsOptions.clear();
-		settingsTexts.clear();
-		switch (selectedOption2) {
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			Engine::ChangeScene(&menu);
-			break;
-		default:
-			break;
-		}
-	}
-
-	//Joystick
-	if (Joystick::isConnected(0)) {
-		float joystickPovYPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY);
-		if ((joystickPovYPos > 0) && btnTimer3 <= 0) {
+	if (audioSettings == false && videoSettings == false && controllerSettings == false) {
+		//Keyboard
+		if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer3 <= 0) {
 			btnTimer3 = 1.0f;
 			if (selectedOption2 - 1 >= 0) {
 				settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
@@ -125,7 +107,7 @@ void Settings::Update(const double& dt) {
 			}
 		}
 
-		if ((joystickPovYPos < 0) && btnTimer3 <= 0) {
+		if ((Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) && btnTimer3 <= 0) {
 			btnTimer3 = 1.0f;
 			if (selectedOption2 + 1 < settingsOptions.size()) {
 				settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
@@ -134,16 +116,22 @@ void Settings::Update(const double& dt) {
 			}
 		}
 
-		if (Joystick::isButtonPressed(0, 0) && btnTimer3 <= 0) {
+		if (Keyboard::isKeyPressed(Keyboard::Enter) && btnTimer3 <= 0) {
 			btnTimer3 = 1.0f;
 			settingsOptions.clear();
 			settingsTexts.clear();
 			switch (selectedOption2) {
 			case 0:
+				audioSettings = true;
+				Settings::Load();
 				break;
 			case 1:
+				videoSettings = true;
+				Settings::Load();
 				break;
 			case 2:
+				controllerSettings = true;
+				Settings::Load();
 				break;
 			case 3:
 				Engine::ChangeScene(&menu);
@@ -152,7 +140,49 @@ void Settings::Update(const double& dt) {
 				break;
 			}
 		}
+
+		//Joystick
+		if (Joystick::isConnected(0)) {
+			float joystickPovYPos = Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY);
+			if ((joystickPovYPos > 0) && btnTimer3 <= 0) {
+				btnTimer3 = 1.0f;
+				if (selectedOption2 - 1 >= 0) {
+					settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+					selectedOption2--;
+					settingsTexts[selectedOption2]->ChangeColor(Color::White);
+				}
+			}
+
+			if ((joystickPovYPos < 0) && btnTimer3 <= 0) {
+				btnTimer3 = 1.0f;
+				if (selectedOption2 + 1 < settingsOptions.size()) {
+					settingsTexts[selectedOption2]->ChangeColor(sf::Color(50, 50, 50, 255));
+					selectedOption2++;
+					settingsTexts[selectedOption2]->ChangeColor(Color::White);
+				}
+			}
+
+			if (Joystick::isButtonPressed(0, 0) && btnTimer3 <= 0) {
+				btnTimer3 = 1.0f;
+				settingsOptions.clear();
+				settingsTexts.clear();
+				switch (selectedOption2) {
+				case 0:
+					break;
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					Engine::ChangeScene(&menu);
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
+	
 
 	btnTimer3 -= dt;
 
