@@ -5,7 +5,6 @@
 #include "SFML/Window.hpp"
 #include "SFML/Window/Joystick.hpp"
 #include <SFML/Audio.hpp>
-#include "components.h"
 
 class PlayerController : public Component {
 protected:

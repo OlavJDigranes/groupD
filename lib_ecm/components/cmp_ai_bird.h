@@ -7,7 +7,6 @@
 #include "maths.h"
 #include <LevelSystem.h>
 #include <SFML/Audio.hpp>
-#include "components/components.h"
 
 class AIBirdComponent : public Component {
 protected:

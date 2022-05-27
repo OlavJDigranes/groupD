@@ -58,7 +58,7 @@ void MainMenu::Load() {
 	//Game music loop handling. 
 	menuLoop.openFromFile("res/music/MainMenuLoop.mp3");
 	menuLoop.setLoop(true);
-	menuLoop.setVolume(menuLoopVolume);
+	menuLoop.setVolume(70);
 	menuLoop.play();
 
 	setLoaded(true);
