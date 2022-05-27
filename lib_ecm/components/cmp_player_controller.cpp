@@ -1,4 +1,5 @@
 #include "cmp_player_controller.h"
+#include "../NbrhdNash/game.h"
 
 using namespace std; 
 using namespace sf; 
@@ -18,7 +19,8 @@ PlayerController::PlayerController(Entity* p, std::weak_ptr<DrivingComponent> dr
     //Driving sound
     carEngineBuffer.loadFromFile("res/music/CarSound.mp3");
     carEngine.setBuffer(carEngineBuffer);
-    carEngine.setVolume(70);
+    //carEngine.setVolume(70);
+    carEngine.setVolume(70 * settings.sfxVolumeMod);
     
 }
 

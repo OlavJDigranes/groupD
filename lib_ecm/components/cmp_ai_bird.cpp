@@ -1,4 +1,5 @@
 #include "cmp_ai_bird.h"
+#include "../NbrhdNash/game.h"
 
 AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player, sf::Vector2i levelBounds, sf::Vector2f size) : Component(parent), _player(player) {
 	_str = std::make_shared<BirdSteering>(parent, player.get(), false, levelBounds);
@@ -52,11 +53,16 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
     flying3.setBuffer(flyingBuffer3); 
     birdQue.setBuffer(birdQueBuffer); 
 
-    splat.setVolume(70);
-    flying1.setVolume(65); 
-    flying2.setVolume(65); 
-    flying3.setVolume(65); 
-    birdQue.setVolume(55); 
+    //splat.setVolume(70);
+    splat.setVolume(70 * settings.sfxVolumeMod);
+    //flying1.setVolume(65); 
+    flying1.setVolume(65 * settings.sfxVolumeMod);
+    //flying2.setVolume(65); 
+    flying2.setVolume(65 * settings.sfxVolumeMod);
+    //flying3.setVolume(65); 
+    flying3.setVolume(65 * settings.sfxVolumeMod);
+    //birdQue.setVolume(55); 
+    birdQue.setVolume(55 * settings.sfxVolumeMod);
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {

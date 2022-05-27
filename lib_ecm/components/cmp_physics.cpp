@@ -1,5 +1,7 @@
 #include "cmp_physics.h"
 #include "system_physics.h"
+#include "../NbrhdNash/Scenes/scene_Settings.h"
+#include "../NbrhdNash/game.h"
 
 using namespace std;
 using namespace sf;
@@ -190,12 +192,14 @@ PhysicsTriggerComponent::PhysicsTriggerComponent(Entity* p, const Vector2f& size
     //Checkpoint Sound
     checkpointSoundBuffer.loadFromFile("res/music/Checkpoint.mp3");
     checkpointSound.setBuffer(checkpointSoundBuffer);
-    checkpointSound.setVolume(73);
+    //checkpointSound.setVolume(73);
+    checkpointSound.setVolume(73 * settings.sfxVolumeMod);
 
     //Grate sound
     grateQueBuffer.loadFromFile("res/Music/Grate.mp3");
     grateQue.setBuffer(grateQueBuffer);
-    grateQue.setVolume(55);
+    //grateQue.setVolume(55);
+    grateQue.setVolume(55 * settings.sfxVolumeMod);
 }
 
 bool PhysicsTriggerComponent::HasGoalBeenReached() {

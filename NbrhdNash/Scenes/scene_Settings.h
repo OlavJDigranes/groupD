@@ -21,6 +21,10 @@ protected:
 	std::vector<std::shared_ptr<Entity>> settingsOptions;
 	std::vector<std::shared_ptr<TextComponent>> settingsTexts;
 	float btnTimer3 = 1.0f;
+
+	bool audioSettings; 
+	bool videoSettings; 
+	bool controllerSettings; 
 public:
 	string vsyncSetting;
 	string imageSetting;
@@ -38,4 +42,16 @@ public:
 
 	void ingestFile();
 	void saveSettings();
+
+	//Volume Ranges
+	float minVolume = 0.0f;
+	float maxVolume = 100.0f;
+	float maxvolumeMod = 2.0f;
+
+	//Volume variables
+	float menuLoopVolume = 70;
+
+	//Volume modifiers, start at one
+	float sfxVolumeMod = 1.0f;
+	float ambienceVolumeMod = 1.0f;
 };

@@ -36,7 +36,8 @@ void GameOver::Load() {
 	//Game over sound
 	gameOverBuffer.loadFromFile("res/music/GameOver.mp3");
 	gameOverSound.setBuffer(gameOverBuffer);
-	gameOverSound.setVolume(80);
+	//gameOverSound.setVolume(80);
+	gameOverSound.setVolume(80 * settings.sfxVolumeMod);
 	gameOverSound.play();
 
 	setLoaded(true);

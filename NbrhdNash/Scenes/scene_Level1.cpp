@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "scene_Level1.h"
+#include "../game.h"
 
 //#define RENDER_TO_TEX
 //#define DEBUG_COLLIDERS
@@ -299,7 +300,8 @@ void Level1::Load() {
 	cityAtmos.openFromFile("res/music/CityAtmos.mp3");
 	cityAtmos.setLoop(true); 
 	cityAtmos.play(); 
-	cityAtmos.setVolume(10); 
+	//cityAtmos.setVolume(10); 
+	cityAtmos.setVolume(10 * settings.ambienceVolumeMod);
 
 	setLoaded(true);
 }

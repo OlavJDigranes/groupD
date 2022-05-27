@@ -1,4 +1,5 @@
 #include "cmp_player_data.h"
+#include "../NbrhdNash/game.h"
 
 PlayerDataComponent::PlayerDataComponent(Entity* p, int HP, int Rep, std::shared_ptr<sf::Texture> hpTexture, std::shared_ptr<sf::Texture> repTexture) : _hp(HP), _rep(Rep), startingHP(HP), startingRep(Rep), Component(p) {
 	_hpTexture = std::make_shared<SpriteComponent>(p, false);
@@ -7,7 +8,9 @@ PlayerDataComponent::PlayerDataComponent(Entity* p, int HP, int Rep, std::shared
 	_repTexture->setTexture(repTexture);
 	damageBuffer.loadFromFile("res/music/LifeLoss.mp3");
 	damage.setBuffer(damageBuffer); 
-	damage.setVolume(60); 
+	//damage.setVolume(60); 
+	damage.setVolume(60 * settings.sfxVolumeMod);
+	
 	hpPos = _hpTexture->getSprite().getTextureRect().getPosition();
 	hpSize = _hpTexture->getSprite().getTextureRect().getSize();
 	repPos = _repTexture->getSprite().getTextureRect().getPosition();
