@@ -7,7 +7,7 @@ PlayerDataComponent::PlayerDataComponent(Entity* p, int HP, int Rep, std::shared
 	_repTexture->setTexture(repTexture);
 	damageBuffer.loadFromFile("res/music/LifeLoss.mp3");
 	damage.setBuffer(damageBuffer); 
-	damage.setVolume(60 * audioVol.sfxVolumeMod);
+	damage.setVolume(60 * sfxVolumeMod);
 	hpPos = _hpTexture->getSprite().getTextureRect().getPosition();
 	hpSize = _hpTexture->getSprite().getTextureRect().getSize();
 	repPos = _repTexture->getSprite().getTextureRect().getPosition();
