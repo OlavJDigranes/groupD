@@ -52,11 +52,17 @@ AIBirdComponent::AIBirdComponent(Entity* parent, std::shared_ptr<Entity> player,
     flying3.setBuffer(flyingBuffer3); 
     birdQue.setBuffer(birdQueBuffer); 
 
-    splat.setVolume(70 * audioVol.sfxVolumeMod);
-    flying1.setVolume(65 * audioVol.sfxVolumeMod);
-    flying2.setVolume(65 * audioVol.sfxVolumeMod);
-    flying3.setVolume(65 * audioVol.sfxVolumeMod);
-    birdQue.setVolume(55 * audioVol.sfxVolumeMod);
+    //splat.setVolume(70 * audioVol.sfxVolumeMod);
+    //flying1.setVolume(65 * audioVol.sfxVolumeMod);
+    //flying2.setVolume(65 * audioVol.sfxVolumeMod);
+    //flying3.setVolume(65 * audioVol.sfxVolumeMod);
+    //birdQue.setVolume(55 * audioVol.sfxVolumeMod);
+
+    splat.setVolume(70);
+    flying1.setVolume(65);
+    flying2.setVolume(65);
+    flying3.setVolume(65);
+    birdQue.setVolume(55);
 }
 
 void AIBirdComponent::CheckForPlayer(double dt) {
