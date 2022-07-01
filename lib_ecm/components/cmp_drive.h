@@ -15,15 +15,17 @@
 
 class DrivingComponent : public Component {
 protected:
-	Entity* _parent;
-	b2Body* _body;
-	float32 _currentSpeed;
+	Entity* _parent{nullptr};
+	b2Body* _body{nullptr};
+	float32 _currentSpeed{0};
 	b2Vec2 _size;
 	b2Vec2 _halfSize;
 	std::shared_ptr<b2Vec2> _direction;
 	bodyUserData* _data;
-	float _topSpeed;
-	bool _colliding;
+	float _topSpeed{0.0f};
+	bool _colliding{false};
+	bool _isBraking{false};
+	float _brakeStrength{ 0.0f };
 
 public:
 	void Drive(float speed, double dt);
@@ -33,7 +35,8 @@ public:
 	void SetDirection(b2Vec2 newDir) { *_direction = newDir; };
 	void SetDirection(sf::Vector2i newDir) { SetDirection(b2Vec2(newDir.x, newDir.y)); };
 	float32 GetCurrentSpeed() { return _currentSpeed; }
-
+	bool GetBrakingStatus() { return _isBraking; }
+	void SetBrakingStatus(bool isBraking) { _isBraking = isBraking; }
 	void IsColliding();
 	std::vector<const b2Contact const*> _dirtyCheck;
 

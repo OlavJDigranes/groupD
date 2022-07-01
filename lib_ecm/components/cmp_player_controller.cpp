@@ -40,9 +40,16 @@ void PlayerController::update(double dt) {
             //Driving sound
             soundOn = true;
         }
+        else {
+            soundOn = false;
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            d->SetBrakingStatus(true);
             d->Brake(dt);  // Brake
             soundOn = false;
+        }
+        else if (d->GetBrakingStatus()) {
+            d->SetBrakingStatus(false);
         }
 
         sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
@@ -60,6 +67,7 @@ void PlayerController::update(double dt) {
                 soundOn = true;
             }
             if (joystickTAxisPos > 0) {
+                d->SetBrakingStatus(true);
                 d->Brake(dt);  // Brake
                 soundOn = false;
             }

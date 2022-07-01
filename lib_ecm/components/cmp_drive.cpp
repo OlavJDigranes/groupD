@@ -65,24 +65,18 @@ void DrivingComponent::IsColliding() {
 }
 
 void DrivingComponent::Drive(float speed, double dt) {
-    // If brakes have been activated then reset damping
-    if (_body->GetLinearDamping() > 0.5) {
-        _body->SetLinearDamping(0.5);
-    }
     // If below top speed, set body velocity to increase in direction and let parent (sprite) update
     if (_body->GetLinearVelocity().LengthSquared() <= pow(_topSpeed, 2) && _body->GetLinearVelocity().LengthSquared() >= 0 && _currentSpeed <= _topSpeed) {
-        _body->SetLinearVelocity(b2Vec2((_currentSpeed + (speed * dt)) * *_direction));
+        _body->ApplyForceToCenter(speed * *_direction, true);
         _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition()));
-        _currentSpeed += speed * dt;
     }
 }
 
 void DrivingComponent::Brake(double dt) {
-    // Increase damping if car is moving
-    auto damping = _body->GetLinearDamping();
-    if (damping >= 0.5 && damping < 12) {
-        _body->SetLinearDamping(damping + dt);
+    if (_brakeStrength < 1) {
+        _brakeStrength = sqrt(1 - pow(_brakeStrength + dt - 1, 2));
     }
+    _body->ApplyForceToCenter((-1.6 * _brakeStrength) * *_direction, true);
 }
 
 void DrivingComponent::Rotate(float degrees, float dt) {
@@ -95,15 +89,16 @@ void DrivingComponent::Rotate(float degrees, float dt) {
 }
 
 void DrivingComponent::update(double dt) {
-    if (_body->GetLinearDamping() > 0.5 || _currentSpeed == 0) {
-        _body->SetLinearDamping(0.5);   // if car is stationary or not braking then reduce damping
-    }
     _body->SetLinearVelocity(_body->GetLinearVelocity().Length() * *_direction); // ensure the car is always travelling forwards when turning with no accel
     _currentSpeed = _body->GetLinearVelocity().Length(); // Update speed to follow damping effects
     _parent->setPosition(Physics::bv2_to_sv2(_body->GetPosition())); // Set parent to follow body when not moving
 
     if (_data->_tag != "AI") {
         IsColliding();
+    }
+
+    if (!_isBraking && _brakeStrength != 0.0f) {
+        _brakeStrength = 0.0f;
     }
 }
 
