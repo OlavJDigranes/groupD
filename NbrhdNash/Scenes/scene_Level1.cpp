@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <thread>
 #include "scene_Level1.h"
@@ -15,7 +16,7 @@ void Level1::Load() {
 	tag = 1; 
 
 	for (auto tex : _textures) {
-		if (tex.second->loadFromFile(tex.first)) {
+		if (std::filesystem::exists(tex.first)) {
 			tex.second->loadFromFile(tex.first);
 		}
 	}
