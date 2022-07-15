@@ -49,8 +49,10 @@ target_include_directories(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths" S
 # ECM Library
 file(GLOB_RECURSE SOURCE_FILES lib_ecm/*.cpp lib_ecm/*.h)
 file(GLOB_RECURSE CMPNTS lib_ecm/components/*.cpp lib_ecm/components/*.h)
+file(GLOB_RECURSE PREBUILTS lib_ecm/prebuilts/*.cpp lib_ecm/prebuilts/*.h)
 source_group("Components" FILES ${CMPNTS})
 source_group("Resources" FILES ${RESOURCE_FILES})
+source_group("Prebuilts" FILES ${PREBUILTS})
 add_library(lib_ecm STATIC ${SOURCE_FILES})
 target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib_ecm" )
 target_link_libraries(lib_ecm PRIVATE lib_engine lib_maths)

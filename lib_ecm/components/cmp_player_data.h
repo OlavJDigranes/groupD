@@ -25,6 +25,14 @@ protected:
 public:
 	PlayerDataComponent() = delete;
 	explicit PlayerDataComponent(Entity* p, int startingHP, int startingRep, std::shared_ptr<sf::Texture> hpTexture, std::shared_ptr<sf::Texture> repTexture);
+	~PlayerDataComponent();
+	
+	void update(double dt) override;
+	void render() override;
+	
+	void SetHealthTexture(std::shared_ptr<SpriteComponent> tx) { _hpTexture = tx; };
+	void SetRepTexture(std::shared_ptr<SpriteComponent> tx) { _repTexture = tx; };
+
 	void TakeDamage(int HP) { _hp -= HP; damage.play(); ++_hpDecreases; };
 	void Heal(int HP) { _hp += HP; }
 	void IncreaseReputation(int Rep) { _rep += Rep; }
@@ -32,7 +40,4 @@ public:
 	int GetHealth() { return _hp; };
 	int getReputation() { return _rep; }
 	int GetTimesPoopedOn() { return _hpDecreases; };
-	void update(double dt) override;
-	void render() override;
-	~PlayerDataComponent();
 };
