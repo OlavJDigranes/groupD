@@ -2,8 +2,8 @@
 #include "prb_Player.h"
 
 Player::Player(Scene* s, sf::Vector2f size, float TopSpeed) : Entity(s) {
-	driver = std::make_unique<DrivingComponent>(this, size, "Player", TopSpeed);
-	controller = std::make_unique<PlayerController>(driver);
+	driver = std::make_shared<DrivingComponent>(this, size, "Player", TopSpeed);
+	controller = std::make_unique<PlayerController>(this, driver);
 	data = std::make_unique<PlayerDataComponent>(this, 5, 5, nullptr, nullptr);
 }
 

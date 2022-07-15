@@ -33,11 +33,11 @@ public:
 	void SetHealthTexture(std::shared_ptr<SpriteComponent> tx) { _hpTexture = tx; };
 	void SetRepTexture(std::shared_ptr<SpriteComponent> tx) { _repTexture = tx; };
 
-	void TakeDamage(int HP) { _hp -= HP; damage.play(); ++_hpDecreases; };
-	void Heal(int HP) { _hp += HP; }
-	void IncreaseReputation(int Rep) { _rep += Rep; }
-	void DecreaseReputation(int Rep) { _rep -= Rep; ++_repDecreases; }
+	void TakeDamage(int HP);
+	void Heal(int HP);
+	void IncreaseReputation(int Rep);
+	void DecreaseReputation(int Rep);
 	int GetHealth() { return _hp; };
-	int getReputation() { return _rep; }
+	int GetReputation() { return _rep; }
 	int GetTimesPoopedOn() { return _hpDecreases; };
 };

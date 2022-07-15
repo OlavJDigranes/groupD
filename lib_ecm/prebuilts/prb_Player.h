@@ -20,8 +20,8 @@ public:
 protected:
 
 private:
-	std::unique_ptr<DrivingComponent> driver;
-	std::unique_ptr<PlayerController> controller;
-	std::unique_ptr<PlayerDataComponent> data;
-	std::unique_ptr<SpriteComponent> sprite;
+	std::shared_ptr<DrivingComponent> driver{ nullptr };
+	std::unique_ptr<PlayerController> controller{ nullptr };
+	std::unique_ptr<PlayerDataComponent> data{ nullptr };
+	std::unique_ptr<SpriteComponent> sprite{ nullptr };
 };
