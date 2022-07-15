@@ -10,9 +10,6 @@ public:
 	Player(Scene* scene, sf::Vector2f size, float TopSpeed);
 	~Player() override;
 
-	void update(double dt) override;
-	void render() override;
-
 	void SetPlayerTexture(std::shared_ptr<sf::Texture> tx);
 	void SetHealthTexture(std::shared_ptr<SpriteComponent> tx);
 	void SetRepTexture(std::shared_ptr<SpriteComponent> tx);
@@ -21,7 +18,7 @@ protected:
 
 private:
 	std::shared_ptr<DrivingComponent> driver{ nullptr };
-	std::unique_ptr<PlayerController> controller{ nullptr };
-	std::unique_ptr<PlayerDataComponent> data{ nullptr };
-	std::unique_ptr<SpriteComponent> sprite{ nullptr };
+	std::shared_ptr<PlayerController> controller{ nullptr };
+	std::shared_ptr<PlayerDataComponent> data{ nullptr };
+	std::shared_ptr<SpriteComponent> sprite{ nullptr };
 };
