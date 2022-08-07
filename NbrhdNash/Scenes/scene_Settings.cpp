@@ -17,9 +17,11 @@ using namespace sf;
 void Settings::Load() {
 	tag = -1;
 
+	/*
 	audioSettings = false; 
 	videoSettings = false; 
 	controllerSettings = false; 
+	*/
 
 	sf::Joystick::Identification joystickID = sf::Joystick::getIdentification(0);
 	
@@ -50,6 +52,7 @@ void Settings::Load() {
 		settingsOptions[i]->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, (Engine::getWindowSize().y * 0.25) - txtOffset));
 	}
 
+	/*
 	auto secondTitleText = makeEntity(); 
 	secondTitleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.5, Engine::getWindowSize().y * 0.25));
 	if (audioSettings == true) {
@@ -66,6 +69,7 @@ void Settings::Load() {
 		auto uu = secondTitleText->addComponent<TextComponent>("Controller Settings:");
 		cout << "tree" << endl;
 	}
+	*/
 
 	/*
 	auto info = makeEntity();
@@ -96,7 +100,7 @@ void Settings::UnLoad() {
 
 void Settings::Update(const double& dt) {
 
-	if (audioSettings == false && videoSettings == false && controllerSettings == false) {
+	//if (audioSettings == false && videoSettings == false && controllerSettings == false) {
 		//Keyboard
 		if ((Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) && btnTimer3 <= 0) {
 			btnTimer3 = 1.0f;
@@ -122,16 +126,19 @@ void Settings::Update(const double& dt) {
 			settingsTexts.clear();
 			switch (selectedOption2) {
 			case 0:
-				audioSettings = true;
-				Settings::Load();
+				//audioSettings = true;
+				Engine::ChangeScene(&audioSettings);
+				//Settings::Load();
 				break;
 			case 1:
-				videoSettings = true;
-				Settings::Load();
+				//videoSettings = true;
+				Engine::ChangeScene(&visualSettings); 
+				//Settings::Load();
 				break;
 			case 2:
-				controllerSettings = true;
-				Settings::Load();
+				//controllerSettings = true;
+				Engine::ChangeScene(&controlSettings); 
+				//Settings::Load();
 				break;
 			case 3:
 				Engine::ChangeScene(&menu);
@@ -168,10 +175,19 @@ void Settings::Update(const double& dt) {
 				settingsTexts.clear();
 				switch (selectedOption2) {
 				case 0:
+					//audioSettings = true;
+					Engine::ChangeScene(&audioSettings);
+					//Settings::Load();
 					break;
 				case 1:
+					//videoSettings = true;
+					Engine::ChangeScene(&visualSettings);
+					//Settings::Load();
 					break;
 				case 2:
+					//controllerSettings = true;
+					Engine::ChangeScene(&controlSettings);
+					//Settings::Load();
 					break;
 				case 3:
 					Engine::ChangeScene(&menu);
@@ -181,7 +197,7 @@ void Settings::Update(const double& dt) {
 				}
 			}
 		}
-	}
+	//}
 	
 
 	btnTimer3 -= dt;

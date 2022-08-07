@@ -8,6 +8,9 @@
 #include "Scenes/scene_GameOver.h"
 #include "Scenes/scene_Steering.h"
 #include "Scenes/scene_Scoreboard.h"
+#include "Scenes/scene_AudioSettings.h"
+#include "Scenes/scene_ControlSettings.h"
+#include "Scenes/scene_VisualSettings.h"
 #include <SFML/Audio.hpp>
 
 using namespace sf;
@@ -20,3 +23,6 @@ extern GameOver gameover;
 extern Celebration celebration; 
 extern SteeringScene steering; 
 extern Scoreboard scoreboard; 
+extern AudioSettings audioSettings; 
+extern ControlSettings controlSettings; 
+extern VisualSettings visualSettings; 

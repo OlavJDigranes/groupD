@@ -22,9 +22,11 @@ protected:
 	std::vector<std::shared_ptr<TextComponent>> settingsTexts;
 	float btnTimer3 = 1.0f;
 
+	/*
 	bool audioSettings; 
 	bool videoSettings; 
 	bool controllerSettings; 
+	*/
 public:
 	string vsyncSetting;
 	string imageSetting;
