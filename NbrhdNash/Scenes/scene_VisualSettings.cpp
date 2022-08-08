@@ -33,7 +33,7 @@ void VisualSettings::Load() {
 }
 
 void VisualSettings::UnLoad() {
-
+	Scene::UnLoad();
 }
 
 void VisualSettings::Update(const double& dt) {

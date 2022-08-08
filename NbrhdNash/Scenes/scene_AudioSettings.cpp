@@ -33,7 +33,7 @@ void AudioSettings::Load() {
 }
 
 void AudioSettings::UnLoad() {
-
+	Scene::UnLoad();
 }
 
 void AudioSettings::Update(const double& dt) {

@@ -33,7 +33,7 @@ void ControlSettings::Load() {
 }
 
 void ControlSettings::UnLoad() {
-
+	Scene::UnLoad();
 }
 
 void ControlSettings::Update(const double& dt) {
