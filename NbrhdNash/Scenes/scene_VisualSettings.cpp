@@ -23,11 +23,17 @@ void VisualSettings::Load() {
 	auto esc = makeEntity();
 	esc->setPosition(Vector2f(5, 5));
 	if (Joystick::isConnected(0)) {
-		auto y = esc->addComponent<ESCTextComponent>("Press Start to exit the game\nPress A to select a menu option");
+		auto y = esc->addComponent<ESCTextComponent>("Press Start to return to the menu\nPress A to select a menu option");
 	}
 	else {
 		auto y = esc->addComponent<ESCTextComponent>("Press ESC to return to the menu\nPress Enter to select a menu option");
 	}
+
+
+	auto titleText = makeEntity();
+	titleText->setPosition(Vector2f(Engine::getWindowSize().x * 0.2, Engine::getWindowSize().y * 0.25));
+	auto u = titleText->addComponent<TextComponent>("Visual Settings");
+	float txtOffset = 0.0f;
 
 	setLoaded(true);
 }
@@ -37,9 +43,14 @@ void VisualSettings::UnLoad() {
 }
 
 void VisualSettings::Update(const double& dt) {
+	if (Keyboard::isKeyPressed(Keyboard::Escape) && btnTimer3 <= 0.0f) {
+		Engine::ChangeScene(&settings); 
+	}
 
+	btnTimer3 -= dt;
+	Scene::Update(dt);
 }
 
 void VisualSettings::Render() {
-
+	Scene::Render();
 }
