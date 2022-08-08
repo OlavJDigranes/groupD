@@ -35,6 +35,15 @@ void VisualSettings::Load() {
 	auto u = titleText->addComponent<TextComponent>("Visual Settings");
 	float txtOffset = 0.0f;
 
+	auto info2 = makeEntity();
+	info2->setPosition(Vector2f(Engine::getWindowSize().x * 0.3, Engine::getWindowSize().y * 0.2));
+	if (Joystick::isConnected(0)) {
+		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nA: 1280 x 720\nY: 1920 x 1080\nX: 2560 x 1440\n\nV-SYNC:\nLB: On\nRB: Off");
+	}
+	else {
+		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440\n\nV-SYNC:\nV: On\nB: Off");
+	}
+
 	setLoaded(true);
 }
 
