@@ -35,7 +35,7 @@ void Settings::Load() {
 	}
 
 	constexpr int optionNmb = 4;
-	const string options[optionNmb] = { "Audio","Controls","Video","Back" };
+	const string options[optionNmb] = { "Audio","Video","Controls","Back" };
 	selectedOption2 = 0;
 
 	auto titleText = makeEntity();
