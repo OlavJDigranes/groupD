@@ -45,7 +45,11 @@ void VisualSettings::Load() {
 	else {
 		auto i2 = info2->addComponent<TextComponent>("SELECT RESOLUTION:\nQ: 1280 x 720\nW: 1920 x 1080\nE: 2560 x 1440\n\nV-SYNC:\nV: On\nB: Off");
 	}
+
+	X / back (0,7) to save. 
 	*/
+
+
 
 	setLoaded(true);
 }
